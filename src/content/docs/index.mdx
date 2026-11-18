@@ -1,0 +1,127 @@
+---
+title: "Capybaroar Docs"
+description: "Step-by-step guides for Capybaroar: connect your channels, schedule posts to 14 networks, use the AI agent and connect Claude, ChatGPT or Cursor."
+template: splash
+sidebar:
+  label: "Home"
+hero:
+  title: "Capybaroar docs. <span class='dim'>Everything, step by step.</span>"
+  tagline: "How to connect your channels, schedule posts, work with the AI agent and use Capybaroar from Claude, ChatGPT or Cursor."
+  image:
+    html: '<img src="/img/calendar.webp" width="2304" height="1440" alt="The Capybaroar calendar, with a month of posts for several channels" fetchpriority="high">'
+  actions:
+    - text: "Get started"
+      link: /get-started/welcome/
+      icon: right-arrow
+      variant: primary
+    - text: "Connect your AI app"
+      link: /ai/mcp/
+      variant: secondary
+    - text: "Open the app"
+      link: https://app.capybaroar.com
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Capybaroar is an agentic social media platform. An AI agent plans and writes your posts, and you schedule them to 14 networks from one calendar. These docs show you how each part works, with the exact button names you see in the app.
+
+## Get started
+
+<CardGrid>
+  <LinkCard title="What is Capybaroar?" href="/get-started/welcome/" description="Capybaroar is an agentic social media platform: an AI agent plans and writes your posts, and you schedule them to 14 networks from one calendar." />
+  <LinkCard title="Create your account" href="/get-started/create-account/" description="Sign up with your email in under a minute. You start on 14 days of Pro, free, with no card." />
+  <LinkCard title="Connect your first channel" href="/get-started/connect-a-channel/" description="A channel is one social account Capybaroar can post to, like your Instagram account or your LinkedIn Page." />
+  <LinkCard title="Schedule your first post" href="/get-started/schedule-your-first-post/" description="Write a post once, check how it looks on each network, then schedule it, queue it or post it now." />
+</CardGrid>
+
+## Explore the docs
+
+<CardGrid>
+  <Card title="Publishing" icon="pencil">
+    The calendar, queue times, campaigns, bulk upload, RSS feeds and evergreen posts. [Plan your posts](/publishing/calendar-and-queue/)
+  </Card>
+  <Card title="Channels" icon="puzzle">
+    One page per network, with how to connect it and the fix for each post it turns down. [See every network](/get-started/connect-a-channel/#how-each-network-connects)
+  </Card>
+  <Card title="AI agent and MCP" icon="star">
+    The agent, AI credits, rewrites and the MCP server for Claude, ChatGPT and Cursor. [Meet the agent](/ai/agent/)
+  </Card>
+  <Card title="Inbox and results" icon="comment">
+    Answer comments, read your analytics, send reports and build a link in bio page. [Open the guides](/results/inbox/)
+  </Card>
+  <Card title="Workspace" icon="setting">
+    Plans and billing, team roles, brands and approvals. [Set up your team](/workspace/team-and-roles/)
+  </Card>
+  <Card title="Developers" icon="seti:json">
+    The REST API and webhooks, on every plan. [Read the API guide](/developers/rest-api/)
+  </Card>
+</CardGrid>
+
+## Channels
+
+| Network | What you can post | Connects with |
+| - | - | - |
+| [Instagram](/channels/instagram/) | Posts, Reels and Stories | Sign in with Meta |
+| [Facebook](/channels/facebook/) | Posts, Reels and Stories on Pages | Sign in with Meta |
+| [TikTok](/channels/tiktok/) | Videos and photo posts | Sign in with TikTok |
+| [LinkedIn](/channels/linkedin/) | Posts and PDF carousels, on profiles and Pages | Sign in with LinkedIn |
+| [YouTube](/channels/youtube/) | Videos | Sign in with Google |
+| [X](/channels/x/) | Posts, threads and polls | Sign in with X |
+| [Threads](/channels/threads/) | Posts and threads | Sign in with Meta |
+| [Pinterest](/channels/pinterest/) | Pins | Sign in with Pinterest |
+| [Bluesky](/channels/bluesky/) | Posts and threads | Handle and app password |
+| [Mastodon](/channels/mastodon/) | Posts and threads | Your server, then sign in |
+| [Discord](/channels/discord/) | Messages | A webhook link |
+| [Telegram](/channels/telegram/) | Messages in a channel or group | The Capybaroar bot as an admin |
+| [WordPress](/channels/wordpress/) | Blog posts | Site address and application password |
+
+## Three ways to use Capybaroar
+
+<Tabs>
+  <TabItem label="In the app">
+
+Sign in at [app.capybaroar.com](https://app.capybaroar.com). Connect a channel, then write your first post in the calendar.
+
+  </TabItem>
+  <TabItem label="From your AI app">
+
+Connect Claude, ChatGPT or Cursor to the Capybaroar MCP server and ask for posts in plain words. It is on every plan, Free too. See [Use Capybaroar from Claude, ChatGPT or Cursor](/ai/mcp/).
+
+  </TabItem>
+  <TabItem label="With the API">
+
+Make posts and read results from your own code. Get a webhook when a post goes out. See the [REST API](/developers/rest-api/) and [Webhooks](/developers/webhooks/).
+
+  </TabItem>
+</Tabs>
+
+## Your first ten minutes
+
+<Steps>
+
+1. **Create your account**
+
+   Sign up and start 14 days of Pro for free. [Create your account](/get-started/create-account/)
+
+1. **Connect a channel**
+
+   Add the social account you post from. [Connect your first channel](/get-started/connect-a-channel/)
+
+1. **Schedule a post**
+
+   Write it once, then pick a time. [Schedule your first post](/get-started/schedule-your-first-post/)
+
+1. **Let the agent plan your week**
+
+   Ask for a week of drafts in one message. [Plan a week of posts](/ai/plan-a-week/)
+
+</Steps>
+
+## Need help?
+
+<CardGrid>
+  <LinkCard title="FAQ and troubleshooting" href="/reference/faq/" description="Answers to common questions, and what each message in the app means." />
+  <LinkCard title="Email us" href="mailto:hello@capybaroar.com" description="Write to hello@capybaroar.com and a person will answer." />
+</CardGrid>

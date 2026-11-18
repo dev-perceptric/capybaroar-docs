@@ -1,0 +1,72 @@
+---
+title: "Discord"
+description: "How to connect Discord, what you can post there and how to fix a post it turns down."
+sidebar:
+  label: "Discord"
+---
+
+import { Aside, CardGrid, LinkCard, LinkButton, Steps } from '@astrojs/starlight/components';
+
+How to connect Discord, what you can post there and how to fix a post it turns down.
+
+<LinkButton href="https://app.capybaroar.com/channels" variant="secondary" icon="external">Open in Capybaroar</LinkButton>
+
+## At a glance
+
+| | |
+| - | - |
+| **Characters** | 2,000 |
+| **Needs a picture or video** | No |
+| **Connects with** | A short form (Webhook URL) |
+| **Inbox** | Not in the Inbox |
+| **Analytics** | Not in Analytics yet |
+| **Change after it goes out** | Yes, the text |
+
+## Connect Discord
+
+Discord connects with a webhook, a private link that posts into one channel.
+
+<Steps>
+
+1. **Make a webhook.** In Discord, open the channel's settings, then **Integrations**, then **Webhooks**, create one and copy its URL.
+
+1. **Connect in Capybaroar.** Click Discord in **Channels** and paste the webhook URL.
+
+</Steps>
+
+## Post to Discord
+
+<Steps>
+
+1. **Open the calendar** and click **New post**.
+
+1. **Pick your Discord channel** and write the post.
+
+1. **Open the Discord tab** to set the options below.
+
+1. **Check the preview**, then schedule, queue or post now.
+
+</Steps>
+
+- Messages can be up to 2,000 characters.
+- A message takes up to 10 files, each under 10 MB.
+- Each webhook posts to one channel. Add another webhook for another channel.
+
+## If a post is turned down
+
+Capybaroar checks each post before it's scheduled and shows the reason next to the channel. These are the Discord ones:
+
+| Message | What to do |
+| - | - |
+| `This Discord webhook doesn't exist or was deleted` | Make a new webhook in Discord and connect it again. |
+| `Discord takes up to 10 files` | Remove files until there are 10 or fewer. |
+| `Discord files must be under 10 MB` | Use smaller files. |
+
+Read more about scheduling Discord on the [Discord scheduler](https://capybaroar.com/discord-message-scheduler) page.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Connect your first channel" href="/get-started/connect-a-channel/" />
+  <LinkCard title="Schedule your first post" href="/get-started/schedule-your-first-post/" />
+</CardGrid>

@@ -1,0 +1,110 @@
+---
+title: "Bulk upload and automation"
+description: "Schedule many posts at once from a CSV file or a stack of files, and let RSS feeds and evergreen posts keep your calendar full."
+sidebar:
+  label: "Bulk upload and automation"
+---
+
+import { Aside, CardGrid, LinkCard, LinkButton, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+
+Plan weeks of posts at once with **Bulk**. Let a blog's feed fill your calendar, and send your best posts out again every few weeks. All of it is on every plan, Free too.
+
+<LinkButton href="https://app.capybaroar.com/calendar" variant="secondary" icon="external">Open in Capybaroar</LinkButton>
+
+## Bulk upload
+
+Open **Calendar** and press **Bulk**. Under **Import from**, pick how you want to add posts.
+
+<Tabs>
+<TabItem label="CSV file">
+
+One row is one post, with the columns date, time, channels, text, media URL and first comment. A campaign column is optional.
+
+<Steps>
+
+1. **Get the template.** Press **Template** to download a CSV file with the right columns and an example row.
+
+1. **Fill in your posts.** Use a date like `2026-11-05` and a time like `09:30`, in your workspace's time zone. In channels, write channel names or networks, split by `|`, like `LinkedIn | X`. A network name picks every channel on that network.
+
+1. **Choose the file.** Drop it in, or press **Choose file**. Capybaroar checks every row before it saves anything and shows each row's problems.
+
+1. **Save.** Rows marked **Ready** are scheduled. A row a network can't post yet, like a YouTube video with no title, comes in as **Draft only**.
+
+</Steps>
+
+- A file can hold up to 500 rows and be up to 900 KB.
+- All channels in a row must be from one brand.
+- To post a thread, put a line with only `---` between the parts. Networks without threads post the first part only.
+- The media URL must start with `http://` or `https://`. Capybaroar downloads the file into your media library.
+
+</TabItem>
+
+<TabItem label="Pictures and videos">
+
+Each file becomes its own post, spread over your queue or one a day.
+
+<Steps>
+
+1. **Drop your files.** Add up to 100 pictures and videos at a time: JPG, PNG, GIF, WebP, MP4 or MOV.
+
+1. **Pick channels.** Choose where the posts go.
+
+1. **Pick when.** **Queue** fills your next free queue times. **One a day** posts each file on its own day at the time you set.
+
+1. **Write the text.** Type a caption for each file, or press **Write captions** to let Claude write the empty ones. Add **Notes for Claude** first if you want a certain angle.
+
+1. **Save.**
+
+</Steps>
+
+Writing captions with AI uses 4 [AI credits](/ai/ai-credits/) each and needs a plan with AI.
+
+</TabItem>
+</Tabs>
+
+<Aside type="caution">
+On Free, scheduled posts count toward your 30 a month. If a bulk upload would go over, Capybaroar tells you how many are left before it starts. Save the rest as drafts, or upgrade.
+</Aside>
+
+## RSS feeds
+
+New items from a blog or news feed become drafts or queued posts, every 30 minutes.
+
+<Steps>
+
+1. **Open Feeds.** Click **Channels**, then the **Feeds** tab, and press **Add feed**.
+
+1. **Paste the feed URL.** Use your blog's RSS or Atom address.
+
+1. **Pick channels.** Choose the channels that get a post for each new item. They need to be channels that post text.
+
+1. **Write the template.** Use `{title}`, `{link}` and `{summary}` where the item's parts should go. Links are shortened so their clicks are counted.
+
+1. **Choose what new items become.** **Drafts** wait for you to check them. **Add to queue** puts them in your next free queue time.
+
+</Steps>
+
+A new feed posts only its newest item, so you don't get a flood of old posts. Turn a feed off with its **Active** switch, or press **Remove**. Posts it already made stay on the calendar.
+
+## Evergreen posts
+
+An evergreen post goes out again as a queued copy every few weeks, so your best posts keep working.
+
+<Steps>
+
+1. **Open a published post** from the calendar.
+
+1. **Press Evergreen** in the post's header.
+
+1. **Switch it on and pick how often.** Under **Post again**, choose every week, or every 2, 4, 8, 12 or 26 weeks. The panel shows when the next copy goes out.
+
+</Steps>
+
+To post something once more right now, press **Post again** instead. It opens a new copy you can change before you schedule it.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Calendar, queue and campaigns" href="/publishing/calendar-and-queue/" />
+  <LinkCard title="Plan a week of posts with the agent" href="/ai/plan-a-week/" />
+</CardGrid>

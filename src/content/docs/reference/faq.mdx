@@ -1,0 +1,205 @@
+---
+title: "FAQ and troubleshooting"
+description: "Answers to common Capybaroar questions, and what each message in the app means and what to do about it."
+sidebar:
+  label: "FAQ and troubleshooting"
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Click a question to see its answer. Further down, the [troubleshooting tables](#troubleshooting) list the messages you may see in the app and what to do.
+
+## Getting started
+
+<details>
+<summary>Which networks can I post to?</summary>
+
+Instagram, Facebook, TikTok, LinkedIn profiles, LinkedIn Pages, YouTube, X, Threads, Pinterest, Bluesky, Mastodon, Discord, Telegram and WordPress. Each one has a page under **Channels** in these docs.
+
+</details>
+
+<details>
+<summary>Do I need a card to try Capybaroar?</summary>
+
+No. New workspaces get 14 days of Pro with 200 AI credits and no card. After that you stay on the Free plan unless you pick a paid one. See [Plans and billing](/workspace/plans-and-billing/).
+
+</details>
+
+<details>
+<summary>What happens to my posts when the trial ends?</summary>
+
+They stay. Your posts and channels stay where they are, and the workspace moves to the Free plan. Free covers 3 channels and 30 scheduled posts a month.
+
+</details>
+
+<details>
+<summary>Why can't Capybaroar post to my Instagram account?</summary>
+
+Instagram only lets apps post to professional accounts (business or creator). You can switch for free in the Instagram app under account settings, then connect again. See [Instagram](/channels/instagram/).
+
+</details>
+
+## Posting
+
+<details>
+<summary>What's the difference between Schedule and Add to queue?</summary>
+
+**Schedule** sends the post at the date and time you pick. **Add to queue** puts it in the next free time from your queue, which you set in **Settings**, **Queue**. See [Calendar, queue and campaigns](/publishing/calendar-and-queue/#the-posting-queue).
+
+</details>
+
+<details>
+<summary>Can I post different text to each network?</summary>
+
+Yes. In the post editor, open a channel's tab and change the text for that network only. You can also ask AI to **Fit to this network**.
+
+</details>
+
+<details>
+<summary>Can I change a post after it went out?</summary>
+
+On some networks. Open the post, press **Edit**, change it and press **Save changes**. LinkedIn, Facebook, YouTube, Pinterest, Mastodon, Telegram, Discord and WordPress allow it. Instagram, TikTok, X, Threads and Bluesky don't.
+
+</details>
+
+<details>
+<summary>How do I take a post down?</summary>
+
+Open it from the calendar and press **Delete**. In **Delete post**, pick the channels and press **Delete everywhere**. Instagram and TikTok don't let apps delete posts, so Capybaroar links you to the post to delete it there.
+
+</details>
+
+<details>
+<summary>What happens if a post fails?</summary>
+
+Capybaroar tries again on its own when a network has a passing problem, after 1, 5, 15, 60 and 240 minutes. If the network turns the post down, or the tries run out, the post shows its reason next to the channel. Owners and admins get an email too.
+
+</details>
+
+<details>
+<summary>Do drafts count toward the Free plan's 30 posts?</summary>
+
+No. Only scheduled and published posts count, and the count starts over on the 1st of each month.
+
+</details>
+
+## AI
+
+<details>
+<summary>Will the agent post without asking me?</summary>
+
+No. The agent saves drafts unless you ask it to schedule. Nothing goes out until you, or the agent on your request, schedule it. It also asks before it deletes anything.
+
+</details>
+
+<details>
+<summary>What happens when I run out of AI credits?</summary>
+
+AI actions stop until your plan credits refill on your billing date, or you buy a pack in **Settings**, **Billing**. Everything else keeps working. Turn on **Automatic top-up** so it doesn't happen again. See [AI credits](/ai/ai-credits/).
+
+</details>
+
+<details>
+<summary>Can I use Capybaroar from Claude or ChatGPT on the Free plan?</summary>
+
+Yes. The MCP server and the API are on every plan. See [Use Capybaroar from Claude, ChatGPT or Cursor](/ai/mcp/).
+
+</details>
+
+## Teams and clients
+
+<details>
+<summary>Do clients take a paid seat?</summary>
+
+No. Clients who only approve posts don't count as members. Invite as many as you need on Pro and Agency.
+
+</details>
+
+<details>
+<summary>Can a client approve without making an account?</summary>
+
+Yes. Send them the brand's review link. They see the posts in review as they'll look and press **Approve** or **Reject**. See [Approvals](/workspace/approvals/).
+
+</details>
+
+<details>
+<summary>How do I get a copy of my data?</summary>
+
+In **Settings**, **Your account**, press **Download my data**. Owners can also press **Export workspace** in **Settings**, **General**. Each can be made once a day.
+
+</details>
+
+## Troubleshooting
+
+Each row gives a message as the app shows it and how to fix it. Where a message has a number or a name in it, the table shows it as N or a short placeholder.
+
+### Plans and limits
+
+| Message | What it means | What to do |
+| - | - | - |
+| "Your plan allows N channels. Upgrade to add more." | You've connected as many channels as your plan covers. | Remove a channel you don't use, or upgrade. Reconnecting a channel doesn't count as a new one. |
+| "Your plan allows 30 scheduled posts a month. Upgrade to schedule more." | You've scheduled 30 posts this month on Free. | Save the post as a draft and schedule it on the 1st, or upgrade. |
+| "Your plan allows N members. Upgrade to add more." | Every seat is taken, counting open invites. | Withdraw an open invite, remove a member, or upgrade. Clients don't need a seat. |
+| "Your plan allows N brands. Upgrade to add more." | You have as many brands as your plan covers. | Delete a brand you don't use, or upgrade. |
+| "Your plan doesn't include AI. Upgrade to use it." | AI is on Creator, Pro and Agency. | An owner or admin upgrades in **Settings**, **Billing**. |
+| "Approvals come with Pro and Agency. Upgrade to use them." | Approvals and review links need Pro or Agency. | Upgrade to Pro or Agency. |
+| "Your plan doesn't include reports. Upgrade to use them." | Reports are on Pro and Agency. | Upgrade to Pro or Agency. |
+
+### AI credits
+
+| Message | What it means | What to do |
+| - | - | - |
+| "You're out of credits. Buy more in Settings, Billing." | Your plan and bought credits are used up. | Buy a pack, or wait for your plan credits to refill. |
+| "This costs N credits and N are left" | The action costs more than you have left. | Buy a pack, or pick a cheaper model or a shorter video. |
+| "This brand has used its credits for this month" | On Agency, this brand hit its credit limit. | An owner or admin raises the brand's **Credit limit** in **Settings**, **Brands**. |
+
+### Channels and posting
+
+| Message | What it means | What to do |
+| - | - | - |
+| **Reconnect** on a channel | The network signed Capybaroar out, often after a password change. | Click **Reconnect** and sign in again. Scheduled posts stay in place. |
+| **Soon** next to a network | That network can't be connected in your workspace yet. | Pick another network for now. |
+| **Partly published** | The post went out on some channels and was turned down on others. | Open the post. The reason shows next to each channel that failed. |
+| A reason next to a channel, like "X posts are up to 280 characters" | Capybaroar checked the post and the network won't take it as it is. | See the network's page under **Channels** for each message and its fix. |
+| "Words to avoid: ..." in the editor | The text has a word from the brand kit's **Words to avoid**. | Change the word, or post it anyway. |
+
+### Analytics
+
+| Message | What it means | What to do |
+| - | - | - |
+| "Results arrive 1 hour after a post goes out." | Your posts are too new to have numbers. | Check back in an hour. |
+| "None yet" on a number | No post in the period has results yet, or the network doesn't send them. | Wait for results. TikTok, Discord, Telegram and WordPress aren't in Analytics yet. |
+| "Your best times show once 10 posts have results." | **Your best times** in **Queue** needs more data. | Pick another preset for now. |
+
+### Bulk upload and feeds
+
+| Message | What it means | What to do |
+| - | - | - |
+| "The first row needs the columns date, time, channels and text" | The CSV file is missing a column name. | Press **Template** and copy your rows into it. |
+| "Use a date like 2026-11-05 and a time like 09:30" | A row's date or time can't be read. | Fix the date and time in that row. |
+| "Pick a time in the future" | A row's time has passed. | Change it to a later time. |
+| "No channel called "name"" | A row names a channel that isn't connected. | Use the channel's name as Channels shows it, or a network name. |
+| "Pick channels from one brand" | A row mixes channels from different brands. | Split it into one row per brand. |
+| "Up to 500 rows at a time" | The file is too long. | Split it into smaller files. |
+| "Use \{title\}, \{link\} or \{summary\} in the template" | A feed's template has none of its parts. | Add at least one of them to the template. |
+
+### Approvals and team
+
+| Message | What it means | What to do |
+| - | - | - |
+| "This review link was turned off" | The brand's review link was turned off. | Ask the team for a new link. |
+| "Clients can only approve or reject posts" | A client tried to make or change a post. | Ask an editor or admin to make the change. |
+| "Only owners and admins can change this" | The setting is for people who run the workspace. | Ask an owner or admin. |
+
+### API and webhooks
+
+| Message | What it means | What to do |
+| - | - | - |
+| "Send an API key from Settings as Authorization: Bearer cbr_..." | The request had no key, or a deleted one. | Make a key in **Settings**, **API and MCP** and send it in the header. |
+| Status 429 | Over 120 requests a minute for this key. | Wait for the seconds in `Retry-After`. |
+| "A workspace can have up to 10 webhooks. Delete one first." | You have 10 webhooks. | Delete one you don't use. |
+| A webhook turned off | Its deliveries failed 5 times in a row. | Fix your URL, then switch it back on in **Settings**, **API and MCP**. |
+
+<Aside type="tip">
+Still stuck? Write to [hello@capybaroar.com](mailto:hello@capybaroar.com) with the message you see and the post or channel it's on.
+</Aside>

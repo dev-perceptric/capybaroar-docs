@@ -1,0 +1,283 @@
+/* Capybaroar Docs theme. Matches the app (src/app/globals.css): Inter, calm grays, a dark gray primary pill,
+   and one yellow accent that is always a fill with dark ink on it. Yellow is never text or an icon on white. */
+
+:root {
+  --sl-font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --sl-content-width: 48rem;
+
+  /* Capybaroar tokens (light). */
+  --cb-signal: #ffd202;
+  --cb-signal-strong: #e6bd00;
+  --cb-signal-soft: #fff6c7;
+  --cb-signal-pale: #fffced;
+  --cb-on-signal: #262209;
+  --cb-brand: #333333;
+  --cb-brand-hover: #1f1f1f;
+  --cb-ink: #171717;
+  --cb-body: #333333;
+  --cb-muted: #737373;
+  --cb-panel: #ffffff;
+  --cb-paper: #fafafa;
+  --cb-shell: #f5f5f5;
+  --cb-line: #ebebeb;
+  --cb-line-strong: #d4d4d4;
+  --cb-r-sm: 6px;
+  --cb-r-md: 8px;
+  --cb-r-lg: 12px;
+  --cb-r-xl: 16px;
+  --cb-sh-rest: 0 1px 1px -0.5px rgba(0, 0, 0, 0.04), 0 3px 3px -1.5px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --cb-sh-hover: 0 12px 24px -12px rgba(0, 0, 0, 0.12), 0 3px 3px -1.5px rgba(0, 0, 0, 0.06), 0 0 0 1px var(--cb-signal-strong);
+  --cb-sh-chip: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --cb-sh-primary: 0 0 0 1px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.4), 1px 4px 8px rgba(0, 0, 0, 0.12);
+  --cb-sh-picked: 0 0 0 1px var(--cb-signal-strong);
+}
+
+/* Light mode: dark ink for links and text accents; yellow only as fills. */
+:root[data-theme='light'] {
+  --sl-color-accent-low: var(--cb-signal-soft);
+  --sl-color-accent: var(--cb-brand);
+  --sl-color-accent-high: var(--cb-on-signal);
+  --sl-color-text-accent: var(--cb-on-signal);
+  --sl-color-white: var(--cb-ink);
+  --sl-color-gray-1: #262626;
+  --sl-color-gray-2: var(--cb-body);
+  --sl-color-gray-3: var(--cb-muted);
+  --sl-color-gray-4: #a3a3a3;
+  --sl-color-gray-5: var(--cb-line-strong);
+  --sl-color-gray-6: #ededed;
+  --sl-color-gray-7: var(--cb-paper);
+  --sl-color-black: var(--cb-panel);
+  --sl-color-bg-nav: rgba(255, 255, 255, 0.92);
+  --sl-color-bg-sidebar: var(--cb-shell);
+  --sl-color-bg-inline-code: var(--cb-shell);
+  --sl-color-hairline-light: var(--cb-line);
+  --sl-color-hairline: var(--cb-line);
+  --sl-color-hairline-shade: var(--cb-line);
+}
+
+/* Dark mode: the app's dark tokens. Yellow text is fine on these backgrounds. */
+:root[data-theme='dark'] {
+  --cb-signal-soft: #2e2a0c;
+  --cb-signal-pale: #262209;
+  --cb-brand: #f5f5f0;
+  --cb-brand-hover: #ffffff;
+  --cb-ink: #e8e8e3;
+  --cb-body: #d9d9d4;
+  --cb-muted: #9a9a95;
+  --cb-panel: #1f1f1d;
+  --cb-paper: #1a1a18;
+  --cb-shell: #161614;
+  --cb-line: #2c2c29;
+  --cb-line-strong: #3d3d39;
+  --cb-sh-rest: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --cb-sh-hover: 0 12px 24px -8px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--cb-signal);
+  --cb-sh-chip: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --cb-sh-primary: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 1px 3px rgba(0, 0, 0, 0.5);
+  --cb-sh-picked: 0 0 0 1px var(--cb-signal);
+
+  --sl-color-accent-low: #2e2a0c;
+  --sl-color-accent: var(--cb-signal);
+  --sl-color-accent-high: #ffe674;
+  --sl-color-text-accent: var(--cb-signal);
+  --sl-color-white: #f5f5f0;
+  --sl-color-gray-1: var(--cb-ink);
+  --sl-color-gray-2: var(--cb-body);
+  --sl-color-gray-3: var(--cb-muted);
+  --sl-color-gray-4: #6b6b67;
+  --sl-color-gray-5: var(--cb-line-strong);
+  --sl-color-gray-6: #272725;
+  --sl-color-black: var(--cb-panel);
+  --sl-color-bg: var(--cb-panel);
+  --sl-color-bg-nav: rgba(31, 31, 29, 0.92);
+  --sl-color-bg-sidebar: var(--cb-shell);
+  --sl-color-bg-inline-code: #2e2e2b;
+  --sl-color-hairline-light: var(--cb-line);
+  --sl-color-hairline: var(--cb-line);
+  --sl-color-hairline-shade: #111110;
+}
+
+body { -webkit-font-smoothing: antialiased; }
+
+/* Header and logo */
+.site-title img { height: 1.45rem; width: auto; }
+header.header { backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--sl-color-hairline); }
+
+/* Focus is a yellow ring, as in the app. */
+:where(a, button, summary, input, [role='tab']):focus-visible {
+  outline: 2px solid var(--cb-signal-strong);
+  outline-offset: 2px;
+  border-radius: var(--cb-r-sm);
+}
+
+/* Headings: one tone, calm weight. */
+h1#_top { letter-spacing: -0.025em; font-weight: 650; }
+.sl-markdown-content h2 { letter-spacing: -0.02em; font-weight: 600; margin-top: 2.4rem; font-size: 1.55rem; }
+.sl-markdown-content h3 { letter-spacing: -0.01em; font-weight: 600; font-size: 1.2rem; }
+
+/* Links in prose: ink with an underline. */
+.sl-markdown-content a:not(:where(.not-content *, .sl-link-card *, .card *, .sl-link-button)) {
+  color: var(--sl-color-text-accent);
+  text-decoration: underline;
+  text-decoration-color: var(--cb-line-strong);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.sl-markdown-content a:not(:where(.not-content *, .sl-link-button)):hover { text-decoration-color: currentColor; }
+:root[data-theme='dark'] .sl-markdown-content a:not(:where(.not-content *, .sl-link-button)) { text-decoration-color: rgba(255, 210, 2, 0.4); }
+.sl-link-button { text-decoration: none !important; }
+
+/* Bold button names read as ink. */
+.sl-markdown-content strong { color: var(--sl-color-white); font-weight: 600; }
+
+/* Sidebar: gray group labels; the open page is a yellow fill with ink, like the app's picked chips. */
+.sidebar-content summary .group-label,
+.sidebar-content summary .group-label .large { font-size: 0.78rem !important; font-weight: 500; color: var(--cb-muted); }
+.sidebar-content a { border-radius: var(--cb-r-md); }
+.sidebar-content a:hover { background: rgba(15, 15, 15, 0.04); }
+:root[data-theme='dark'] .sidebar-content a:hover { background: rgba(255, 255, 255, 0.05); }
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+  background-color: var(--cb-signal-soft);
+  box-shadow: var(--cb-sh-picked);
+  color: var(--cb-on-signal);
+  font-weight: 600;
+}
+:root[data-theme='dark'] .sidebar-content a[aria-current='page'],
+:root[data-theme='dark'] .sidebar-content a[aria-current='page']:hover,
+:root[data-theme='dark'] .sidebar-content a[aria-current='page']:focus {
+  background-color: var(--cb-signal);
+  color: var(--cb-on-signal);
+}
+
+/* Table of contents: the current heading in ink, marked by a small yellow bar. */
+starlight-toc a[aria-current='true'],
+starlight-toc a[aria-current='true']:hover { color: var(--sl-color-white); font-weight: 600; }
+starlight-toc a[aria-current='true'] { box-shadow: inset 2px 0 0 var(--cb-signal); }
+
+/* Buttons are pills; the primary is the dark gray pill with white text. */
+.sl-link-button { border-radius: 999px !important; font-weight: 500; }
+.sl-link-button.primary {
+  background: var(--cb-brand) !important;
+  border-color: var(--cb-brand) !important;
+  color: var(--sl-color-black) !important;
+  box-shadow: var(--cb-sh-primary);
+}
+.sl-link-button.primary:hover { background: var(--cb-brand-hover) !important; }
+.sl-link-button.secondary {
+  background: var(--cb-panel) !important;
+  border: 0 !important;
+  color: var(--sl-color-white) !important;
+  box-shadow: var(--cb-sh-chip);
+}
+.sl-link-button.minimal { color: var(--sl-color-white) !important; }
+
+/* Cards: white on a ring shadow, 12px corners; hover draws a yellow ring. */
+.card, .sl-link-card {
+  border: 0 !important;
+  border-radius: var(--cb-r-lg) !important;
+  background: var(--cb-panel) !important;
+  box-shadow: var(--cb-sh-rest);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.sl-link-card:hover, .card:hover { box-shadow: var(--cb-sh-hover); transform: translateY(-1px); }
+.card { padding: 1.25rem 1.35rem !important; }
+.card .title { font-size: 1.05rem !important; font-weight: 600; }
+.card .icon {
+  color: var(--cb-on-signal) !important;
+  background: var(--cb-signal) !important;
+  border: 0 !important;
+  border-radius: var(--cb-r-md) !important;
+  padding: 0.3rem !important;
+}
+.card .body { font-size: 0.95rem !important; }
+.sl-link-card .title { font-weight: 600; color: var(--sl-color-white); }
+.sl-link-card .description { color: var(--cb-muted); }
+.sl-link-card svg { color: var(--sl-color-gray-3) !important; }
+
+/* Steps: the number sits on a yellow dot with ink. */
+.sl-steps > li::before {
+  background-color: var(--cb-signal) !important;
+  color: var(--cb-on-signal) !important;
+  box-shadow: none !important;
+}
+.sl-steps > li::after { background-color: var(--cb-line) !important; }
+
+/* Tabs: the picked tab is a soft yellow fill with ink and a yellow underline. */
+starlight-tabs [role='tablist'] { border-bottom: 1px solid var(--cb-line); flex-wrap: wrap; }
+starlight-tabs .tab > [role='tab'] { box-shadow: none; border-radius: var(--cb-r-md) var(--cb-r-md) 0 0; padding: 0.45rem 1rem; font-size: 0.92rem; }
+starlight-tabs .tab > [role='tab'][aria-selected='true'] {
+  background: var(--cb-signal-soft);
+  color: var(--cb-on-signal);
+  box-shadow: inset 0 -2px 0 var(--cb-signal-strong);
+}
+:root[data-theme='dark'] starlight-tabs .tab > [role='tab'][aria-selected='true'] { color: #ffe674; box-shadow: inset 0 -2px 0 var(--cb-signal); }
+
+/* Asides: soft fills, no heavy frame. Tip and note use the yellow; caution and danger keep their hues. */
+.starlight-aside { border-radius: var(--cb-r-lg); border-inline-start-width: 3px; }
+.starlight-aside--tip, .starlight-aside--note {
+  --sl-color-asides-text-accent: var(--cb-on-signal);
+  background-color: var(--cb-signal-pale) !important;
+  border-color: var(--cb-signal) !important;
+}
+.starlight-aside--note { background-color: var(--cb-paper) !important; border-color: var(--cb-line-strong) !important; --sl-color-asides-text-accent: var(--sl-color-white); }
+:root[data-theme='dark'] .starlight-aside--tip { --sl-color-asides-text-accent: #ffe674; }
+
+/* Badges: 6px tags with a soft fill and deep text, no frame. */
+.sl-badge { border: 0 !important; border-radius: var(--cb-r-sm) !important; font-weight: 500; font-family: var(--__sl-font) !important; }
+.sl-badge.default { background: var(--cb-signal-soft) !important; color: var(--cb-on-signal) !important; }
+:root[data-theme='dark'] .sl-badge.default { background: var(--cb-signal) !important; color: var(--cb-on-signal) !important; }
+
+/* Tables: white card on a ring shadow with hairlines inside. */
+.sl-markdown-content table {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 0;
+  border-radius: var(--cb-r-lg);
+  box-shadow: var(--cb-sh-rest);
+  overflow: hidden;
+  font-size: 0.92rem;
+}
+.sl-markdown-content th { background: var(--cb-paper); font-weight: 600; text-align: left; color: var(--sl-color-white); }
+.sl-markdown-content th, .sl-markdown-content td { border: 0; border-bottom: 1px solid var(--cb-line); padding: 0.6rem 0.85rem; vertical-align: top; }
+.sl-markdown-content tr:last-child td { border-bottom: 0; }
+.sl-markdown-content td code { overflow-wrap: anywhere; }
+@media (max-width: 50rem) {
+  .sl-markdown-content table { display: block; overflow-x: auto; }
+}
+
+/* Inline code and code blocks */
+.sl-markdown-content :not(pre) > code { border-radius: var(--cb-r-sm); padding: 0.1em 0.35em; font-size: 0.86em; overflow-wrap: anywhere; }
+.expressive-code .frame { border-radius: var(--cb-r-lg); }
+
+/* Images from the app sit on a ring shadow with 12px corners. */
+.sl-markdown-content img { border-radius: var(--cb-r-lg); box-shadow: var(--cb-sh-rest); }
+
+/* Details (FAQ) */
+.sl-markdown-content details { border: 0; border-radius: var(--cb-r-lg); box-shadow: var(--cb-sh-rest); padding: 0.75rem 1rem; margin: 0.6rem 0; background: var(--cb-panel); }
+.sl-markdown-content details summary { cursor: pointer; font-weight: 600; color: var(--sl-color-white); }
+.sl-markdown-content details[open] summary { margin-bottom: 0.5rem; }
+
+/* Search button: a quiet pill */
+site-search button[data-open-modal] { border-radius: 999px; box-shadow: var(--cb-sh-chip); border: 0; background: var(--cb-panel); }
+
+/* Splash hero */
+.hero { padding-block: 2.5rem 1.5rem; gap: 2.5rem; }
+.hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: -0.035em; line-height: 1.05; font-weight: 650; }
+.hero h1 .dim { color: var(--sl-color-gray-4); }
+.hero .tagline { font-size: 1.1rem; color: var(--cb-muted); }
+.hero img, .hero .hero-html img { width: 100%; height: auto; max-height: none; object-fit: contain; border-radius: var(--cb-r-xl); box-shadow: var(--cb-sh-rest), 0 30px 60px -30px rgba(0, 0, 0, 0.25); }
+@media (min-width: 50rem) {
+  .hero { grid-template-columns: 5fr 6fr; }
+}
+.sl-markdown-content thead:not(:has(th:not(:empty))) { display: none; }
+.hero > .hero-html { width: 100% !important; max-width: 40rem; }
+.hero > .hero-html img { display: block; }
+@media (max-width: 49.99rem) {
+  .hero > .hero-html { order: 2; }
+}
+/* Previous and next links: white cards on the ring shadow. */
+.pagination-links a { border: 0 !important; border-radius: var(--cb-r-lg) !important; box-shadow: var(--cb-sh-rest) !important; background: var(--cb-panel); }
+.pagination-links a:hover { box-shadow: var(--cb-sh-hover) !important; }

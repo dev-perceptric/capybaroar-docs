@@ -1,0 +1,79 @@
+---
+title: "Plans and billing"
+description: "Capybaroar's four plans and their prices, what each one includes, how the 14-day Pro trial works and how to change plan, pay yearly or buy credits."
+sidebar:
+  label: "Plans and billing"
+---
+
+import { Aside, CardGrid, LinkCard, LinkButton, Steps } from '@astrojs/starlight/components';
+
+Capybaroar has four plans. Free is free forever, and the paid plans add AI and room for more channels and people. Paying yearly gives you two months free.
+
+<LinkButton href="https://app.capybaroar.com/settings?tab=billing" variant="secondary" icon="external">Open in Capybaroar</LinkButton>
+
+## Compare plans
+
+| | Free | Creator | Pro | Agency |
+| - | - | - | - | - |
+| **Monthly** | $0 | $29 | $49 | $149 |
+| **Yearly** | $0 | $290 | $490 | $1,490 |
+| **Members** | 1 | 1 | 5 | 15 |
+| **Brands** | 1 | 1 | 5 | Unlimited |
+| **Channels** | 3 | 8 | 30 | 100 |
+| **Scheduled posts** | 30 a month | Unlimited | Unlimited | Unlimited |
+| **AI credits a month** | No AI | 1,000 | 2,500 | 8,000 |
+| **The agent, AI writing, pictures, videos and audio** | No | Yes | Yes | Yes |
+| **Buy more credits and automatic top-up** | No | Yes | Yes | Yes |
+| **A credit limit for each brand** | No | No | No | Yes |
+| **Reports by link, PDF and email** | No | No | Yes | Yes |
+| **Your logo and color on reports** | No | No | No | Yes |
+| **Approvals and client review links** | No | No | Yes | Yes |
+| **Link in bio** | With our badge | Badge off | Badge off | Badge off |
+| **MCP server, REST API and webhooks** | Yes | Yes | Yes | Yes |
+
+Prices are in US dollars, and taxes may apply. Clients who only approve posts don't count as members.
+
+## Every plan includes
+
+The Free plan is the full scheduler. Every plan gets the calendar and composer with previews, queue times and channel groups, bulk upload and RSS feeds, evergreen posts, short links with click counts, the Inbox, Analytics with best times to post, link in bio, deleting a post everywhere, email alerts when a post doesn't go out, and the MCP server, API and webhooks.
+
+## Your free trial
+
+New workspaces get 14 days of Pro with 200 AI credits, with no card needed. **Settings**, **Billing** shows how many days are left. When the trial ends you move to the Free plan unless you pick a paid plan, and your posts and channels stay where they are.
+
+## How the post limit works
+
+On Free you can schedule 30 posts a month. Drafts don't count, so save as many ideas as you like. The count covers posts scheduled or published in the calendar month, and it starts over on the 1st (in UTC).
+
+## Change your plan
+
+<Steps>
+
+1. **Open Billing.** Click **Settings**, then **Billing**. Only owners and admins see it.
+
+1. **Pick monthly or yearly.** Use **Billing period** above the plans.
+
+1. **Press Upgrade** on the plan you want and pay with Stripe.
+
+</Steps>
+
+Once you pay, **Manage billing** opens your Stripe billing page for your card, your invoices and your subscription. If a payment fails, Billing shows **Payment due**. Update your card in **Manage billing** to keep your plan.
+
+## What Billing shows
+
+- **Brands**, **Channels**, **Posts this month** and **Members** next to your plan's limit for each.
+- **Credits**: plan credits and bought credits left, and when plan credits refill.
+- **Buy credits** and **Automatic top-up** on paid plans. See [AI credits](/ai/ai-credits/#buying-more).
+- **Credit history**, with **Download CSV**.
+
+<Aside type="note">
+When you reach a limit, Capybaroar says so in a short message, like "Your plan allows 8 channels. Upgrade to add more." Nothing you already have is removed.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="AI credits" href="/ai/ai-credits/" />
+  <LinkCard title="Team and roles" href="/workspace/team-and-roles/" />
+  <LinkCard title="Pricing on capybaroar.com" href="https://capybaroar.com/pricing" />
+</CardGrid>
