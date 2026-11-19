@@ -1,0 +1,140 @@
+---
+title: "Roles and permissions"
+description: "A grid of what owners, admins, editors and clients can do in every part of Capybaroar: posts, approvals, channels, Inbox, AI, reports, settings, billing, the API and webhooks."
+sidebar:
+  label: "Roles and permissions"
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Everyone in a workspace has one of four roles. This page shows what each role can do, area by area. The app checks the role on every action, and the API and MCP server check it the same way.
+
+| Role | In short | Takes a seat |
+| - | - | - |
+| **Owner** | Made the workspace. Can do everything, including deleting it. | Yes |
+| **Admin** | Runs the workspace: settings, billing, team, brands, keys and webhooks. Sees every brand. | Yes |
+| **Editor** | Writes, schedules and answers for the brands they're given | Yes |
+| **Client** | Sees the calendar for their brands and approves or rejects posts | No |
+
+Clients need a plan with approvals: Pro or Agency.
+
+## Brands
+
+Owners and admins always see every brand. Editors and clients see only the brands picked for them when they were invited, or **All brands**. Everything below is limited to those brands: posts, channels, files, feeds, Inbox items, results and reports.
+
+## The grid
+
+✓ means they can. A dash means they can't.
+
+### Calendar and posts
+
+| Action | Owner | Admin | Editor | Client |
+| - | - | - | - | - |
+| See the calendar | ✓ | ✓ | ✓ | ✓ |
+| Write, schedule, queue and post now | ✓ | ✓ | ✓ | - |
+| Move, duplicate and post again | ✓ | ✓ | ✓ | - |
+| Delete a post, here or everywhere | ✓ | ✓ | ✓ | - |
+| Edit a post that went out | ✓ | ✓ | ✓ | - |
+| Skip approval in a brand that needs it | ✓ | ✓ | - | - |
+| Approve or reject a post in review | ✓ | ✓ | - | ✓ |
+| Channel groups, campaigns and snippets | ✓ | ✓ | ✓ | - |
+| Bulk upload | ✓ | ✓ | ✓ | - |
+| Evergreen posts | ✓ | ✓ | ✓ | - |
+
+An editor's post to a brand that needs approval waits in review. Editors can't approve, even their own posts.
+
+### Channels and feeds
+
+| Action | Owner | Admin | Editor | Client |
+| - | - | - | - | - |
+| Open Channels and Feeds | ✓ | ✓ | ✓ | - |
+| Connect, reconnect and remove channels | ✓ | ✓ | ✓ | - |
+| Move a channel to another brand | ✓ | ✓ | - | - |
+| Add, change and remove RSS feeds | ✓ | ✓ | ✓ | - |
+
+### Inbox, Media, Analytics, Reports and Link in bio
+
+| Action | Owner | Admin | Editor | Client |
+| - | - | - | - | - |
+| Inbox: read, answer, like, hide, mark done | ✓ | ✓ | ✓ | - |
+| Media: upload, crop, trim, alt text, delete | ✓ | ✓ | ✓ | - |
+| Analytics | ✓ | ✓ | ✓ | - |
+| Reports: make, change, send and delete | ✓ | ✓ | ✓ | - |
+| Link in bio: build, change and delete | ✓ | ✓ | ✓ | - |
+
+### AI
+
+| Action | Owner | Admin | Editor | Client |
+| - | - | - | - | - |
+| Chat with the agent | ✓ | ✓ | ✓ | - |
+| Rewrite with AI, suggested replies | ✓ | ✓ | ✓ | - |
+| Make pictures, videos and audio | ✓ | ✓ | ✓ | - |
+| Buy credits, set automatic top-up | ✓ | ✓ | - | - |
+| Set a credit limit for each brand (Agency) | ✓ | ✓ | - | - |
+
+AI needs a paid plan. Credits are shared by the whole workspace.
+
+### Settings
+
+| Settings tab | Owner | Admin | Editor | Client |
+| - | - | - | - | - |
+| **General**: name and time zone | ✓ | ✓ | - | - |
+| **General**: require two-factor for everyone | ✓ | - | - | - |
+| **General**: export the workspace | ✓ | - | - | - |
+| **General**: delete the workspace | ✓ | - | - | - |
+| **Brands**: add, rename, delete, brand kit, approvals, review links | ✓ | ✓ | - | - |
+| **Members**: invite, change roles and brands, remove | ✓ | ✓ | - | - |
+| **Queue** | ✓ | ✓ | - | - |
+| **Audit log** | ✓ | ✓ | - | - |
+| **Billing**: change plan, buy credits, invoices | ✓ | ✓ | - | - |
+| **API and MCP**: keys, connected apps, webhooks | ✓ | ✓ | - | - |
+| **Your account**: two-factor, devices, emails, export, delete my account | ✓ | ✓ | ✓ | ✓ |
+
+Editors and clients see only **Your account** in Settings.
+
+### API and MCP
+
+| Action | Owner | Admin | Editor | Client |
+| - | - | - | - | - |
+| Make and delete API keys | ✓ | ✓ | - | - |
+| Use a key or a connected app | ✓ | ✓ | ✓ (their brands) | - |
+| Manage webhooks | ✓ | ✓ | - | - |
+
+A key acts as the person who made it, with their role at the time of each request. See [Authentication](/api-reference/authentication/).
+
+## Rules about roles
+
+- There is one owner. The owner's role can't change, and the owner can't be removed.
+- Nobody can change their own role or remove themselves. To leave, use **Delete my account** in **Your account**, or ask an admin to remove you.
+- Owners and admins can invite admins, editors and clients. Inviting a client needs Pro or Agency.
+- Changing a client to an admin or editor needs a free seat.
+- The owner of a workspace that other people use can't delete their account while they're its only owner. Delete the workspace first. A workspace where they're the only member is deleted with the account.
+
+## Messages you may see
+
+| Message | Why |
+| - | - |
+| `Only owners and admins can change this` | An editor tried a workspace setting |
+| `Clients can only approve or reject posts` | A client tried to write or delete |
+| `Only owners, admins and clients can approve` | An editor pressed Approve |
+| `Only owners can delete the workspace` | An admin tried to delete it |
+| `Only owners can change this` | An admin tried to require two-factor |
+| `Only owners and admins can change the plan` | Billing, as an editor |
+| `Only owners and admins can manage webhooks` | Webhooks, as an editor's key |
+| `Clients can't connect channels` | A client opened a connect link |
+| `You can't post to this brand` | The brand isn't one of yours |
+| `The owner's role can't change` | Someone tried to change the owner |
+| `You can't change your own role` | Ask another admin |
+| `Approvals come with Pro and Agency. Upgrade to use them.` | Inviting a client on Free or Creator |
+
+<Aside type="note">
+Public review links let someone approve or reject without an account. Anyone with the link can, so share it only with the right person. See [Approvals](/workspace/approvals/).
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Team and roles" href="/workspace/team-and-roles/" />
+  <LinkCard title="Approvals" href="/workspace/approvals/" />
+  <LinkCard title="Plan limits" href="/reference/plan-limits/" />
+</CardGrid>

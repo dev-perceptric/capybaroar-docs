@@ -1,0 +1,165 @@
+---
+title: "Plan limits"
+description: "Every Capybaroar plan side by side, and every limit in the app: channels, posts, seats, brands, AI credits, files, threads, bulk upload, feeds, reports, the API and sign-in."
+sidebar:
+  label: "Plan limits"
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+This page lists every limit Capybaroar sets, taken from the app itself. The first table is what changes between plans. The rest are the same on every plan.
+
+## Plans
+
+| | Free | Creator | Pro | Agency |
+| - | - | - | - | - |
+| **Price a month** | $0 | $29 | $49 | $149 |
+| **Price a year** | $0 | $290 | $490 | $1,490 |
+| **Team seats** | 1 | 1 | 5 | 15 |
+| **Brands** | 1 | 1 | 5 | No limit |
+| **Channels** | 3 | 8 | 30 | 100 |
+| **Scheduled posts** | 30 a month | No limit | No limit | No limit |
+| **AI** (the agent, AI writing, pictures, videos, audio) | No | Yes | Yes | Yes |
+| **AI credits a month** | 0 | 1,000 | 2,500 | 8,000 |
+| **Buy credit packs, automatic top-up** | No | Yes | Yes | Yes |
+| **Credit limit for each brand** | No | No | No | Yes |
+| **Approvals, review links and clients** | No | No | Yes | Yes |
+| **Reports by link, PDF and email** | No | No | Yes | Yes |
+| **Your logo and color on reports** | No | No | No | Yes |
+| **Turn off "Made with Capybaroar" on link in bio** | No | Yes | Yes | Yes |
+| **REST API, MCP server and webhooks** | Yes | Yes | Yes | Yes |
+
+Prices are in US dollars. A year costs the same as ten months. Taxes may apply (check).
+
+### How each limit counts
+
+- **Seats** count owners, admins, editors, and open invites for those roles. Clients who only approve posts don't take a seat.
+- **Brands** count every brand in the workspace. Every workspace keeps at least one.
+- **Channels** count every connected account. Each Facebook Page, LinkedIn Page or other account is one.
+- **Scheduled posts** count posts that are scheduled or went out with a time in this calendar month, in UTC. Drafts don't count. One post to five channels counts once.
+- **AI credits** refill every month on the day your subscription started. Bought credits last 12 months.
+
+## The free trial
+
+A new workspace gets 14 days of Pro: 5 seats, 5 brands, 30 channels, approvals, reports and 200 AI credits. After 14 days without a paid plan, it moves to Free's limits. Nothing is deleted, but you can't add more than Free allows until you upgrade.
+
+## Credit packs
+
+| Pack | Price |
+| - | - |
+| 1,000 credits | $12 |
+| 5,000 credits | $50 |
+| 20,000 credits | $160 |
+
+Automatic top-up buys a pack when your credits fall under 200. No single AI action costs more than 1,000 credits. See [AI credits](/ai/ai-credits/).
+
+## Posts and files
+
+| What | Limit |
+| - | - |
+| Channels on one post | 30 (through the API); one brand's channels |
+| Files on one post | 20 through the API. Each network has its own count. |
+| Thread | 25 posts: the first and 24 replies |
+| Picture or video file | 250 MB |
+| PDF | 100 MB, LinkedIn only |
+| Queue lookahead | 8 weeks |
+| Evergreen repeats | Every 1, 2, 4, 8, 12 or 26 weeks |
+| Campaign and channel group names | 60 characters |
+| Brand names | 60 characters |
+| Brand voice in the brand kit | 1,500 characters |
+
+Each network's character and file limits are in [Compare every network](/channels/).
+
+## Bulk upload and feeds
+
+| What | Limit |
+| - | - |
+| Rows in one CSV file | 500 |
+| CSV file size | About 900 KB |
+| RSS feed file | 2 MB |
+| How often a feed is read | Every 30 minutes |
+| New items turned into posts per read | 3 |
+| Feed post template | 1,000 characters |
+
+On Free, a bulk upload checks the month's post limit before it starts. A file that would go over it is refused with `Your plan allows 30 scheduled posts a month and <n> are left. Upgrade to schedule more, or save these as drafts.`
+
+## Link in bio
+
+| What | Limit |
+| - | - |
+| Pages | One for each brand |
+| Blocks on a page | 50 |
+| Title | 80 characters |
+| Bio | 300 characters |
+| Search title | 70 characters |
+| Search description | 200 characters |
+
+## Reports
+
+| What | Limit |
+| - | - |
+| Report name | 80 characters |
+| Notes | 5,000 characters |
+| Email addresses for one report | 20 |
+| Sending one report | 5 times an hour |
+| Report emails from a workspace | 50 a day |
+
+## Team
+
+| What | Limit |
+| - | - |
+| Invites sent from a workspace | 20 a day |
+| Invites to one address | 4 a day: the first and 3 more |
+| Data export | One account export and one workspace export a day |
+| Audit log | Kept for 365 days. A CSV export has up to 10,000 rows. |
+
+## API, MCP and webhooks
+
+| What | Limit |
+| - | - |
+| Requests per key | 120 a minute |
+| API keys | 25 for each workspace |
+| Webhooks | 10 for each workspace |
+| Posts in one MCP `create_posts` | 25 |
+| Messages in one MCP batch | 25 |
+| Range for listing posts | 92 days |
+| Request body | 1 MB |
+
+More in [Errors and limits](/api-reference/errors-and-limits/).
+
+## Sign-in and security
+
+| What | Limit |
+| - | - |
+| Sign-in tries for one email | 10 in 15 minutes |
+| Sign-in tries from one network address | 30 in 15 minutes |
+| New accounts from one network address | 10 an hour |
+| Sign-up tries for one email | 5 an hour |
+| Password reset emails | 3 an hour for one email |
+| Sign-in links | 5 an hour for one email |
+| Codes from an email | 5 tries in 10 minutes |
+| Two-factor codes | 5 tries in 10 minutes |
+| Backup codes | 10 |
+
+Past a limit, the message says how long to wait, like `Try again in 12 minutes.`
+
+## What Capybaroar keeps, and for how long
+
+| What | Kept for |
+| - | - |
+| Inbox items marked done | 180 days |
+| Agent chats | 365 days after the last message |
+| Audit log | 365 days |
+| Webhook delivery history | 7 days |
+
+<Aside type="note">
+These limits are read from Capybaroar's code when this page was written. If the app and this page ever disagree, the app's message is right.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Plans and billing" href="/workspace/plans-and-billing/" />
+  <LinkCard title="Roles and permissions" href="/reference/roles-and-permissions/" />
+  <LinkCard title="AI credits" href="/ai/ai-credits/" />
+</CardGrid>
