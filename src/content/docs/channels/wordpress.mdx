@@ -17,10 +17,11 @@ How to connect a WordPress site, what you can publish there and how to fix a pos
 | - | - |
 | **Characters** | 100,000 |
 | **Needs a picture or video** | No |
-| **Connects with** | A short form (Site address, Username, Application password) |
-| **Inbox** | Not in the Inbox |
-| **Analytics** | Not in Analytics yet |
+| **Connects with** | A short form: site address, username and application password |
+| **Inbox** | No |
+| **Analytics** | No |
 | **Change after it goes out** | Yes: the text, title, status, categories, tags and excerpt |
+| **Delete everywhere** | Yes |
 
 ## Connect WordPress
 
@@ -37,6 +38,10 @@ How to connect a WordPress site, what you can publish there and how to fix a pos
 </Steps>
 
 Use an author, editor or administrator account. Capybaroar checks that it can publish posts.
+
+### What Capybaroar asks for
+
+An application password lets Capybaroar use your site's REST API as that user. It can do what the user can do, so use an author or editor account if you want less. You can revoke it in WordPress under **Users**, **Profile**.
 
 ## Post to WordPress
 
@@ -71,9 +76,41 @@ Use an author, editor or administrator account. Capybaroar checks that it can pu
 | **Tags** | Names, separated by commas |
 | **Excerpt** | Text |
 
+## Limits
+
+| | |
+| - | - |
+| **Body** | 100,000 characters |
+| **Title** | Required |
+| **Featured image** | One picture. Videos and PDFs aren't taken. |
+| **Address** | Your site's `https://` address |
+
+Capybaroar checks these before a post is scheduled, so a post that breaks one is stopped before it's scheduled, with the reason under the text.
+
+## Results and Inbox
+
+WordPress doesn't report views to Capybaroar, so WordPress posts show in Analytics without numbers.
+
+WordPress doesn't come into the Inbox.
+
+## After it goes out
+
+Open the post, press **Edit**, change the body or settings and press **Save changes**. **Delete everywhere** deletes the post on your site. See [Edit and delete posts that went out](/publishing/edit-and-delete/).
+
+## Disconnect or reconnect
+
+Open **Channels**, find the channel and press **Remove** (the bin icon), then **Remove** again. Owners, admins and editors (for their brands) can do this.
+
+- Scheduled posts stop going to this channel.
+- The channel's Inbox items and results go with it, and posts that went out to it lose this channel's numbers in Analytics.
+- The plan's channel count goes down by one, so you can add another.
+- Revoke the application password in WordPress too.
+
+When WordPress stops taking posts from Capybaroar, the channel shows **Reconnect** in red on **Channels**. Owners and admins get an email, at most once a day, and webhooks get a `channel.reconnect` event. Press **Reconnect** (the arrows icon) and sign in again, or fill in the connect form again for networks that use one. Posts due while it was signed out fail with `Reconnect <channel name>`. Open each one and schedule it again.
+
 ## If a post is turned down
 
-Capybaroar checks each post before it's scheduled and shows the reason next to the channel. These are the WordPress ones:
+Capybaroar checks each post before it's scheduled and shows the reason under the text. Some messages come from WordPress when the post goes out. These are the WordPress ones:
 
 | Message | What to do |
 | - | - |
@@ -85,10 +122,17 @@ Capybaroar checks each post before it's scheduled and shows the reason next to t
 | `WordPress posts need a title` | Add a title in the WordPress tab. |
 | `WordPress takes pictures as the featured image only` | Remove videos and other files. |
 | `WordPress takes one picture, as the featured image` | Keep one picture. |
+| `Use your site's https:// address` | Use the `https://` address of your site. |
+| `WordPress didn't accept that username and application password` | Check the username and make a new application password. |
+| `This site's REST API isn't reachable. Check the address, and that the REST API is on.` | Check the address, and that no plugin turns off the REST API. |
+| `This WordPress user can't publish posts. Use an author, editor or administrator.` | Connect with a user who can publish. |
+| `WordPress takes pictures as the featured image only` | Remove videos and PDFs. |
+| `WordPress takes one picture, as the featured image` | Keep one picture. |
 
 ## Related
 
 <CardGrid>
+  <LinkCard title="Compare every network" href="/channels/" />
   <LinkCard title="Connect your first channel" href="/get-started/connect-a-channel/" />
   <LinkCard title="Schedule your first post" href="/get-started/schedule-your-first-post/" />
 </CardGrid>

@@ -1,0 +1,87 @@
+---
+title: "Compare every network"
+description: "What Capybaroar can post to each of its 14 networks, their character and file limits, how each one connects, and what comes back into Analytics and the Inbox."
+sidebar:
+  label: "Compare every network"
+  order: 0
+---
+
+import { Aside, CardGrid, LinkCard, LinkButton } from '@astrojs/starlight/components';
+
+Capybaroar posts to 14 networks from one calendar. Each one is written from that network's own API, so what it can do differs. This page puts them side by side. Each network's own page has the full detail.
+
+<LinkButton href="https://app.capybaroar.com/channels" variant="secondary" icon="external">Open in Capybaroar</LinkButton>
+
+## Posting
+
+| Network | Characters | Needs a file | Threads | What one post can hold |
+| - | - | - | - | - |
+| [Instagram](/channels/instagram/) | 2,200 | Yes | No | 1 to 10 files, a Reel (one video) or a Story (one file) |
+| [Facebook](/channels/facebook/) | 63,206 | No | No | Pictures, or one video. Reels and Stories too. |
+| [Threads](/channels/threads/) | 500 | No | Yes | Up to 20 files |
+| [TikTok](/channels/tiktok/) | 2,200 | Yes | No | One video, or 1 to 35 pictures |
+| [LinkedIn](/channels/linkedin/) | 3,000 | No | No | Up to 20 pictures, one video, or one PDF |
+| LinkedIn Page | 3,000 | No | No | The same as LinkedIn |
+| [YouTube](/channels/youtube/) | 5,000 | Yes | No | Exactly one video, with a title |
+| [X (Twitter)](/channels/x/) | 280 | No | Yes | Up to 4 pictures, or one video or GIF, or a poll |
+| [Pinterest](/channels/pinterest/) | 500 | Yes | No | One picture or one video, on a board |
+| [Bluesky](/channels/bluesky/) | 300 | No | Yes | Up to 4 pictures under 1 MB |
+| [Mastodon](/channels/mastodon/) | 500 | No | Yes | Up to 4 files |
+| [Discord](/channels/discord/) | 2,000 | No | No | Up to 10 files under 10 MB |
+| [Telegram](/channels/telegram/) | 4,096 | No | No | Up to 10 files, sent as an album |
+| [WordPress](/channels/wordpress/) | 100,000 | No | No | One featured picture, and a title |
+
+A thread can have up to 25 posts: the first and 24 replies. On a network without threads, only the first post goes out. PDFs can only go to LinkedIn and LinkedIn Pages, and audio files can't be posted anywhere.
+
+## Connecting
+
+| Network | How it connects |
+| - | - |
+| Instagram | Sign in with Meta. Needs a business or creator account linked to a Facebook Page. |
+| Facebook | Sign in with Meta and pick your Pages. Each Page is a channel. |
+| Threads | Sign in with Meta |
+| TikTok | Sign in with TikTok |
+| LinkedIn, LinkedIn Page | Sign in with LinkedIn. A Page needs you to be its admin. |
+| YouTube | Sign in with the Google account that owns the channel |
+| X (Twitter) | Sign in with X |
+| Pinterest | Sign in with Pinterest |
+| Mastodon | Type your server, then sign in there |
+| Bluesky | A form: your handle and an app password |
+| Discord | A form: a channel's webhook URL |
+| Telegram | Add the Capybaroar bot as an admin, then type the channel or group |
+| WordPress | A form: site address, username and an application password |
+
+Networks whose sign-in isn't set up on Capybaroar's side show **Soon** in **Add channel**. See [Connect your first channel](/get-started/connect-a-channel/).
+
+## What comes back
+
+| Network | Analytics | Inbox | Change after it goes out | Delete everywhere |
+| - | - | - | - | - |
+| Instagram | Reach, views, likes, comments, shares, saves | Comments: answer, hide | No | Delete it in the app |
+| Facebook | Reach, views, reactions, comments, shares, clicks | Comments: answer, like, hide | The text | Yes |
+| Threads | Views, likes, replies, shares | Replies: answer, hide | No | When turned on (check) |
+| TikTok | None yet | No | No | Delete it in the app |
+| LinkedIn | Likes, comments | No | The text | Yes |
+| LinkedIn Page | Impressions, reach, likes, comments, shares, clicks | Comments: answer, like | The text | Yes |
+| YouTube | Views, likes, comments | Comments: answer, hide | Text and most settings | Yes |
+| X (Twitter) | Impressions, likes, replies, shares, bookmarks, clicks | When turned on (check) | No | Yes |
+| Pinterest | Impressions, saves, clicks, video views | No | Text, title and link | Yes |
+| Bluesky | Likes, replies, shares | Replies and mentions: answer, like | No | Yes |
+| Mastodon | Favourites, replies, boosts | Replies, mentions, messages: answer, like | Text and content warning | Yes |
+| Discord | None | No | The text | Yes |
+| Telegram | Member count only | No | The text | Yes, with Telegram's limits |
+| WordPress | None | No | Text and every setting | Yes |
+
+Post numbers are read 1 hour, 1 day, 7 days and 30 days after a post goes out. Follower counts are saved once a day. The Inbox checks every 10 minutes, or every 30 for YouTube and X.
+
+<Aside type="note">
+Your plan sets how many channels you can connect: 3 on Free, 8 on Creator, 30 on Pro and 100 on Agency. Each Page, profile or account counts as one channel. See [Plan limits](/reference/plan-limits/).
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Connect your first channel" href="/get-started/connect-a-channel/" />
+  <LinkCard title="The Channels screen" href="/channels/channels-screen/" />
+  <LinkCard title="Errors when posting" href="/errors/posting/" />
+</CardGrid>

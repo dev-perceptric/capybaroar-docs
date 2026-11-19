@@ -23,7 +23,7 @@ export default defineConfig({
       sidebar: [
         { label: 'Get started', items: ['index', ...['welcome', 'create-account', 'connect-a-channel', 'schedule-your-first-post'].map((p) => `get-started/${p}`)] },
         group('Publishing', 'publishing', ['calendar-and-queue', 'bulk-and-automation']),
-        group('Channels', 'channels', ['instagram', 'facebook', 'tiktok', 'linkedin', 'youtube', 'x', 'threads', 'pinterest', 'bluesky', 'mastodon', 'discord', 'telegram', 'wordpress'], { collapsed: true }),
+        { label: 'Channels', collapsed: true, items: ['channels', 'channels/channels-screen', ...['instagram', 'facebook', 'tiktok', 'linkedin', 'youtube', 'x', 'threads', 'pinterest', 'bluesky', 'mastodon', 'discord', 'telegram', 'wordpress'].map((p) => `channels/${p}`)] },
         group('AI agent and MCP', 'ai', ['agent', 'plan-a-week', 'ai-credits', 'rewrite-with-ai', 'mcp']),
         group('Inbox and results', 'results', ['inbox', 'analytics-and-reports', 'link-in-bio']),
         group('Workspace', 'workspace', ['plans-and-billing', 'team-and-roles', 'approvals']),

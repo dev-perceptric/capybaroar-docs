@@ -15,12 +15,13 @@ How to connect Telegram, what you can post there and how to fix a post it turns 
 
 | | |
 | - | - |
-| **Characters** | 4,096 |
+| **Characters** | 4,096, or 1,024 under files |
 | **Needs a picture or video** | No |
-| **Connects with** | A short form (Channel or group) |
-| **Inbox** | Not in the Inbox |
-| **Analytics** | Not in Analytics yet |
+| **Connects with** | A short form: your channel or group |
+| **Inbox** | No |
+| **Analytics** | No post numbers. Member counts are saved daily. |
 | **Change after it goes out** | Yes, the text |
+| **Delete everywhere** | Yes, with Telegram's time limits |
 
 ## Connect Telegram
 
@@ -37,6 +38,10 @@ How to connect Telegram, what you can post there and how to fix a post it turns 
 </Steps>
 
 If the bot isn't an admin yet, Capybaroar's message names the bot to add.
+
+### What Capybaroar asks for
+
+One Capybaroar bot posts for everyone. You add it as an admin of your channel or group. In a channel, it needs the right to post messages. It doesn't read your members or messages.
 
 ## Post to Telegram
 
@@ -61,9 +66,42 @@ If the bot isn't an admin yet, Capybaroar's message names the bot to add.
 - You can change a post's text after it goes out.
 - Telegram lets the bot delete its messages in a basic group for 48 hours. After that, delete them in Telegram. In a channel or supergroup the bot can delete them later too.
 
+## Limits
+
+| | |
+| - | - |
+| **Text** | 4,096 characters |
+| **Caption under files** | 1,024 characters. Longer text goes out as its own message after the files. |
+| **Files** | Up to 10. Several files go out as one album. |
+| **Pictures** | Under 5 MB |
+| **Videos and GIFs** | Under 20 MB. An album can't hold GIFs. |
+
+Capybaroar checks these before a post is scheduled, so a post that breaks one is stopped before it's scheduled, with the reason under the text.
+
+## Results and Inbox
+
+Telegram doesn't send post numbers to bots, so Telegram posts show in Analytics without numbers. The channel's member count is saved once a day.
+
+Telegram doesn't come into the Inbox.
+
+## After it goes out
+
+Open the post, press **Edit**, change the text and press **Save changes**. If the text went out as its own message after an album, edit it in Telegram (`Telegram sent this text as its own message. Edit it in Telegram.`). In a basic group the bot can delete its messages for 48 hours. After that, Telegram answers `Telegram won't let the bot delete this message. Delete it in Telegram.` See [Edit and delete posts that went out](/publishing/edit-and-delete/).
+
+## Disconnect or reconnect
+
+Open **Channels**, find the channel and press **Remove** (the bin icon), then **Remove** again. Owners, admins and editors (for their brands) can do this.
+
+- Scheduled posts stop going to this channel.
+- The channel's Inbox items and results go with it, and posts that went out to it lose this channel's numbers in Analytics.
+- The plan's channel count goes down by one, so you can add another.
+- Remove the bot from the channel's admins in Telegram too, if you no longer use it anywhere.
+
+When Telegram stops taking posts from Capybaroar, the channel shows **Reconnect** in red on **Channels**. Owners and admins get an email, at most once a day, and webhooks get a `channel.reconnect` event. Press **Reconnect** (the arrows icon) and sign in again, or fill in the connect form again for networks that use one. Posts due while it was signed out fail with `Reconnect <channel name>`. Open each one and schedule it again.
+
 ## If a post is turned down
 
-Capybaroar checks each post before it's scheduled and shows the reason next to the channel. These are the Telegram ones:
+Capybaroar checks each post before it's scheduled and shows the reason under the text. Some messages come from Telegram when the post goes out. These are the Telegram ones:
 
 | Message | What to do |
 | - | - |
@@ -76,10 +114,13 @@ Capybaroar checks each post before it's scheduled and shows the reason next to t
 | `Telegram pictures must be under 5 MB` | Use smaller pictures. |
 | `Telegram videos must be under 20 MB` | Use a shorter or smaller video. |
 | `Telegram posts need text or media` | Add text or a file. |
+| `Telegram captions are up to 1024 characters` | Shorten the text under the files, or remove the files. |
+| `Telegram won't let the bot delete this message. Delete it in Telegram.` | Delete it in Telegram. |
 
 ## Related
 
 <CardGrid>
+  <LinkCard title="Compare every network" href="/channels/" />
   <LinkCard title="Connect your first channel" href="/get-started/connect-a-channel/" />
   <LinkCard title="Schedule your first post" href="/get-started/schedule-your-first-post/" />
 </CardGrid>
