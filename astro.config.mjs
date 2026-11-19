@@ -27,6 +27,7 @@ export default defineConfig({
         group('AI agent and MCP', 'ai', ['agent', 'plan-a-week', 'ai-media', 'ai-credits', 'rewrite-with-ai', 'mcp']),
         group('Inbox and results', 'results', ['inbox', 'analytics-and-reports', 'analytics', 'reports', 'link-in-bio']),
         group('Workspace', 'workspace', ['settings-general', 'brands', 'team-and-roles', 'approvals', 'plans-and-billing', 'audit-log', 'api-and-mcp', 'your-account']),
+        { label: 'Recipes', collapsed: true, items: [{ autogenerate: { directory: 'recipes' } }] },
         group('Developers', 'developers', ['rest-api', 'webhooks']),
         { label: 'API reference', collapsed: true, items: [{ autogenerate: { directory: 'api-reference' } }] },
         { label: 'Changelog', collapsed: true, items: [{ autogenerate: { directory: 'changelog' } }] },

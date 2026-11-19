@@ -1,0 +1,74 @@
+---
+title: "Manage several brands as an agency"
+description: "Set up a Capybaroar workspace for an agency: one brand per client, channels sorted into brands, a brand kit each, team members limited to their clients, and credit limits per client."
+sidebar:
+  label: "Agency with several brands"
+  order: 7
+---
+
+import { Aside, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+
+Run every client from one workspace, with each client's channels, posts, files and results kept apart.
+
+**Goal:** a workspace with one brand per client, and each person seeing only the clients they work on.
+
+**You need:** Pro (5 brands) or Agency (no brand limit, plus credit limits and your logo on reports). Owners and admins set this up.
+
+**Time:** 15 minutes for the first client, 5 for each one after.
+
+<Steps>
+
+1. **Add a brand for each client**
+
+   Open **Settings**, **Brands** and press **Add a brand**. Type the client's name in **New brand** and press **Add**.
+
+   ![The New brand box over the Brands table, with the name Juniper Cafe](../../../assets/shots/recipes/agency-1.webp)
+
+1. **Switch to the client**
+
+   Open the brand menu at the top of the sidebar and pick the client. Every screen now shows only that brand. Pick **All brands** to see everything.
+
+   ![The brand menu open with All brands, each client and Manage brands](../../../assets/shots/recipes/agency-2.webp)
+
+1. **Connect or move the client's channels**
+
+   With the client picked, connect their channels in **Channels**: new channels join the brand you're in. Channels already connected can be moved in their **Brand** column.
+
+   ![Channels with the Brand menu open on one channel](../../../assets/shots/recipes/agency-3.webp)
+
+1. **Fill in the brand kit**
+
+   In **Settings**, **Brands**, open the client's menu and press **Brand kit**. Add the **Voice**, **Words to avoid**, **Hashtags to add**, and their website in **Look from website**, then **Read website**. The agent, Rewrite and CapyInfographic follow it.
+
+   ![A brand kit with voice, words to avoid, hashtags and the website](../../../assets/shots/recipes/agency-4.webp)
+
+1. **Give your team their clients**
+
+   In **Settings**, **Members**, invite each person as an **Editor** and tick only their clients. Editors see and post for those brands only. Change their brands later with **Brands** on their row.
+
+   ![The Invite dialog with one client brand ticked](../../../assets/shots/recipes/agency-5.webp)
+
+1. **Set a credit limit per client** (Agency)
+
+   In **Settings**, **Brands**, type a **Credit limit** for each client, in credits a month. **Credits used** shows what each one has used. Buy packs or turn on automatic top-up in **Settings**, **Billing**.
+
+   ![Billing with usage, credits, buying credits and the plans](../../../assets/shots/recipes/agency-6.webp)
+
+</Steps>
+
+## Next steps for each client
+
+- Turn on approvals and invite the client: [Run an approval flow](/recipes/client-approval-flow/).
+- Send them results every month: [Send a monthly client report](/recipes/monthly-client-report/).
+- Make them a link in bio page: [Link in bio](/results/link-in-bio/).
+
+<Aside type="tip">
+Clients you invite with the **Client** role don't take a seat. Seats count owners, admins and editors only.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Brands" href="/workspace/brands/" />
+  <LinkCard title="Team and roles" href="/workspace/team-and-roles/" />
+</CardGrid>
