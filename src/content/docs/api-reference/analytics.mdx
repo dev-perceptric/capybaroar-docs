@@ -1,0 +1,119 @@
+---
+title: "GET /analytics"
+description: "Read reach and engagement for 7, 30 or 90 days against the period before, the best times to post, results by format and the top posts."
+sidebar:
+  label: "GET /analytics"
+  order: 17
+---
+
+import { Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Returns the same numbers as the **Analytics** screen: a period against the one before it, the best hours to post, how videos, pictures and text posts did, and the top five posts.
+
+```http
+GET https://app.capybaroar.com/api/v1/analytics?days={days}&channel_id={channel_id}
+```
+
+## Parameters
+
+| Name | In | Type | Required | Description |
+| - | - | - | - | - |
+| `days` | query | number | No | `7`, `30` (default) or `90` |
+| `channel_id` | query | string | No | Only this channel. Editors always get only their brands' channels. |
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl "https://app.capybaroar.com/api/v1/analytics?days=30" \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="Python">
+
+```python
+res = requests.get(
+    "https://app.capybaroar.com/api/v1/analytics",
+    params={"days": 90, "channel_id": instagram_id},
+    headers={"Authorization": f"Bearer {key}"},
+)
+a = res.json()["analytics"]
+print(a["current"]["engagements"], "vs", a["previous"]["engagements"])
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK`
+
+```json
+{
+  "analytics": {
+    "days": 30,
+    "since": "2026-10-20",
+    "current": { "posts": 42, "reach": 186400, "engagements": 9120, "engagement_rate": 0.049, "posts_with_results": 39 },
+    "previous": { "posts": 37, "reach": 151200, "engagements": 6810, "engagement_rate": 0.045, "posts_with_results": 37 },
+    "best_times": [
+      { "weekday": "Wednesday", "hour": 17 },
+      { "weekday": "Wednesday", "hour": 18 },
+      { "weekday": "Thursday", "hour": 9 }
+    ],
+    "formats": [
+      { "format": "video", "posts": 9, "average_engagements": 412.3 },
+      { "format": "picture", "posts": 24, "average_engagements": 198.6 },
+      { "format": "text", "posts": 9, "average_engagements": 61.2 }
+    ],
+    "top_posts": [
+      {
+        "id": "f0e1d2c3-b4a5-4968-8776-5a4b3c2d1e0f",
+        "channel_id": "2f4e6a8c-1b3d-4e5f-9a7b-8c6d4e2f0a1b",
+        "published_at": "2026-11-12T22:00:00.000Z",
+        "text": "Behind the scenes of the Fernway shoot.",
+        "url": "https://www.instagram.com/reel/C0bEhInD/",
+        "engagements": 1773,
+        "engagement_rate": 0.097
+      }
+    ]
+  }
+}
+```
+
+| Field | Description |
+| - | - |
+| `days`, `since` | The period, and the day it started, like `2026-10-20` |
+| `current`, `previous` | This period, and the same length just before it |
+| `posts` | Posts that went out in the period, one per channel |
+| `reach` | People reached, or views or impressions where a network gives no reach |
+| `engagements` | Likes, comments, shares, saves and clicks added up |
+| `engagement_rate` | Engagements divided by reach, or `null` with no reach |
+| `posts_with_results` | Posts whose network sent numbers back |
+| `best_times` | Up to 3 hours in the workspace's time zone, from hours with 2 or more posts. Empty until 10 posts have results. |
+| `formats` | Posts and average engagements for `video`, `picture` and `text` |
+| `top_posts` | Up to 5 posts with the most engagements. Each entry is one channel's copy of a post, so `id` names that copy, and `channel_id` the channel. |
+
+## When numbers show up
+
+Capybaroar reads each post's numbers 1 hour, 1 day, 7 days and 30 days after it goes out. Follower counts are saved once a day. What each network reports is on its [channel page](/channels/). TikTok, Telegram, Discord and WordPress don't send post numbers back.
+
+## Errors
+
+| Status | Message |
+| - | - |
+| 400 | `days must be 7, 30 or 90` |
+| 404 | `Channel not found` |
+
+## MCP
+
+[`get_analytics`](/api-reference/mcp-tools/#get_analytics) takes the same `days` and `channel_id`.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Analytics" href="/results/analytics-and-reports/" />
+  <LinkCard title="The posting queue" href="/publishing/posting-queue/" />
+</CardGrid>

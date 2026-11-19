@@ -1,0 +1,125 @@
+---
+title: "Errors and limits"
+description: "Every error code the Capybaroar REST API and MCP server return, the messages behind them, and every size, count and rate limit in the API."
+sidebar:
+  label: "Errors and limits"
+  order: 3
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+When a request can't go through, the API answers with a status and one error object. The message is plain words you can show to a person or hand to an AI to fix.
+
+```json
+{ "error": { "code": "invalid_request", "message": "LinkedIn Studio: LinkedIn posts are up to 3,000 characters" } }
+```
+
+## Error codes
+
+| Status | Code | What it means |
+| - | - | - |
+| 400 | `invalid_request` | Something in the request needs fixing. The message says what. This also covers the app's own rules, like `Pick a time in the future` or a plan limit. |
+| 400 | `invalid_json` | The body isn't valid JSON |
+| 401 | `unauthorized` | No key, or a key that was deleted. See [Authentication](/api-reference/authentication/#sign-in-errors). |
+| 402 | `upgrade_required` | The plan has no AI (Free). Upgrade to use AI files. |
+| 402 | `out_of_credits` | Not enough AI credits for this. Buy more in **Settings**, **Billing**. |
+| 402 | `brand_limit` | The brand used its monthly credit limit (Agency). Raise it in **Settings**, **Billing**. |
+| 403 | `forbidden` | The key's role can't do this, like an editor adding a webhook |
+| 404 | `not_found` | It isn't there, or the key's person can't see it |
+| 405 | `method_not_allowed` | The MCP server takes `POST` only |
+| 409 | `conflict` | The post's state doesn't allow it: it already went out, or it is going out right now |
+| 413 | `too_large` | The body is over 1 MB, or a file is over its size limit |
+| 429 | `rate_limited` | Over 120 requests a minute. Wait for `Retry-After`. |
+| 503 | `unavailable` | A short hiccup on our side. Try again in a moment. |
+| 503 | `busy` | Other uploads from links are running. Try again in a minute. |
+
+## Messages you may see
+
+These come from the checks every request goes through. Text in angle brackets stands for a name or number.
+
+### Fields and ids
+
+| Message | Fix |
+| - | - |
+| `Send a JSON object` | Wrap the fields in `{...}`. A list or a plain value is refused. |
+| `Unknown field "<name>"` | Check the spelling. Only the fields on each endpoint's page are taken. |
+| `<field> must be an id from this API` | Use an id the API gave you |
+| `<field> must be an ISO 8601 time with an offset, like 2026-11-05T09:00:00-05:00` | Add `Z` or an offset like `-05:00` |
+| `channel_ids is required` | Send at least one channel id |
+| `Pick at least one channel` | `channel_ids` can't be empty |
+| `channel_ids can have up to 30 ids` | Split the post into two |
+| `media_ids can have up to 20 ids` | Use 20 files or fewer |
+| `mode must be one of draft, schedule, now, queue` | Use one of those four |
+| `publish_at is required when mode is draft` (or `schedule`) | Send a time, or use `queue` or `now` |
+| `text is too long` | The text is over 70,000 characters |
+| `thread can have up to 24 posts after the first` | Trim the thread |
+| `channel_text has a channel that isn't in channel_ids: <id>` | Add the channel to `channel_ids`, or drop its text |
+| `settings has a channel that isn't in channel_ids: <id>` | The same, for settings |
+| `Send at least one field to change` | A `PATCH` needs one field or more |
+| `to must be after from` | Swap the two times |
+| `A range can be up to 92 days` | Ask for a shorter range |
+| `days must be 7, 30 or 90` | Use one of those |
+
+### Posts
+
+| Message | Fix |
+| - | - |
+| `Channel <id> isn't in this workspace. Use an id from list_channels.` | Get ids from [`GET /channels`](/api-reference/channels/) |
+| `<channel>: <network> has no setting "<key>"` | Use a key that channel lists under `settings` |
+| `<channel>: <label> must be one of <values>` | Use one of the setting's `options` |
+| `<channel>: <label> is required` | Send the required setting, like a YouTube `title` or a Pinterest `board` |
+| `<channel>: <network> posts are up to <n> characters` | Shorten the text, or give that channel its own `channel_text` |
+| `<channel>: write something or add media` | Send text or files |
+| `<channel>: PDFs can only go to LinkedIn` | Leave PDFs off other channels |
+| `Audio can't go on a post on its own. Use a picture or a video.` | Audio files can't be posted |
+| `Pick channels from one brand` | Make one post for each brand |
+| `You can't post to this brand` | The key's person doesn't have this brand |
+| `Reconnect <channel> first` | Reconnect the channel in **Channels** |
+| `Pick a time in the future` | Send a time from now on |
+| `File <id> isn't in this workspace's media library` | Upload it first with [`POST /media`](/api-reference/media/) |
+| `A cover must be a file id from list_media` | Send a media id as `cover` |
+| `Add time slots to your queue in Settings first` | Set queue times in **Settings**, **Queue** |
+| `No free slot in the next 8 weeks` | Add more queue times |
+| `There aren't enough results yet to know the best times. Send a time, or use mode queue.` | `publish_at: "best"` needs results first |
+| `Your plan allows 30 scheduled posts a month. Upgrade to schedule more.` | Save as a draft, or upgrade |
+| `This post already went out` | Only `draft`, `review`, `scheduled` and `failed` posts change |
+| `This post is going out right now. Try again in a minute.` | Wait a minute |
+
+Each network also has its own checks, like `Instagram needs a picture or video`. They come back as `<channel>: <reason>`. The [error guide](/errors/) lists them all.
+
+## Limits
+
+| What | Limit |
+| - | - |
+| Requests per key | 120 a minute, shared by every server |
+| Request body | 1 MB |
+| Post text | 70,000 characters (each network's own limit still applies) |
+| Channels on one post | 30 |
+| Files on one post | 20 |
+| Thread | 24 posts after the first |
+| Posts in one `create_posts` call (MCP) | 25 |
+| Messages in one MCP batch | 25 |
+| Range for `GET /posts` | 92 days |
+| Files from `GET /media` | The newest 200 |
+| File from a link | 250 MB, or 100 MB for a PDF, downloaded within 3 minutes |
+| Setting value | 5,000 characters |
+| AI prompt | 2,000 characters for pictures and videos, 5,000 for audio, infographics and animations |
+| One AI action | 1,000 credits at most |
+| Webhooks per workspace | 10 |
+| API keys per workspace | 25 |
+
+<Aside type="note">
+Plan limits apply to the API the same way they apply in the app. On Free, 30 posts a month can be scheduled or published, and AI files answer `402` with `Your plan doesn't include AI. Upgrade to use it.` See [Plan limits](/reference/plan-limits/).
+</Aside>
+
+## Retrying
+
+Retry on `429`, `503` and network errors, with a growing wait between tries. Don't retry a `400`: it fails the same way until you change the request. A `POST /posts` that timed out may have worked, so check [`GET /posts`](/api-reference/list-posts/) before you send it again.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Error guide" href="/errors/" />
+  <LinkCard title="Plan limits" href="/reference/plan-limits/" />
+  <LinkCard title="Create a post" href="/api-reference/create-a-post/" />
+</CardGrid>

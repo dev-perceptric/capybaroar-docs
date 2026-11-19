@@ -1,0 +1,241 @@
+---
+title: "MCP tools"
+description: "All 21 tools on Capybaroar's MCP server, with their inputs, what they answer and an example call for each."
+sidebar:
+  label: "MCP tools"
+  order: 21
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+The MCP server has 21 tools. Each one runs the same action as a REST endpoint, with the same checks. Arguments go in `params.arguments` of a `tools/call`, and the answer is the tool's JSON as text. Fields are the same as on the linked REST page.
+
+| Tool | Changes data | REST twin |
+| - | - | - |
+| `list_brands` | No | [`GET /brands`](/api-reference/brands/) |
+| `list_channels` | No | [`GET /channels`](/api-reference/channels/) |
+| `list_channel_groups` | No | [`GET /channel-groups`](/api-reference/channel-groups/) |
+| `list_campaigns` | No | [`GET /campaigns`](/api-reference/campaigns/) |
+| `list_posts` | No | [`GET /posts`](/api-reference/list-posts/) |
+| `get_post` | No | [`GET /posts/{id}`](/api-reference/get-a-post/) |
+| `create_posts` | Yes | [`POST /posts`](/api-reference/create-a-post/), up to 25 at once |
+| `update_post` | Yes | [`PATCH /posts/{id}`](/api-reference/update-a-post/) |
+| `delete_post` | Yes, can't be undone | [`DELETE /posts/{id}`](/api-reference/delete-a-post/) |
+| `list_media` | No | [`GET /media`](/api-reference/media/) |
+| `upload_media` | Yes | [`POST /media`](/api-reference/media/#add-a-file-from-a-link) |
+| `generate_media` | Yes, uses credits | [`POST /generations`](/api-reference/generations/) |
+| `get_generation` | No | [`GET /generations/{id}`](/api-reference/generations/#check-a-generation) |
+| `get_credits` | No | [`GET /credits`](/api-reference/credits/) |
+| `next_queue_slot` | No | [`GET /queue`](/api-reference/queue/) |
+| `get_analytics` | No | [`GET /analytics`](/api-reference/analytics/) |
+| `list_webhooks` | No | [`GET /webhooks`](/api-reference/webhooks/) |
+| `create_webhook` | Yes | [`POST /webhooks`](/api-reference/webhooks/#add-a-webhook) |
+| `set_webhook` | Yes | [`PATCH /webhooks/{id}`](/api-reference/webhooks/#turn-a-webhook-on-or-off) |
+| `test_webhook` | Sends a ping | [`POST /webhooks/{id}/test`](/api-reference/webhooks/#send-a-test) |
+| `delete_webhook` | Yes | [`DELETE /webhooks/{id}`](/api-reference/webhooks/#delete-a-webhook) |
+
+Each tool also carries MCP hints: read tools are marked read-only, and `delete_post`, `create_webhook`, `set_webhook` and `delete_webhook` are marked destructive, so well-behaved apps ask you first.
+
+## Reading tools
+
+### list_brands
+
+The brands (clients) in this workspace. No inputs.
+
+```json
+{ "name": "list_brands", "arguments": {} }
+```
+
+Answers `{"brands": [{ "id", "name", "needs_approval", "website", "has_style" }]}`.
+
+### list_channels
+
+Connected channels with their id, network, character limit and settings. Call this before writing posts.
+
+| Input | Type | Required | Description |
+| - | - | - | - |
+| `brand_id` | string | No | Only this brand's channels |
+
+```json
+{ "name": "list_channels", "arguments": { "brand_id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64" } }
+```
+
+Answers `{"channels": [...]}`.
+
+### list_channel_groups
+
+Saved groups of channels from one brand. To post to a group, send its `channel_ids` to `create_posts`. No inputs. Answers `{"groups": [{ "id", "name", "brand_id", "channel_ids" }]}`.
+
+### list_campaigns
+
+Campaigns with their posts by status and engagements. No inputs. Answers `{"campaigns": [...]}`.
+
+### list_posts
+
+Posts with a publish time in a range of up to 92 days. Without `from` and `to`, the next 30 days.
+
+| Input | Type | Required | Description |
+| - | - | - | - |
+| `from` | string | No | ISO 8601 start, with offset |
+| `to` | string | No | ISO 8601 end, with offset |
+| `brand_id` | string | No | Only this brand's posts |
+
+```json
+{ "name": "list_posts", "arguments": { "from": "2026-11-23T00:00:00-05:00", "to": "2026-11-30T00:00:00-05:00" } }
+```
+
+### get_post
+
+One post with its status on each channel and links to what went out.
+
+```json
+{ "name": "get_post", "arguments": { "id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d" } }
+```
+
+### list_media
+
+The newest files in the media library, with ids to attach to posts. No inputs.
+
+### get_credits
+
+This month's plan credits and what's left, bought credits, the total left and when plan credits refill. No inputs.
+
+### next_queue_slot
+
+The next free time in the posting queue. No inputs. Answers `{"publish_at": "2026-11-20T14:00:00.000Z"}`.
+
+### get_analytics
+
+| Input | Type | Required | Description |
+| - | - | - | - |
+| `days` | number | No | `7`, `30` (default) or `90` |
+| `channel_id` | string | No | Only this channel |
+
+### get_generation
+
+Where a `generate_media` request is: `queued`, `running`, `done` (with `media` to attach) or `failed` (with the error).
+
+```json
+{ "name": "get_generation", "arguments": { "id": "1f2e3d4c-5b6a-4978-8a6b-5c4d3e2f1a09" } }
+```
+
+## Writing tools
+
+### create_posts
+
+Up to 25 posts at once. Each one is checked on its own, so one bad post doesn't stop the rest. Posts are drafts unless `mode` says otherwise.
+
+| Input | Type | Required | Description |
+| - | - | - | - |
+| `posts` | list | Yes | 1 to 25 posts. Each takes the fields of [`POST /posts`](/api-reference/create-a-post/#body); `channel_ids` and `text` are required. |
+
+```json
+{
+  "name": "create_posts",
+  "arguments": {
+    "posts": [
+      { "channel_ids": ["c1a2b3c4-d5e6-4f70-8a9b-0c1d2e3f4a5b"], "text": "Monday: how we name a bakery.", "mode": "draft", "publish_at": "2026-11-23T09:00:00-05:00" },
+      { "channel_ids": ["c1a2b3c4-d5e6-4f70-8a9b-0c1d2e3f4a5b"], "text": "Wednesday: three logo sketches that didn't make it.", "mode": "queue" }
+    ]
+  }
+}
+```
+
+The answer has one result per post, in order:
+
+```json
+{
+  "results": [
+    { "ok": true, "post": { "id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d", "status": "draft", "publish_at": "2026-11-23T14:00:00.000Z" } },
+    { "ok": false, "error": "Add time slots to your queue in Settings first" }
+  ]
+}
+```
+
+### update_post
+
+Change a post that hasn't gone out. Send `id` and only the fields to change. Without `mode`, a draft stays a draft and a scheduled post is scheduled again.
+
+```json
+{ "name": "update_post", "arguments": { "id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d", "text": "Monday: how we named Fernway Bakery." } }
+```
+
+### delete_post
+
+| Input | Type | Required | Description |
+| - | - | - | - |
+| `id` | string | Yes | The post |
+| `everywhere` | boolean | No | Also delete it on the networks. Default `false`. |
+| `channel_ids` | list | No | With `everywhere`: only these channels |
+
+Without `everywhere`, it's removed from Capybaroar only. With `everywhere: true`, the answer lists each channel's result: `deleted`, `failed` with the error, `manual` with the link where it must be deleted by hand, or `skipped`. The tool tells the AI to ask you before deleting everywhere.
+
+### upload_media
+
+Download a picture, video or PDF from a public link into the media library.
+
+| Input | Type | Required | Description |
+| - | - | - | - |
+| `url` | string | Yes | A public http or https link: JPG, PNG, GIF, WebP, MP4 or MOV up to 250 MB, or a PDF up to 100 MB |
+| `alt` | string | No | Alt text |
+
+### generate_media
+
+Make an infographic, animation, picture, video or audio. Leave `model` out and Capy picks. Uses credits.
+
+| Input | Type | Required | Description |
+| - | - | - | - |
+| `kind` | string | Yes | `infographic`, `motion`, `image`, `video` or `audio` |
+| `prompt` | string | Yes | What to make, up to 5,000 characters |
+| `model` | string | No | A model id from [POST /generations](/api-reference/generations/#models-and-how-capy-picks) |
+| `aspect` | string | No | `1:1`, `4:5` (infographics and animations), `9:16` or `16:9` |
+| `website` | string | No | The brand's site, for infographics and animations of a brand without a style |
+| `seconds` | number | No | `5` or `10`, for videos and sound effects |
+| `source_media_id` | string | No | A picture to edit, or a video's first frame |
+
+```json
+{ "name": "generate_media", "arguments": { "kind": "infographic", "prompt": "Fernway Bakery's week in numbers: 1,240 loaves, 380 croissant boxes, 6 new regulars a day", "aspect": "4:5" } }
+```
+
+Answers `{"generation": {...}}` with `credits_charged` and `credits_left`. Call `get_generation` until `status` is `done`.
+
+## Webhook tools
+
+All five are for owners and admins only.
+
+### list_webhooks
+
+No inputs. Answers `{"webhooks": [...]}`.
+
+### create_webhook
+
+| Input | Type | Required | Description |
+| - | - | - | - |
+| `url` | string | Yes | An https URL |
+| `events` | list | Yes | Any of `post.published`, `post.failed`, `post.in_review`, `post.approved`, `post.rejected`, `channel.reconnect` |
+
+Answers `{"webhook": {...}, "secret": "whsec_..."}`. The secret is shown once.
+
+### set_webhook
+
+`id` and `enabled` (true or false). Turning one on again starts its failure count over.
+
+### test_webhook
+
+`id`. Sends a `ping` event now. Answers `{"sent": true}`.
+
+### delete_webhook
+
+`id`. Answers `{"deleted": true}`.
+
+<Aside type="tip">
+Tools the Claude directory app hides: `generate_media` and `get_generation`. Connect with a key's MCP link if you want AI pictures from Claude.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="MCP server" href="/api-reference/mcp-server/" />
+  <LinkCard title="Schedule from Claude with MCP" href="/recipes/schedule-from-claude/" />
+  <LinkCard title="Use Capybaroar from Claude, ChatGPT or Cursor" href="/ai/mcp/" />
+</CardGrid>

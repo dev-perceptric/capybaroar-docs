@@ -1,0 +1,156 @@
+---
+title: "GET /posts"
+description: "List Capybaroar posts with a publish time in a range of up to 92 days, with each channel's status, link and error."
+sidebar:
+  label: "GET /posts"
+  order: 8
+---
+
+import { Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Returns the posts with a publish time between `from` and `to`, oldest first. Without `from` and `to`, you get the next 30 days. Each post lists its channels with their own status, link and error.
+
+```http
+GET https://app.capybaroar.com/api/v1/posts?from={from}&to={to}&brand_id={brand_id}
+```
+
+## Parameters
+
+| Name | In | Type | Required | Description |
+| - | - | - | - | - |
+| `from` | query | string | No | The start, ISO 8601 with an offset. Default: now. |
+| `to` | query | string | No | The end, ISO 8601 with an offset. Default: 30 days after `from`. It must be after `from`, and at most 92 days after it. |
+| `brand_id` | query | string | No | Only this brand's posts |
+
+Remember to URL-encode the `+` in an offset like `+01:00` as `%2B01:00`. A `Z` or a minus offset needs no encoding.
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl "https://app.capybaroar.com/api/v1/posts?from=2026-11-23T00:00:00-05:00&to=2026-11-30T00:00:00-05:00" \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const url = new URL("https://app.capybaroar.com/api/v1/posts");
+url.searchParams.set("from", "2026-11-23T00:00:00-05:00");
+url.searchParams.set("to", "2026-11-30T00:00:00-05:00");
+const res = await fetch(url, { headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` } });
+const { posts } = await res.json();
+```
+
+  </TabItem>
+  <TabItem label="Python">
+
+```python
+res = requests.get(
+    "https://app.capybaroar.com/api/v1/posts",
+    params={"from": "2026-11-23T00:00:00-05:00", "to": "2026-11-30T00:00:00-05:00"},
+    headers={"Authorization": f"Bearer {key}"},
+)
+for post in res.json()["posts"]:
+    print(post["publish_at"], post["status"], post["text"][:40])
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK`
+
+```json
+{
+  "posts": [
+    {
+      "id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+      "status": "scheduled",
+      "text": "Weekend croissant boxes are back. Order by Thursday for Saturday pickup.",
+      "publish_at": "2026-11-24T14:00:00.000Z",
+      "brand_id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f",
+      "media_ids": ["5e6f7a8b-9c0d-4e1f-8a2b-3c4d5e6f7a8b"],
+      "thread": [],
+      "campaign_id": "7b8c9d0e-1f2a-4b3c-8d4e-5f6a7b8c9d0e",
+      "channels": [
+        {
+          "channel_id": "a3b4c5d6-e7f8-4a9b-8c0d-1e2f3a4b5c6d",
+          "status": "pending",
+          "text": null,
+          "settings": { "format": "post", "first_comment": "#fernwaybakery #croissants" },
+          "url": null,
+          "error": null,
+          "deleted_at": null,
+          "thread_urls": []
+        }
+      ]
+    }
+  ]
+}
+```
+
+Every post has the fields below. [`GET /posts/{id}`](/api-reference/get-a-post/) returns the same shape for one post.
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The post's id |
+| `status` | string | The post's state. See the table below. |
+| `text` | string | The text every channel shares |
+| `publish_at` | string or null | When it goes out, or went out, in UTC |
+| `brand_id` | string or null | The brand of its channels |
+| `media_ids` | list | Its files, in order |
+| `thread` | list | The thread's posts after the first, each `{ "text", "media_ids" }` |
+| `campaign_id` | string or null | Its campaign |
+| `channels` | list | One entry for each channel. See below. |
+
+### Post status
+
+| Status | What it means |
+| - | - |
+| `draft` | Saved, with no plan to go out |
+| `review` | Waiting for approval |
+| `scheduled` | Set to go out at `publish_at` |
+| `publishing` | Going out right now |
+| `published` | Out on every channel |
+| `partial` | Out on some channels, failed on others |
+| `failed` | Didn't go out on any channel |
+
+Posts deleted on every network (`deleted`) aren't listed. [Get one by id](/api-reference/get-a-post/) to see it.
+
+### Each channel
+
+| Field | Type | Description |
+| - | - | - |
+| `channel_id` | string | The channel |
+| `status` | string | `pending` (waiting or retrying), `published` or `failed` |
+| `text` | string or null | This channel's own text, or `null` when it uses the shared `text` |
+| `settings` | object | The network settings sent with it |
+| `url` | string or null | The link to the post on the network, once it's out |
+| `error` | string or null | Why it failed, or the last error while it retries |
+| `deleted_at` | string or null | When it was deleted on the network |
+| `thread_urls` | list | Links to the thread's later posts on this channel, in order |
+
+## Errors
+
+| Status | Message |
+| - | - |
+| 400 | `from must be an ISO 8601 time with an offset, like 2026-11-05T09:00:00-05:00` |
+| 400 | `to must be after from` |
+| 400 | `A range can be up to 92 days` |
+| 404 | `Brand not found` |
+
+## MCP
+
+[`list_posts`](/api-reference/mcp-tools/#list_posts) takes the same `from`, `to` and `brand_id`.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="GET /posts/{id}" href="/api-reference/get-a-post/" />
+  <LinkCard title="POST /posts" href="/api-reference/create-a-post/" />
+</CardGrid>

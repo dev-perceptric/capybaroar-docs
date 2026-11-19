@@ -1,0 +1,153 @@
+---
+title: "GET /channels"
+description: "List connected social channels with their network, character limit, whether they need media or post threads, and every setting the network takes."
+sidebar:
+  label: "GET /channels"
+  order: 5
+---
+
+import { Aside, Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Returns the connected channels the key's person can use. Call this before you write posts: it gives each channel's id, its character limit, and the settings its network takes, with the ones that are required.
+
+```http
+GET https://app.capybaroar.com/api/v1/channels?brand_id={brand_id}
+```
+
+## Parameters
+
+| Name | In | Type | Required | Description |
+| - | - | - | - | - |
+| `brand_id` | query | string | No | Only this brand's channels. Leave it out for every brand you can use. |
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl "https://app.capybaroar.com/api/v1/channels?brand_id=4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64" \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const url = new URL("https://app.capybaroar.com/api/v1/channels");
+url.searchParams.set("brand_id", "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64");
+const res = await fetch(url, { headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` } });
+const { channels } = await res.json();
+```
+
+  </TabItem>
+  <TabItem label="Python">
+
+```python
+res = requests.get(
+    "https://app.capybaroar.com/api/v1/channels",
+    params={"brand_id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64"},
+    headers={"Authorization": f"Bearer {key}"},
+)
+channels = res.json()["channels"]
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK`
+
+```json
+{
+  "channels": [
+    {
+      "id": "c1a2b3c4-d5e6-4f70-8a9b-0c1d2e3f4a5b",
+      "network": "linkedin-page",
+      "network_name": "LinkedIn Page",
+      "name": "Ocelot Studio",
+      "username": "ocelot-studio",
+      "status": "active",
+      "brand_id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64",
+      "character_limit": 3000,
+      "needs_media": false,
+      "thread": false,
+      "settings": [
+        { "key": "first_comment", "label": "First comment", "kind": "textarea", "required": false },
+        { "key": "reshare", "label": "Resharing", "kind": "select", "required": false, "options": ["on", "off"] },
+        { "key": "doc_title", "label": "PDF title", "kind": "text", "required": false }
+      ]
+    },
+    {
+      "id": "2f4e6a8c-1b3d-4e5f-9a7b-8c6d4e2f0a1b",
+      "network": "instagram",
+      "network_name": "Instagram",
+      "name": "ocelotstudio",
+      "username": "ocelotstudio",
+      "status": "active",
+      "brand_id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64",
+      "character_limit": 2200,
+      "needs_media": true,
+      "thread": false,
+      "settings": [
+        { "key": "format", "label": "Format", "kind": "select", "required": false, "options": ["post", "reel", "story"] },
+        { "key": "trial", "label": "Trial Reel", "kind": "select", "required": false, "options": ["off", "manual", "auto"], "only_when": { "key": "format", "value": "reel" } },
+        { "key": "cover", "label": "Reel cover", "kind": "cover", "required": false, "only_when": { "key": "format", "value": "reel" } },
+        { "key": "first_comment", "label": "First comment", "kind": "textarea", "required": false }
+      ]
+    }
+  ]
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The channel's id, for `channel_ids` on a post |
+| `network` | string | One of `linkedin`, `linkedin-page`, `facebook`, `instagram`, `threads`, `tiktok`, `youtube`, `x`, `pinterest`, `bluesky`, `mastodon`, `telegram`, `discord`, `wordpress` |
+| `network_name` | string | The network's name, like `LinkedIn Page` |
+| `name` | string | The account's name on the network |
+| `username` | string or null | The handle, when the network has one |
+| `status` | string | `active`, or `reconnect` when the channel lost its sign-in. Posts to a `reconnect` channel are refused until it's reconnected. |
+| `brand_id` | string or null | The brand the channel belongs to |
+| `character_limit` | number | The most characters one post can have on this network |
+| `needs_media` | boolean | `true` when every post needs a picture or video (Instagram, TikTok, YouTube, Pinterest) |
+| `thread` | boolean | `true` when a post's `thread` goes out as replies (X, Threads, Bluesky, Mastodon) |
+| `settings` | list | The network's own settings. See below. |
+
+## Settings
+
+Each setting has a `key` to send under `settings` on a post, a `label` as the app shows it, and a `kind`:
+
+| Kind | What to send |
+| - | - |
+| `text` | A string |
+| `textarea` | A string, line breaks allowed |
+| `select` | One of `options` |
+| `tags` | Words split by commas, like `"launch, design"` |
+| `cover` | A picture's id from [`GET /media`](/api-reference/media/) |
+
+`required: true` means a post to this channel is refused without it, like a YouTube `title`. `only_when` means the setting is used only when another setting has that value, like an Instagram Reel cover. Settings you leave out use the network's default, such as `format: "post"` on Instagram. Each [channel page](/channels/) lists every setting and its default.
+
+<Aside type="note">
+Character limits are counted the way people see letters, so an emoji counts as one. Networks that count differently, like X with links, may still turn down a post near the limit.
+</Aside>
+
+## Errors
+
+| Status | Message | When |
+| - | - | - |
+| 400 | `brand_id must be an id from this API` | `brand_id` isn't an id |
+| 404 | `Brand not found` | The key's person can't use that brand |
+
+## MCP
+
+[`list_channels`](/api-reference/mcp-tools/#list_channels) returns the same list and takes the same `brand_id`.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Create a post" href="/api-reference/create-a-post/" />
+  <LinkCard title="GET /channel-groups" href="/api-reference/channel-groups/" />
+  <LinkCard title="Channels" href="/channels/" />
+</CardGrid>

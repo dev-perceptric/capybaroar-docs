@@ -1,0 +1,186 @@
+---
+title: "POST /posts"
+description: "Make a Capybaroar post: a draft, a scheduled post, a post that goes out now, or one in the next queue time, with per-channel text, network settings, files and threads."
+sidebar:
+  label: "POST /posts"
+  order: 9
+---
+
+import { Aside, Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Makes one post for one or more channels of the same brand. It's a draft unless `mode` says otherwise. The post gets the same checks the calendar runs, so what works here works in the app.
+
+```http
+POST https://app.capybaroar.com/api/v1/posts
+```
+
+## Body
+
+| Field | Type | Required | Description |
+| - | - | - | - |
+| `channel_ids` | list | Yes | 1 to 30 channel ids from [`GET /channels`](/api-reference/channels/), all from one brand |
+| `text` | string | No | The text every channel shares. Up to 70,000 characters, and each network's own limit applies. |
+| `mode` | string | No | `draft` (the default), `schedule`, `now` or `queue` |
+| `publish_at` | string | For `draft` and `schedule` | When it goes out, ISO 8601 with an offset, or `"best"` |
+| `media_ids` | list | No | Up to 20 file ids from [`GET /media`](/api-reference/media/), in the order they show |
+| `channel_text` | object | No | Own text for some channels: `{ "<channel id>": "text" }`. Other channels use `text`. |
+| `settings` | object | No | Network settings by channel: `{ "<channel id>": { "first_comment": "..." } }` |
+| `thread` | list | No | Up to 24 posts after the first, each `{ "text": "...", "media_ids": [] }` or a plain string |
+| `campaign_id` | string or null | No | A campaign from [`GET /campaigns`](/api-reference/campaigns/) |
+
+### Modes
+
+| `mode` | What happens |
+| - | - |
+| `draft` | Saved on the calendar at `publish_at`. Nothing goes out. Network checks wait until you schedule it. |
+| `schedule` | Goes out at `publish_at`. The time must be in the future. |
+| `now` | Goes out right away. `publish_at` is ignored. |
+| `queue` | Takes the next free time in the workspace's queue (**Settings**, **Queue**) |
+
+`publish_at: "best"` picks the next of the workspace's best hours, at least 30 minutes from now. It needs enough results to know them. Until then you get `There aren't enough results yet to know the best times. Send a time, or use mode queue.`
+
+<Aside type="note">
+In a brand that needs approval, a post from an editor's key goes to `review` and waits there for approval. The answer's `status` tells you which one happened.
+</Aside>
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/posts \
+  -H "Authorization: Bearer cbr_your_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "channel_ids": ["c1a2b3c4-d5e6-4f70-8a9b-0c1d2e3f4a5b", "2f4e6a8c-1b3d-4e5f-9a7b-8c6d4e2f0a1b"],
+    "text": "New work: a full identity for Fernway Bakery. Logo, bread bags, shop signs and a menu that fits on one card.",
+    "media_ids": ["5e6f7a8b-9c0d-4e1f-8a2b-3c4d5e6f7a8b"],
+    "mode": "schedule",
+    "publish_at": "2026-11-24T09:00:00-05:00",
+    "channel_text": {
+      "2f4e6a8c-1b3d-4e5f-9a7b-8c6d4e2f0a1b": "New work for Fernway Bakery. Swipe to see how it came together."
+    },
+    "settings": {
+      "c1a2b3c4-d5e6-4f70-8a9b-0c1d2e3f4a5b": { "first_comment": "Case study: ocelot.example/fernway" },
+      "2f4e6a8c-1b3d-4e5f-9a7b-8c6d4e2f0a1b": { "format": "post" }
+    }
+  }'
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const res = await fetch("https://app.capybaroar.com/api/v1/posts", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    channel_ids: [linkedinId, instagramId],
+    text: "New work: a full identity for Fernway Bakery.",
+    media_ids: [pictureId],
+    mode: "queue",
+  }),
+});
+if (!res.ok) throw new Error((await res.json()).error.message);
+const { post } = await res.json();
+console.log(post.status, post.publish_at);
+```
+
+  </TabItem>
+  <TabItem label="Python">
+
+```python
+res = requests.post(
+    "https://app.capybaroar.com/api/v1/posts",
+    headers={"Authorization": f"Bearer {key}"},
+    json={
+        "channel_ids": [x_id],
+        "text": "Three things we learned redesigning a bakery brand. 1/4",
+        "thread": [
+            "1. Start with the bread bag. The logo comes later.",
+            "2. A menu that fits on one card sells more bread.",
+            {"text": "3. Shop signs need a test at 20 meters.", "media_ids": [sign_id]},
+        ],
+        "mode": "schedule",
+        "publish_at": "2026-11-25T12:30:00-05:00",
+    },
+)
+res.raise_for_status()
+post = res.json()["post"]
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`201 Created`
+
+```json
+{
+  "post": {
+    "id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+    "status": "scheduled",
+    "text": "New work: a full identity for Fernway Bakery. Logo, bread bags, shop signs and a menu that fits on one card.",
+    "publish_at": "2026-11-24T14:00:00.000Z",
+    "brand_id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64",
+    "media_ids": ["5e6f7a8b-9c0d-4e1f-8a2b-3c4d5e6f7a8b"],
+    "thread": [],
+    "campaign_id": null,
+    "channels": [
+      { "channel_id": "c1a2b3c4-d5e6-4f70-8a9b-0c1d2e3f4a5b", "status": "pending", "text": null, "settings": { "first_comment": "Case study: ocelot.example/fernway" }, "url": null, "error": null, "deleted_at": null, "thread_urls": [] },
+      { "channel_id": "2f4e6a8c-1b3d-4e5f-9a7b-8c6d4e2f0a1b", "status": "pending", "text": "New work for Fernway Bakery. Swipe to see how it came together.", "settings": { "format": "post" }, "url": null, "error": null, "deleted_at": null, "thread_urls": [] }
+    ]
+  }
+}
+```
+
+The fields are the same as on [`GET /posts`](/api-reference/list-posts/#response).
+
+## What gets checked
+
+Before a post is scheduled, Capybaroar checks it for every channel. A draft is checked only for its ids and files, so you can save half-done work.
+
+- Every channel is in the workspace, from one brand, and not waiting to be reconnected.
+- Every file is in the workspace's media library. Audio files can't be posted, and PDFs go to LinkedIn only.
+- Each channel's text fits its network's limit, and required settings are there.
+- Setting keys are ones the network takes, and select settings use one of their options.
+- The network's own rules pass, like a picture for Instagram or one video for YouTube.
+- The plan allows another post this month (Free allows 30).
+
+The first problem stops the post and comes back as the error, like `Fernway Bakery: Instagram needs a picture or video`. The channel's name comes first, so you know which one to fix.
+
+## Threads
+
+On X, Threads, Bluesky and Mastodon, each item in `thread` goes out as a reply to the post before it. Channels on other networks post only the first part. Each part must fit the network's limit.
+
+## Errors
+
+| Status | Message |
+| - | - |
+| 400 | `channel_ids is required` |
+| 400 | `publish_at is required when mode is schedule` |
+| 400 | `Pick a time in the future` |
+| 400 | `Pick channels from one brand` |
+| 400 | `<channel>: <reason>` from a network check |
+| 400 | `Your plan allows 30 scheduled posts a month. Upgrade to schedule more.` |
+| 400 | `Add time slots to your queue in Settings first` |
+| 400 | `That campaign belongs to another brand` |
+
+See [Errors and limits](/api-reference/errors-and-limits/#posts) for the full list.
+
+## MCP
+
+[`create_posts`](/api-reference/mcp-tools/#create_posts) takes a list of up to 25 posts with these same fields, and answers each one on its own.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="PATCH /posts/{id}" href="/api-reference/update-a-post/" />
+  <LinkCard title="POST /media" href="/api-reference/media/" />
+  <LinkCard title="GET /queue" href="/api-reference/queue/" />
+</CardGrid>

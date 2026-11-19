@@ -1,0 +1,121 @@
+---
+title: "PATCH /posts/{id}"
+description: "Change a Capybaroar post that hasn't gone out: its text, channels, time, files, settings, thread or campaign. Send only the fields to change."
+sidebar:
+  label: "PATCH /posts/{id}"
+  order: 11
+---
+
+import { Aside, Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Changes a draft, a post in review, a scheduled post or a failed post. Send only the fields you want to change. The rest stay as they are.
+
+```http
+PATCH https://app.capybaroar.com/api/v1/posts/{id}
+```
+
+## Parameters
+
+| Name | In | Type | Required | Description |
+| - | - | - | - | - |
+| `id` | path | string | Yes | The post's id |
+
+## Body
+
+The same fields as [`POST /posts`](/api-reference/create-a-post/#body), all optional. Send at least one.
+
+| Field | What changing it does |
+| - | - |
+| `text` | Replaces the shared text |
+| `channel_ids` | Replaces the channel list. Channels you drop lose their own text and settings. |
+| `publish_at` | Moves the post. Send `"best"` for the next best time. |
+| `mode` | `draft`, `schedule`, `now` or `queue`. Without it, a draft stays a draft and anything else is scheduled again. |
+| `media_ids` | Replaces the files |
+| `channel_text` | Replaces every channel's own text. Channels not in it use the shared text. |
+| `settings` | Replaces every channel's settings |
+| `thread` | Replaces the thread. Send `[]` to remove it. |
+| `campaign_id` | Moves it to a campaign, or `null` to take it out of one |
+
+<Aside type="caution">
+`channel_text` and `settings` replace the whole map at once. To change one channel's first comment, send that channel's full settings, and every other channel's too if you want to keep them.
+</Aside>
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl -X PATCH https://app.capybaroar.com/api/v1/posts/9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d \
+  -H "Authorization: Bearer cbr_your_key" \
+  -H "Content-Type: application/json" \
+  -d '{ "publish_at": "2026-11-26T08:30:00-05:00" }'
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+// Turn a draft into a scheduled post at its saved time.
+const res = await fetch(`https://app.capybaroar.com/api/v1/posts/${postId}`, {
+  method: "PATCH",
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}`, "Content-Type": "application/json" },
+  body: JSON.stringify({ mode: "schedule" }),
+});
+const { post } = await res.json();
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK` with the whole post, as on [`GET /posts/{id}`](/api-reference/get-a-post/).
+
+```json
+{
+  "post": {
+    "id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+    "status": "scheduled",
+    "publish_at": "2026-11-26T13:30:00.000Z",
+    "text": "Weekend croissant boxes are back. Order by Thursday for Saturday pickup.",
+    "brand_id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f",
+    "media_ids": ["5e6f7a8b-9c0d-4e1f-8a2b-3c4d5e6f7a8b"],
+    "thread": [],
+    "campaign_id": null,
+    "channels": [
+      { "channel_id": "a3b4c5d6-e7f8-4a9b-8c0d-1e2f3a4b5c6d", "status": "pending", "text": null, "settings": { "format": "post" }, "url": null, "error": null, "deleted_at": null, "thread_urls": [] }
+    ]
+  }
+}
+```
+
+## How a change is saved
+
+- The whole post is checked again, like a new one. A scheduled post that no longer fits a network is refused, and stays as it was.
+- A post moved to `schedule` must have a time in the future.
+- An editor's change to a post in a brand that needs approval sends it back to `review`.
+- A failed post that you schedule again tries every channel again.
+- A post that went out (`published`, `partial` or `deleted`) can't change here: you get `409` and `This post already went out`. Some networks let you change a live post's text in the app. See [Edit and delete posts that went out](/publishing/edit-and-delete/).
+
+## Errors
+
+| Status | Message |
+| - | - |
+| 400 | `Send at least one field to change` |
+| 400 | `publish_at is required when mode is schedule` |
+| 400 | `channel_text and settings can only name the post's channels: <id>` |
+| 400 | `<channel>: <reason>` from a network check |
+| 404 | `Post not found` |
+| 409 | `This post already went out` |
+
+## MCP
+
+[`update_post`](/api-reference/mcp-tools/#update_post) takes `id` and the same fields.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="POST /posts" href="/api-reference/create-a-post/" />
+  <LinkCard title="DELETE /posts/{id}" href="/api-reference/delete-a-post/" />
+</CardGrid>

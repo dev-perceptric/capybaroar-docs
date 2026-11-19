@@ -1,0 +1,76 @@
+---
+title: "GET /queue"
+description: "Get the next free time in the Capybaroar posting queue, the same time Add to queue and mode queue use."
+sidebar:
+  label: "GET /queue"
+  order: 16
+---
+
+import { Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Returns the next free time in the workspace's posting queue. It's the time a post gets with **Add to queue** in the editor, or with `mode: "queue"` on [`POST /posts`](/api-reference/create-a-post/).
+
+```http
+GET https://app.capybaroar.com/api/v1/queue
+```
+
+## Parameters
+
+None.
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/queue \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const { publish_at } = await (await fetch("https://app.capybaroar.com/api/v1/queue", {
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` },
+})).json();
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK`
+
+```json
+{ "publish_at": "2026-11-20T14:00:00.000Z" }
+```
+
+## How the next time is found
+
+- The queue's times are set in **Settings**, **Queue**, in the workspace's time zone. For example, Monday to Friday at 9:00.
+- A time is free when no scheduled post, or post going out, sits at that exact minute.
+- The time must be more than a minute from now.
+- Capybaroar looks 8 weeks ahead.
+
+The queue is shared by the whole workspace, so two brands don't both take Monday at 9:00. Asking for the queue doesn't hold the time. Two posts made one after the other with `mode: "queue"` get two different times, but a time you read with `GET /queue` can be taken before you use it.
+
+## Errors
+
+| Status | Code | Message | What to do |
+| - | - | - | - |
+| 409 | `conflict` | `Add time slots to your queue in Settings first` | Set queue times in **Settings**, **Queue** |
+| 409 | `conflict` | `No free slot in the next 8 weeks` | Add more times |
+
+## MCP
+
+[`next_queue_slot`](/api-reference/mcp-tools/#next_queue_slot) returns the same time.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="The posting queue" href="/publishing/posting-queue/" />
+  <LinkCard title="POST /posts" href="/api-reference/create-a-post/" />
+</CardGrid>

@@ -1,0 +1,102 @@
+---
+title: "GET /channel-groups"
+description: "List saved channel groups, like All socials, with the ids of their connected channels, ready to send to POST /posts."
+sidebar:
+  label: "GET /channel-groups"
+  order: 6
+---
+
+import { Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Returns the channel groups saved in the post editor. A group is a named set of channels from one brand, like "All socials" or "Studio socials". To post to a group, send its `channel_ids` to [`POST /posts`](/api-reference/create-a-post/).
+
+```http
+GET https://app.capybaroar.com/api/v1/channel-groups
+```
+
+## Parameters
+
+None. Groups for brands the key's person can't use are left out.
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/channel-groups \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const res = await fetch("https://app.capybaroar.com/api/v1/channel-groups", {
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` },
+});
+const { groups } = await res.json();
+const socials = groups.find((g) => g.name === "Studio socials");
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK`
+
+```json
+{
+  "groups": [
+    {
+      "id": "3c4d5e6f-7a8b-4c9d-8e0f-1a2b3c4d5e6f",
+      "name": "Studio socials",
+      "brand_id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64",
+      "channel_ids": [
+        "c1a2b3c4-d5e6-4f70-8a9b-0c1d2e3f4a5b",
+        "2f4e6a8c-1b3d-4e5f-9a7b-8c6d4e2f0a1b",
+        "8e9f0a1b-2c3d-4e4f-9a5b-6c7d8e9f0a1b",
+        "0b1c2d3e-4f5a-4b6c-8d7e-9f0a1b2c3d4e"
+      ]
+    }
+  ]
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The group's id |
+| `name` | string | The name it was saved with, up to 60 characters |
+| `brand_id` | string or null | The brand all its channels belong to |
+| `channel_ids` | list | The group's channels that are still connected, in order. Send this list as `channel_ids` on a post. |
+
+## Notes
+
+- A group only ever holds channels from one brand, because a post can only go to one brand.
+- A channel that was disconnected drops out of `channel_ids`. A group with no connected channels left isn't listed.
+- Groups are made and deleted in the post editor: pick two or more channels, press **Save as group**, and name it. The API can read groups but not change them.
+
+## Example: post to a group
+
+```js
+const { groups } = await (await fetch(`${base}/channel-groups`, { headers })).json();
+const group = groups.find((g) => g.name === "Studio socials");
+
+await fetch(`${base}/posts`, {
+  method: "POST",
+  headers: { ...headers, "Content-Type": "application/json" },
+  body: JSON.stringify({ channel_ids: group.channel_ids, text: "New work is up on the site.", mode: "queue" }),
+});
+```
+
+## MCP
+
+[`list_channel_groups`](/api-reference/mcp-tools/#list_channel_groups) returns the same groups.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="GET /channels" href="/api-reference/channels/" />
+  <LinkCard title="Channel groups and campaigns" href="/publishing/groups-and-campaigns/" />
+</CardGrid>

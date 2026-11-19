@@ -1,0 +1,93 @@
+---
+title: "GET /campaigns"
+description: "List campaigns, like a launch or a sale, with each one's scheduled, published, failed and draft posts and their engagements."
+sidebar:
+  label: "GET /campaigns"
+  order: 7
+---
+
+import { Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Returns the campaigns the key's person can see. A campaign ties posts together, like a launch, a sale or a series. Send a campaign's `id` as `campaign_id` when you [make](/api-reference/create-a-post/) or [change](/api-reference/update-a-post/) a post.
+
+```http
+GET https://app.capybaroar.com/api/v1/campaigns
+```
+
+## Parameters
+
+None.
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/campaigns \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const res = await fetch("https://app.capybaroar.com/api/v1/campaigns", {
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` },
+});
+const { campaigns } = await res.json();
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK`
+
+```json
+{
+  "campaigns": [
+    {
+      "id": "7b8c9d0e-1f2a-4b3c-8d4e-5f6a7b8c9d0e",
+      "name": "Winter menu",
+      "color": "amber",
+      "brand_id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f",
+      "scheduled": 6,
+      "published": 4,
+      "failed": 0,
+      "drafts": 2,
+      "engagements": 1873
+    }
+  ]
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The campaign's id, for `campaign_id` on a post |
+| `name` | string | Up to 60 characters. Names are unique in a workspace. |
+| `color` | string | The color the calendar shows: `violet`, `green`, `amber`, `red`, `turquoise`, `sky`, `pink` or `yellow` |
+| `brand_id` | string or null | The brand the campaign belongs to, or `null` for one any brand can use |
+| `scheduled` | number | Posts waiting to go out |
+| `published` | number | Posts that went out |
+| `failed` | number | Posts that didn't go out |
+| `drafts` | number | Drafts in the campaign |
+| `engagements` | number | Likes, comments, shares, saves and clicks on its published posts |
+
+## Notes
+
+- Campaigns are made, renamed, recolored and deleted in the app: in the editor's **Campaign** menu (**New campaign**) or with **Campaigns** on the calendar. Deleting a campaign keeps its posts.
+- A post can be in one campaign. Send `"campaign_id": null` on a `PATCH` to take it out.
+- A campaign tied to a brand can only hold that brand's posts. A post to another brand gets `That campaign belongs to another brand`.
+
+## MCP
+
+[`list_campaigns`](/api-reference/mcp-tools/#list_campaigns) returns the same list.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Create a post" href="/api-reference/create-a-post/" />
+  <LinkCard title="Channel groups and campaigns" href="/publishing/groups-and-campaigns/" />
+</CardGrid>

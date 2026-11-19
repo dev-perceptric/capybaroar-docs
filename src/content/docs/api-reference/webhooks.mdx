@@ -1,0 +1,193 @@
+---
+title: "Webhooks endpoints"
+description: "List, add, turn on or off, test and delete Capybaroar webhooks with the REST API. Owners and admins only."
+sidebar:
+  label: "Webhooks endpoints"
+  order: 18
+---
+
+import { Aside, Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+A webhook makes Capybaroar send a signed `POST` to your URL when something happens, like a post going out. These endpoints manage them. Only keys of owners and admins can use them, because a webhook sees every brand's posts. An editor's key gets `403` and `Only owners and admins can manage webhooks`.
+
+[Webhook events](/api-reference/webhook-events/) describes what Capybaroar sends.
+
+## List webhooks
+
+```http
+GET https://app.capybaroar.com/api/v1/webhooks
+```
+
+```bash
+curl https://app.capybaroar.com/api/v1/webhooks \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+`200 OK`
+
+```json
+{
+  "webhooks": [
+    {
+      "id": "6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d",
+      "url": "https://hooks.ocelot.example/capybaroar",
+      "events": ["post.published", "post.failed"],
+      "enabled": true,
+      "failures": 0,
+      "last_status": 200,
+      "last_error": null,
+      "last_delivered_at": "2026-11-19T14:00:04.000Z",
+      "created_at": "2026-11-02T10:11:00.000Z"
+    }
+  ]
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The webhook's id |
+| `url` | string | Where Capybaroar sends events |
+| `events` | list | The events it gets |
+| `enabled` | boolean | `false` when it was turned off, by a person or after 5 failed deliveries in a row |
+| `failures` | number | Deliveries in a row that used every try |
+| `last_status` | number or null | The status your URL last answered with |
+| `last_error` | string or null | What went wrong last, like `Answered 500` or `Couldn't reach it: ...` |
+| `last_delivered_at` | string or null | When a delivery last worked |
+| `created_at` | string | When it was added |
+
+## Add a webhook
+
+```http
+POST https://app.capybaroar.com/api/v1/webhooks
+```
+
+| Field | Type | Required | Description |
+| - | - | - | - |
+| `url` | string | Yes | An `https://` URL on the public internet, up to 2,000 characters |
+| `events` | list | Yes | One or more of `post.published`, `post.failed`, `post.in_review`, `post.approved`, `post.rejected`, `channel.reconnect` |
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/webhooks \
+  -H "Authorization: Bearer cbr_your_key" \
+  -H "Content-Type: application/json" \
+  -d '{ "url": "https://hooks.ocelot.example/capybaroar", "events": ["post.published", "post.failed"] }'
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const res = await fetch("https://app.capybaroar.com/api/v1/webhooks", {
+  method: "POST",
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}`, "Content-Type": "application/json" },
+  body: JSON.stringify({ url: "https://hooks.ocelot.example/capybaroar", events: ["post.published", "post.failed"] }),
+});
+const { webhook, secret } = await res.json();
+// Save `secret` now. It isn't shown again.
+```
+
+  </TabItem>
+</Tabs>
+
+`201 Created`
+
+```json
+{
+  "webhook": {
+    "id": "6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d",
+    "url": "https://hooks.ocelot.example/capybaroar",
+    "events": ["post.published", "post.failed"],
+    "enabled": true,
+    "failures": 0,
+    "last_status": null,
+    "last_error": null,
+    "last_delivered_at": null,
+    "created_at": "2026-11-19T15:40:00.000Z"
+  },
+  "secret": "whsec_4Tq8Lm2Xr7Vn1Kp9Zc3Bw6Hd5Jf0Ys8U"
+}
+```
+
+The `secret` signs every delivery. It comes back once. See [how to check a signature](/api-reference/webhook-events/#check-the-signature).
+
+<Aside type="caution">
+Addresses on private networks, `localhost` and names ending in `.local` or `.internal` are refused. Capybaroar checks again at each delivery, against the address it actually connects to.
+</Aside>
+
+## Turn a webhook on or off
+
+```http
+PATCH https://app.capybaroar.com/api/v1/webhooks/{id}
+```
+
+The body is exactly `{"enabled": true}` or `{"enabled": false}`. Turning a webhook on again starts its failure count over.
+
+```bash
+curl -X PATCH https://app.capybaroar.com/api/v1/webhooks/6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d \
+  -H "Authorization: Bearer cbr_your_key" \
+  -H "Content-Type: application/json" \
+  -d '{ "enabled": true }'
+```
+
+`200 OK` with `{"webhook": {...}}`.
+
+## Send a test
+
+```http
+POST https://app.capybaroar.com/api/v1/webhooks/{id}/test
+```
+
+Sends a `ping` event now, whatever events the webhook has, and whether it's on or off. It's tried once and doesn't count toward turning the webhook off.
+
+```bash
+curl -X POST https://app.capybaroar.com/api/v1/webhooks/6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d/test \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+`202 Accepted`
+
+```json
+{ "sent": true }
+```
+
+A few seconds later, `GET /webhooks` shows how your URL answered in `last_status` and `last_error`.
+
+## Delete a webhook
+
+```http
+DELETE https://app.capybaroar.com/api/v1/webhooks/{id}
+```
+
+```bash
+curl -X DELETE https://app.capybaroar.com/api/v1/webhooks/6a7b8c9d-0e1f-4a2b-8c3d-4e5f6a7b8c9d \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+`200 OK` with `{"deleted": true}`. Nothing more is sent to its URL, and deliveries still waiting are dropped.
+
+## Errors
+
+| Status | Message |
+| - | - |
+| 400 | `url must start with https://` |
+| 400 | `The webhook address must be on the public internet` |
+| 400 | `events must be a list of one or more of post.published, post.failed, ...` |
+| 400 | `Unknown event "<name>". Use post.published, post.failed, ...` |
+| 400 | `A workspace can have up to 10 webhooks. Delete one first.` |
+| 400 | `Send {"enabled": true} or {"enabled": false}` |
+| 403 | `Only owners and admins can manage webhooks` |
+| 404 | `Webhook not found` |
+
+## MCP
+
+[`list_webhooks`](/api-reference/mcp-tools/#list_webhooks), [`create_webhook`](/api-reference/mcp-tools/#create_webhook), [`set_webhook`](/api-reference/mcp-tools/#set_webhook), [`test_webhook`](/api-reference/mcp-tools/#test_webhook) and [`delete_webhook`](/api-reference/mcp-tools/#delete_webhook).
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Webhook events" href="/api-reference/webhook-events/" />
+  <LinkCard title="Webhooks guide" href="/developers/webhooks/" />
+</CardGrid>

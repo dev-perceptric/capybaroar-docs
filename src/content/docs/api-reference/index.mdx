@@ -1,0 +1,104 @@
+---
+title: "Capybaroar API reference"
+description: "Base URL, keys, request format, error format and limits for the Capybaroar REST API, with links to every endpoint, the MCP tools and webhook events."
+sidebar:
+  label: "Overview"
+  order: 1
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+The Capybaroar REST API lets your own code make posts, read your calendar, add media, start AI files, read results and manage webhooks. Every plan includes it, Free too. The [MCP server](/api-reference/mcp-server/) runs the very same actions, so anything in this reference also works from Claude, ChatGPT or Cursor.
+
+## Base URL
+
+```text
+https://app.capybaroar.com/api/v1
+```
+
+Every path on these pages is relative to the base URL. `GET /channels` means `GET https://app.capybaroar.com/api/v1/channels`.
+
+## Sign in with a key
+
+Send an API key from **Settings**, **API and MCP** in the `Authorization` header. Keys start with `cbr_`.
+
+```bash
+curl https://app.capybaroar.com/api/v1/brands \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+A key acts as the person who made it. It has their role and sees only their brands. See [Authentication](/api-reference/authentication/) for keys, apps that sign in, and what each role can do through the API.
+
+## Endpoints
+
+| Method | Path | What it does |
+| - | - | - |
+| GET | [`/brands`](/api-reference/brands/) | The brands you can use |
+| GET | [`/channels`](/api-reference/channels/) | Connected channels, with limits and settings |
+| GET | [`/channel-groups`](/api-reference/channel-groups/) | Saved channel groups |
+| GET | [`/campaigns`](/api-reference/campaigns/) | Campaigns, with post counts |
+| GET | [`/posts`](/api-reference/list-posts/) | Posts in a time range |
+| POST | [`/posts`](/api-reference/create-a-post/) | Make a post |
+| GET | [`/posts/{id}`](/api-reference/get-a-post/) | One post |
+| PATCH | [`/posts/{id}`](/api-reference/update-a-post/) | Change a post that hasn't gone out |
+| DELETE | [`/posts/{id}`](/api-reference/delete-a-post/) | Delete a post here, or on the networks too |
+| GET | [`/media`](/api-reference/media/) | The media library |
+| POST | [`/media`](/api-reference/media/#add-a-file-from-a-link) | Add a file from a public link |
+| POST | [`/generations`](/api-reference/generations/) | Start an AI picture, video, infographic, animation or audio |
+| GET | [`/generations/{id}`](/api-reference/generations/#check-a-generation) | Check an AI file |
+| GET | [`/credits`](/api-reference/credits/) | AI credits left |
+| GET | [`/queue`](/api-reference/queue/) | The next free queue time |
+| GET | [`/analytics`](/api-reference/analytics/) | Reach, engagement, best times and top posts |
+| GET | [`/webhooks`](/api-reference/webhooks/) | Your webhooks |
+| POST | [`/webhooks`](/api-reference/webhooks/#add-a-webhook) | Add a webhook |
+| PATCH | [`/webhooks/{id}`](/api-reference/webhooks/#turn-a-webhook-on-or-off) | Turn a webhook on or off |
+| POST | [`/webhooks/{id}/test`](/api-reference/webhooks/#send-a-test) | Send a `ping` event now |
+| DELETE | [`/webhooks/{id}`](/api-reference/webhooks/#delete-a-webhook) | Delete a webhook |
+
+## How requests work
+
+- **JSON in, JSON out.** Send bodies as JSON with `Content-Type: application/json`. Every answer is JSON, with `Cache-Control: no-store`. A body can be up to 1 MB.
+- **Ids are UUIDs.** Every id looks like `9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d`. Use ids that the API gave you. Anything else gets `id must be an id from this API`.
+- **Times have an offset.** Send times as ISO 8601 with an offset, like `2026-11-05T09:00:00-05:00` or `2026-11-05T14:00:00Z`. A time without an offset is refused, so 9 AM can't mean different things on different servers. Answers always use UTC, like `2026-11-05T14:00:00.000Z`.
+- **Unknown fields are refused.** A typo in a field name gets `Unknown field "..."`, so a mistake never passes unseen.
+- **The same checks as the app.** Every post goes through the same checks as the calendar: character limits, required settings, media, plan limits, brands and approvals. See [Errors and limits](/api-reference/errors-and-limits/).
+
+## Answers
+
+A good answer has a status in the 200s and the thing you asked for under one key, like `{"post": {...}}` or `{"channels": [...]}`.
+
+| Status | When |
+| - | - |
+| `200 OK` | A read, or a change that finished |
+| `201 Created` | A new post, file or webhook |
+| `202 Accepted` | Work that keeps going after the answer: an AI file, or a test ping |
+
+Errors have one shape:
+
+```json
+{ "error": { "code": "invalid_request", "message": "publish_at is required when mode is schedule" } }
+```
+
+The `message` is written for people, so you can show it as it is. [Errors and limits](/api-reference/errors-and-limits/) lists every code.
+
+## Rate limit
+
+Each key can make **120 requests a minute**. The count is shared across all of Capybaroar's servers. Past it, you get `429` with a `Retry-After` header that says how many seconds to wait.
+
+<Aside type="tip">
+Making many posts at once? The MCP tool `create_posts` takes up to 25 posts in one call, and checks each one on its own. Over REST, send one `POST /posts` per post and keep under 120 a minute.
+</Aside>
+
+## Webhooks and MCP
+
+- [Webhook events](/api-reference/webhook-events/) lists every event Capybaroar sends to your URL, with its payload, headers and signature.
+- [MCP server](/api-reference/mcp-server/) explains the protocol, and [MCP tools](/api-reference/mcp-tools/) lists all 21 tools with their inputs and answers.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Authentication" href="/api-reference/authentication/" />
+  <LinkCard title="Create a post" href="/api-reference/create-a-post/" />
+  <LinkCard title="Errors and limits" href="/api-reference/errors-and-limits/" />
+  <LinkCard title="REST API guide" href="/developers/rest-api/" />
+</CardGrid>

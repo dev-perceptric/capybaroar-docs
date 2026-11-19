@@ -1,0 +1,193 @@
+---
+title: "POST and GET /generations"
+description: "Start an AI infographic, animation, picture, video or audio file with Capybaroar's API, check on it, and attach the result to a post. Models, shapes, lengths and credits."
+sidebar:
+  label: "POST and GET /generations"
+  order: 14
+---
+
+import { Aside, Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Starts an AI file and answers at once. The file lands in the media library when it's done. Check it with `GET /generations/{id}`, then attach `media.id` to a post. It needs a plan with AI and uses [AI credits](/ai/ai-credits/).
+
+```http
+POST https://app.capybaroar.com/api/v1/generations
+GET  https://app.capybaroar.com/api/v1/generations/{id}
+```
+
+## Kinds
+
+| `kind` | Name | What it makes | How long |
+| - | - | - | - |
+| `infographic` | CapyInfographic | Graphics, charts and banners in your brand's look. Claude designs it and Capybaroar renders it, so the words are spelled right. | Seconds |
+| `motion` | CapyMotion | An animated video of 6 to 30 seconds from your words and numbers: stats that count up, bars, lists, quotes and a call to action | A few minutes |
+| `image` | CapyImage | Pictures, and edits of a picture | Seconds |
+| `video` | CapyVideo | Short videos with sound | A few minutes |
+| `audio` | CapyAudio | Voiceovers, music and sound effects | Seconds to a minute |
+
+## Body
+
+| Field | Type | Required | Description |
+| - | - | - | - |
+| `kind` | string | Yes | One of the kinds above |
+| `prompt` | string | Yes | What to make. Up to 2,000 characters for pictures and videos, and 5,000 for audio, infographics and animations. |
+| `model` | string | No | A model id from the table below. Leave it out, or send `auto`, and Capy picks one. |
+| `aspect` | string | No | `1:1`, `9:16` or `16:9`. Infographics and animations also take `4:5`. Default `1:1`, or `9:16` for animations. Not for audio. |
+| `seconds` | number | No | `5` (default) or `10`, for videos and sound effects |
+| `source_media_id` | string | No | A JPG, PNG or WebP picture from the library: the picture to edit, or a video's first frame. Not for audio. |
+| `website` | string | No | For infographics and animations: the brand's site, like `fernway.example`, to read its colors, fonts and logo. Send it once when [`GET /brands`](/api-reference/brands/) shows `has_style: false`. It's saved on the brand. |
+
+### What to write in the prompt
+
+- **Infographics and animations:** the content to show, in your own words: a headline, the points, the numbers and where they come from.
+- **Pictures and videos:** the scene: the subject, the setting, the light and the style. For a video, say what moves.
+- **Audio:** the exact words for a voiceover, a description of the music or sound, or a song's style followed by `Lyrics:` and the words.
+
+## Models and how Capy picks
+
+Capy reads the prompt and picks the first rule that fits.
+
+| Kind | When | Model id |
+| - | - | - |
+| infographic | Premium, detailed, a lot of data | `capy-infographic-best` |
+| infographic | Anything else | `capy-infographic` |
+| motion | Anything | `capy-motion` |
+| image | A picture is added (`source_media_id`) | `nano-banana-2-edit` |
+| image | Words to print: quotes, a headline, a sign, a logo, a poster | `ideogram-v3` |
+| image | Premium, hero, 4K, detailed | `nano-banana-pro` |
+| image | Anything else | `flux-2-pro` |
+| video | Someone talks | `seedance-2-fast` |
+| video | An ad, cinematic, premium | `veo-3.1` |
+| video | Anything else, with or without a picture | `kling-3-pro` |
+| audio | A song with `Lyrics:` | `minimax-music-v2` |
+| audio | Music, a beat, a jingle | `lyria-2` |
+| audio | A sound effect, a whoosh | `elevenlabs-sfx` |
+| audio | Anything else: a voiceover of your words | `elevenlabs-turbo` |
+
+You can also name `nano-banana-2` (pictures), `elevenlabs-v3` and `stable-audio-2.5` (audio). The answer's `reason` says why Capy picked its model. The [AI credits](/ai/ai-credits/#what-things-cost) page lists what each one costs.
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/generations \
+  -H "Authorization: Bearer cbr_your_key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "kind": "image",
+    "prompt": "A loaf of seeded sourdough on a flour-dusted wooden board, morning window light, close up",
+    "aspect": "1:1"
+  }'
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const headers = { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}`, "Content-Type": "application/json" };
+const base = "https://app.capybaroar.com/api/v1";
+
+let { generation } = await (await fetch(`${base}/generations`, {
+  method: "POST",
+  headers,
+  body: JSON.stringify({ kind: "video", prompt: "Steam rising from a fresh croissant, slow push in", aspect: "9:16" }),
+})).json();
+
+while (generation.status === "queued" || generation.status === "running") {
+  await new Promise((r) => setTimeout(r, 10000));
+  ({ generation } = await (await fetch(`${base}/generations/${generation.id}`, { headers })).json());
+}
+if (generation.status === "failed") throw new Error(generation.error);
+const mediaId = generation.media.id;
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`202 Accepted`
+
+```json
+{
+  "generation": {
+    "id": "1f2e3d4c-5b6a-4978-8a6b-5c4d3e2f1a09",
+    "kind": "image",
+    "brand_id": null,
+    "model": "flux-2-pro",
+    "prompt": "A loaf of seeded sourdough on a flour-dusted wooden board, morning window light, close up",
+    "status": "queued",
+    "error": null,
+    "media": null,
+    "credits": 6,
+    "reason": "it's fast and sharp for everyday posts",
+    "created_at": "2026-11-19T15:30:00.000Z",
+    "credits_charged": 6,
+    "credits_left": 2294
+  }
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The generation's id |
+| `kind`, `model`, `prompt` | string | What was asked for, and the model that makes it |
+| `status` | string | `queued`, `running`, `done` or `failed` |
+| `error` | string or null | Why it failed |
+| `media` | object or null | The finished file, as in [`GET /media`](/api-reference/media/), once `status` is `done` |
+| `credits` | number | What it costs |
+| `reason` | string or null | Why Capy picked the model |
+| `credits_charged` | number | What it holds now. Given back if it fails. |
+| `credits_left` | number | Credits left after it |
+
+## Check a generation
+
+```bash
+curl https://app.capybaroar.com/api/v1/generations/1f2e3d4c-5b6a-4978-8a6b-5c4d3e2f1a09 \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+`200 OK` with `{"generation": {...}}`, the same fields without `credits_charged` and `credits_left`. A picture takes seconds and a video a few minutes. Ask every 5 to 10 seconds.
+
+<Aside type="caution">
+Audio can't go on a post on its own. Use it in a video you edit elsewhere, or with CapyMotion.
+</Aside>
+
+## Errors
+
+| Status | Message |
+| - | - |
+| 400 | `kind must be "infographic", "motion", "image", "video" or "audio"` |
+| 400 | `Describe what to make` (or `Write the words or describe the sound` for audio) |
+| 400 | `Keep it under 2,000 characters` |
+| 400 | `aspect must be one of 1:1, 9:16, 16:9` |
+| 400 | `seconds must be 5 or 10` |
+| 400 | `model must be one of <ids>, or left out for Capy to pick` |
+| 400 | `<model> edits a picture: send source_media_id` |
+| 400 | `<model> doesn't take a picture` |
+| 400 | `source_media_id is for pictures and videos` |
+| 400 | `website must be a site address, like example.com` |
+| 400 | `For a song, describe the style, then write the words after "Lyrics:" (10 characters or more each)` |
+| 400 | `That picture isn't in this workspace's media library` |
+| 400 | `Use a JPG, PNG or WebP picture` |
+| 402 | `Your plan doesn't include AI. Upgrade to use it.` (code `upgrade_required`) |
+| 402 | `This costs <n> credits and <m> are left` (code `out_of_credits`) |
+| 402 | `You're out of credits. Buy more in Settings, Billing.` (code `out_of_credits`) |
+| 402 | `This costs <n> credits and this brand has <m> left this month` (code `brand_limit`) |
+| 402 | `This brand has used its credits for this month` (code `brand_limit`) |
+| 503 | `Couldn't save the request. Try again in a moment.` |
+| 404 | `Generation not found` |
+
+## MCP
+
+[`generate_media`](/api-reference/mcp-tools/#generate_media) and [`get_generation`](/api-reference/mcp-tools/#get_generation) do the same. Claude's directory app leaves these two tools out.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="GET /credits" href="/api-reference/credits/" />
+  <LinkCard title="Make pictures, videos and audio" href="/ai/ai-media/" />
+  <LinkCard title="AI credits" href="/ai/ai-credits/" />
+</CardGrid>

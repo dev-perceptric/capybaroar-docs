@@ -1,0 +1,95 @@
+---
+title: "GET /credits"
+description: "Read the workspace's AI credits: this month's plan credits and what's left, bought credits, the total left and when plan credits refill."
+sidebar:
+  label: "GET /credits"
+  order: 15
+---
+
+import { Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Returns the workspace's AI credits. Every AI action uses credits: the agent, AI writing, and pictures, videos and audio. Check this before a big job, so you know it fits.
+
+```http
+GET https://app.capybaroar.com/api/v1/credits
+```
+
+## Parameters
+
+None.
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/credits \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const { credits } = await (await fetch("https://app.capybaroar.com/api/v1/credits", {
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` },
+})).json();
+if (credits.credits_left < 500) console.warn("Credits are running low");
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK`
+
+```json
+{
+  "credits": {
+    "plan": "pro",
+    "plan_credits": 2500,
+    "plan_credits_left": 1640,
+    "bought_credits_left": 1000,
+    "credits_left": 2640,
+    "refills_at": "2026-12-04T16:12:00.000Z"
+  }
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `plan` | string | `free`, `creator`, `pro` or `agency` |
+| `plan_credits` | number | Credits the plan gives this month. 200 during the 14-day trial. |
+| `plan_credits_left` | number | What's left of them |
+| `bought_credits_left` | number | Credits from packs you bought. They last 12 months. |
+| `credits_left` | number | Everything you can spend now |
+| `refills_at` | string or null | When plan credits refill, or `null` on Free and during the trial |
+
+## How credits are spent
+
+- Plan credits go first, then bought credits.
+- Plan credits refill every month on the day your subscription started, yearly plans too. What's left of them doesn't carry over.
+- An action holds its credits when it starts. It's charged what it really used when it ends, and gets everything back if it fails.
+- No single action costs more than 1,000 credits.
+
+| Plan | Credits a month |
+| - | - |
+| Free | None. Free has no AI. |
+| Creator | 1,000 |
+| Pro | 2,500 |
+| Agency | 8,000 |
+
+Packs of 1,000 credits for $12, 5,000 for $50 and 20,000 for $160 can be bought on any paid plan. See [AI credits](/ai/ai-credits/).
+
+## MCP
+
+[`get_credits`](/api-reference/mcp-tools/#get_credits) returns the same object.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="AI credits" href="/ai/ai-credits/" />
+  <LinkCard title="POST /generations" href="/api-reference/generations/" />
+</CardGrid>

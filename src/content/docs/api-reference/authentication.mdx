@@ -1,0 +1,105 @@
+---
+title: "Authentication"
+description: "How Capybaroar API keys work: the cbr_ format, who a key acts as, what each role can do through the API, apps that sign in with OAuth, and the sign-in errors."
+sidebar:
+  label: "Authentication"
+  order: 2
+---
+
+import { Aside, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+
+Every request to the REST API and the MCP server needs a key or a sign-in token. This page covers both, what a key may do, and the errors you get when it can't.
+
+## Make a key
+
+<Steps>
+
+1. **Open API and MCP.** In the app, click **Settings**, then **API and MCP** under **Developers**. Only owners and admins can make and delete keys.
+
+1. **Press New key.** The **New API key** box asks for a name. Use the app that will hold it, like "Cursor" or "our website". Then press **Make key**.
+
+1. **Copy the key.** **Your new key** shows the **Key**, an **MCP link** with the key in it, and a ready **Claude Code** command. It shows once. Capybaroar stores only a hash of the key, so nobody can show it to you again. Lost a key? Delete it and make a new one.
+
+</Steps>
+
+The **Keys** list shows each key's name, the first characters of the key, when it was made and when it was last used. Press **Delete key**, then **Delete**, to stop it at once. Apps using it stop working. A workspace can have up to 25 keys.
+
+## Send the key
+
+Put the key in the `Authorization` header with the word `Bearer`:
+
+```bash
+curl https://app.capybaroar.com/api/v1/channels \
+  -H "Authorization: Bearer cbr_9fK2mQ7xL4vT8nR1wZ3pH6sD0yB5aE2cG7jU1oW4"
+```
+
+```js
+const res = await fetch("https://app.capybaroar.com/api/v1/channels", {
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` },
+});
+```
+
+A key is `cbr_` and 43 letters, digits, `-` or `_`. Anything else is refused before Capybaroar looks it up.
+
+## Who a key acts as
+
+A key acts as the person who made it, and that's checked on every request. If their role changes, the key's powers change with it. If they leave the workspace, the key stops working.
+
+| The key's person | What the key can do |
+| - | - |
+| **Owner** or **Admin** | Everything in this reference, for every brand: posts, media, AI files, analytics and webhooks |
+| **Editor** | Posts, media, AI files and analytics for their brands only. Their posts to a brand that needs approval wait in review. Webhooks are refused. A key acts this way when the person who made it is later changed to an editor. |
+| **Client** | Nothing. Clients can't use the API. |
+
+Things an editor can't see answer `404 not_found`, as if they weren't there. Asking for a brand they don't have, like `GET /channels?brand_id=...`, gets `Brand not found`.
+
+<Aside type="caution">
+A key can post as you. Keep it out of code you share, out of the browser and out of screenshots. If it leaks, delete it in **Settings**, **API and MCP**.
+</Aside>
+
+## Apps that sign in
+
+Claude, ChatGPT and other apps can also connect with a Capybaroar sign-in, with no key to copy. The person picks a workspace and presses **Allow**, and the app gets a token that works wherever a key does. These apps show under **Connected apps** in **Settings**, **API and MCP**. Press **Remove** to cut one off.
+
+Claude connects through `https://app.capybaroar.com/api/mcp` with no key. When it calls without a sign-in, the server answers `401` with a `WWW-Authenticate` header that tells Claude where to sign in. See [MCP server](/api-reference/mcp-server/).
+
+The audit log shows what each key or app did. Requests with a key are marked as the API, and requests from a signed-in app are marked as that app.
+
+## The MCP link
+
+Some apps only take a link. For those, the MCP server also answers at `https://app.capybaroar.com/api/mcp/cbr_your_key`, with the key in the address. Treat that link like the key itself.
+
+## Rate limit
+
+Each key can make 120 requests a minute, counted on every server together. An MCP batch counts each message in it. Past the limit:
+
+```http
+HTTP/1.1 429 Too Many Requests
+Retry-After: 18
+
+{"error":{"code":"rate_limited","message":"Too many requests. Try again in 18 seconds."}}
+```
+
+Wait for the seconds in `Retry-After`, then send again.
+
+## Sign-in errors
+
+| Status | Code | Message | What to do |
+| - | - | - | - |
+| 401 | `unauthorized` | `Send an API key from Settings as Authorization: Bearer cbr_...` | Add the header, or check that the key is whole |
+| 401 | `unauthorized` | `This API key was deleted or never existed` | Make a new key |
+| 401 | `unauthorized` | `The person who made this key left the workspace` | Make a new key as someone still in the workspace |
+| 403 | `forbidden` | `Clients can't use the API` | Ask an owner to change your role, or use a teammate's key |
+| 403 | `forbidden` | `Only owners and admins can manage webhooks` | Use an owner's or admin's key for webhooks |
+| 429 | `rate_limited` | `Too many requests. Try again in N seconds.` | Wait, then send again |
+| 503 | `unavailable` | `Couldn't check the key just now. Try again in a moment.` | Send again after a short wait |
+
+Every `401` also carries `WWW-Authenticate: Bearer realm="capybaroar"`.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Overview" href="/api-reference/" />
+  <LinkCard title="Errors and limits" href="/api-reference/errors-and-limits/" />
+  <LinkCard title="Team and roles" href="/workspace/team-and-roles/" />
+</CardGrid>

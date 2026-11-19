@@ -1,0 +1,191 @@
+---
+title: "Webhook events"
+description: "Every event Capybaroar sends to a webhook, with its payload, the delivery headers, how to check the signature, retries and when a webhook turns off."
+sidebar:
+  label: "Webhook events"
+  order: 19
+---
+
+import { Aside, Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+When an event happens, Capybaroar sends a `POST` with a JSON body to every webhook that asked for it. This page lists the events and what each one carries.
+
+## The envelope
+
+Every delivery has the same outer shape:
+
+```json
+{
+  "id": "evt_8f3a1c9b2d4e6f7a8b9c0d1e",
+  "type": "post.published",
+  "created_at": "2026-11-19T14:00:03.120Z",
+  "workspace_id": "e2d1c0b9-a8f7-4e6d-8c5b-4a3f2e1d0c9b",
+  "data": { }
+}
+```
+
+| Field | Description |
+| - | - |
+| `id` | The event's id: `evt_` and 24 letters and digits. Every try of the same event has the same id, so skip ids you already handled. |
+| `type` | The event name |
+| `created_at` | When it happened |
+| `workspace_id` | The workspace it happened in |
+| `data` | The event's details, below |
+
+## Headers
+
+```http
+POST /capybaroar HTTP/1.1
+Host: hooks.ocelot.example
+Content-Type: application/json
+Capybaroar-Event: post.published
+Capybaroar-Delivery: evt_8f3a1c9b2d4e6f7a8b9c0d1e
+Capybaroar-Signature: t=1795528803,v1=5257a869e7ecebeda32affa62cdca3fa51cad7e77a0e56ff536d0ce8e108d8bd
+```
+
+## Events
+
+### post.published
+
+A post went out on one channel. A post to three channels sends three of these.
+
+```json
+{
+  "post_id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+  "brand_id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64",
+  "channel_id": "c1a2b3c4-d5e6-4f70-8a9b-0c1d2e3f4a5b",
+  "channel_name": "Ocelot Studio",
+  "network": "linkedin-page",
+  "url": "https://www.linkedin.com/feed/update/urn:li:share:7264021934455713792/"
+}
+```
+
+### post.failed
+
+A post didn't go out on one channel, after its retries. A sign-in problem or a post the network turned down fails at once.
+
+```json
+{
+  "post_id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+  "brand_id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f",
+  "channel_id": "d4e5f6a7-b8c9-4d0e-8f1a-2b3c4d5e6f7a",
+  "channel_name": "Fernway Bakery",
+  "network": "pinterest",
+  "error": "Pinterest board \"Breads\" wasn't found"
+}
+```
+
+### post.in_review
+
+An editor sent a post for approval in a brand that needs it.
+
+```json
+{
+  "post_id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+  "brand_id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f",
+  "publish_at": "2026-11-23T14:00:00+00:00",
+  "text": "Meet the seeded sourdough: sunflower, pumpkin, flax and sesame."
+}
+```
+
+### post.approved
+
+An owner, admin or client approved a post. It's now scheduled.
+
+```json
+{
+  "post_id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+  "brand_id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f",
+  "approved_by": "Ruth Alder"
+}
+```
+
+### post.rejected
+
+Someone asked for changes. The post goes back to a draft, with their comment.
+
+```json
+{
+  "post_id": "9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+  "brand_id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f",
+  "rejected_by": "Ruth Alder",
+  "comment": "Use the photo from Tuesday's bake instead."
+}
+```
+
+### channel.reconnect
+
+A channel lost its sign-in and needs reconnecting. It's sent once, at the moment the channel changes. Later tries that find it signed out send nothing more.
+
+```json
+{
+  "channel_id": "8e9f0a1b-2c3d-4e4f-9a5b-6c7d8e9f0a1b",
+  "channel_name": "ocelotstudio",
+  "network": "x",
+  "brand_id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64"
+}
+```
+
+### ping
+
+Sent by **Send a test** in Settings or [`POST /webhooks/{id}/test`](/api-reference/webhooks/#send-a-test).
+
+```json
+{ "message": "A test from Capybaroar" }
+```
+
+## Check the signature
+
+`Capybaroar-Signature` has a Unix time `t` and `v1`, the hex HMAC-SHA256 of `t`, a dot and the raw body, keyed with your webhook's secret. Check it on the raw body, before you parse the JSON.
+
+<Tabs syncKey="lang">
+  <TabItem label="Node.js">
+
+```js
+import { createHmac, timingSafeEqual } from "node:crypto";
+
+export function verify(secret, header, rawBody) {
+  const parts = Object.fromEntries(header.split(",").map((p) => p.split("=")));
+  const want = createHmac("sha256", secret).update(`${parts.t}.${rawBody}`).digest("hex");
+  const fresh = Math.abs(Date.now() / 1000 - Number(parts.t)) < 300;
+  return fresh && want.length === parts.v1?.length && timingSafeEqual(Buffer.from(want), Buffer.from(parts.v1));
+}
+```
+
+  </TabItem>
+  <TabItem label="Python">
+
+```python
+import hmac, hashlib, time
+
+def verify(secret: str, header: str, raw_body: bytes) -> bool:
+    parts = dict(p.split("=", 1) for p in header.split(","))
+    want = hmac.new(secret.encode(), f"{parts['t']}.".encode() + raw_body, hashlib.sha256).hexdigest()
+    fresh = abs(time.time() - int(parts["t"])) < 300
+    return fresh and hmac.compare_digest(want, parts.get("v1", ""))
+```
+
+  </TabItem>
+</Tabs>
+
+The five-minute window in these examples is your choice. It stops someone from sending an old delivery again.
+
+## Answering and retries
+
+- Answer with any 2xx status within 10 seconds. The body you send back is ignored.
+- Anything else, or no answer, is tried again after 1, 5, 15 and 60 minutes, then 3, 6 and 12 hours: 8 tries in all, over about a day.
+- Deliveries go out side by side, so one slow URL never holds up the others or your posts.
+- Five deliveries in a row that use every try turn the webhook off. Settings shows why, and an owner or admin can turn it back on.
+- Delivery history is kept for a week.
+
+<Aside type="tip">
+Do the slow part of your work after you answer. Put the event on your own queue, answer `200`, then handle it.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Webhooks endpoints" href="/api-reference/webhooks/" />
+  <LinkCard title="Webhooks guide" href="/developers/webhooks/" />
+  <LinkCard title="Approvals" href="/workspace/approvals/" />
+</CardGrid>

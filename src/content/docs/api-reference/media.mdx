@@ -1,0 +1,156 @@
+---
+title: "GET and POST /media"
+description: "List the Capybaroar media library, and add a picture, video or PDF from a public link to attach to posts."
+sidebar:
+  label: "GET and POST /media"
+  order: 13
+---
+
+import { Aside, Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+The media library holds every picture, video, PDF and AI file in the workspace. List it to find ids for `media_ids`, or add a file from a public link.
+
+## List files
+
+```http
+GET https://app.capybaroar.com/api/v1/media
+```
+
+Returns the newest 200 files the key's person can see, newest first. Owners and admins see every file. Editors see their brands' files and the ones they uploaded.
+
+```bash
+curl https://app.capybaroar.com/api/v1/media \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+`200 OK`
+
+```json
+{
+  "media": [
+    {
+      "id": "5e6f7a8b-9c0d-4e1f-8a2b-3c4d5e6f7a8b",
+      "name": "seeded-sourdough.jpg",
+      "mime": "image/jpeg",
+      "size": 482113,
+      "alt": "A loaf of seeded sourdough on a wooden board",
+      "created_at": "2026-11-17T15:42:10.000Z",
+      "preview_url": "https://app.capybaroar.com/storage/v1/object/sign/media/...",
+      "brand_id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f"
+    }
+  ]
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The file's id, for `media_ids` or a `cover` setting |
+| `name` | string | The file name |
+| `mime` | string | Its type, like `image/jpeg`, `video/mp4` or `application/pdf` |
+| `size` | number | Its size in bytes |
+| `alt` | string or null | Alt text, sent to networks that take it |
+| `created_at` | string | When it was added |
+| `preview_url` | string or null | A link to view the file, good for 2 hours |
+| `brand_id` | string or null | The brand the file belongs to, or `null` for the whole workspace |
+
+## Add a file from a link
+
+```http
+POST https://app.capybaroar.com/api/v1/media
+```
+
+Capybaroar downloads the file and saves it to the library.
+
+| Field | Type | Required | Description |
+| - | - | - | - |
+| `url` | string | Yes | A public `http://` or `https://` link to the file, up to 2,000 characters, with no user name or password in it |
+| `alt` | string | No | Alt text, up to 1,000 characters |
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/media \
+  -H "Authorization: Bearer cbr_your_key" \
+  -H "Content-Type: application/json" \
+  -d '{ "url": "https://ocelot.example/work/fernway-bags.jpg", "alt": "Three Fernway bread bags on a counter" }'
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const res = await fetch("https://app.capybaroar.com/api/v1/media", {
+  method: "POST",
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}`, "Content-Type": "application/json" },
+  body: JSON.stringify({ url: "https://ocelot.example/work/fernway-bags.jpg", alt: "Three Fernway bread bags" }),
+});
+const { media } = await res.json();
+// Use media.id in media_ids on POST /posts
+```
+
+  </TabItem>
+</Tabs>
+
+`201 Created`
+
+```json
+{
+  "media": {
+    "id": "6f7a8b9c-0d1e-4f2a-8b3c-4d5e6f7a8b9c",
+    "name": "fernway-bags.jpg",
+    "mime": "image/jpeg",
+    "size": 391204,
+    "alt": "Three Fernway bread bags on a counter",
+    "created_at": "2026-11-19T15:24:03.000Z",
+    "preview_url": "https://app.capybaroar.com/storage/v1/object/sign/media/...",
+    "brand_id": null
+  }
+}
+```
+
+### What files work
+
+| Type | Limit |
+| - | - |
+| JPG, PNG, GIF, WebP pictures | 250 MB |
+| MP4 and MOV videos | 250 MB |
+| PDF (for LinkedIn document posts) | 100 MB |
+
+Capybaroar reads the type from the file itself, so the link's name doesn't matter. A link that answers with a web page is refused. The download must finish within 3 minutes.
+
+<Aside type="note">
+Capybaroar only downloads from the public internet. It checks the address it actually connects to, so a link that points to a private network, or one that redirects there, is refused.
+</Aside>
+
+### Upload errors
+
+| Status | Message |
+| - | - |
+| 400 | `url is required` |
+| 400 | `url must start with http:// or https://` |
+| 400 | `url can't have a user name or password in it` |
+| 400 | `Can't download from that link: <reason>` |
+| 400 | `Couldn't reach the link: <reason>` |
+| 400 | `The link answered <status>` |
+| 400 | `The link gave an empty file` |
+| 400 | `The link isn't a JPG, PNG, GIF, WebP, MP4, MOV or PDF file` |
+| 413 | `Files are up to 250 MB` |
+| 413 | `PDFs are up to 100 MB` |
+| 503 | `Other uploads are running. Try again in a minute.` |
+| 503 | `Couldn't save the file: <reason>` |
+
+## Upload from a computer
+
+The API takes links only. To upload a file from your own computer, drop it into **Media** or the post editor in the app, or host it somewhere public first.
+
+## MCP
+
+[`list_media`](/api-reference/mcp-tools/#list_media) and [`upload_media`](/api-reference/mcp-tools/#upload_media) do the same.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="POST /generations" href="/api-reference/generations/" />
+  <LinkCard title="Media library" href="/publishing/media-library/" />
+</CardGrid>

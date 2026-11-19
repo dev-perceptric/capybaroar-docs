@@ -1,0 +1,112 @@
+---
+title: "GET /brands"
+description: "List the brands a Capybaroar API key can use, with whether each needs approval and whether CapyInfographic knows its look."
+sidebar:
+  label: "GET /brands"
+  order: 4
+---
+
+import { Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Returns the brands in the workspace that the key's person can use. A brand is one client or business. Each channel and post belongs to one brand. Owners and admins see every brand. Editors see the brands they were given.
+
+```http
+GET https://app.capybaroar.com/api/v1/brands
+```
+
+## Parameters
+
+None.
+
+## Request
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl https://app.capybaroar.com/api/v1/brands \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const res = await fetch("https://app.capybaroar.com/api/v1/brands", {
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` },
+});
+const { brands } = await res.json();
+```
+
+  </TabItem>
+  <TabItem label="Python">
+
+```python
+import os, requests
+
+res = requests.get(
+    "https://app.capybaroar.com/api/v1/brands",
+    headers={"Authorization": f"Bearer {os.environ['CAPYBAROAR_KEY']}"},
+)
+brands = res.json()["brands"]
+```
+
+  </TabItem>
+</Tabs>
+
+## Response
+
+`200 OK`
+
+```json
+{
+  "brands": [
+    {
+      "id": "4a9d2e71-6c3b-4f18-a2d5-9e0b7c1f3a64",
+      "name": "Ocelot Studio",
+      "needs_approval": false,
+      "website": "https://ocelot.example",
+      "has_style": true
+    },
+    {
+      "id": "b7e1c2d4-3f5a-4b6c-8d9e-0a1b2c3d4e5f",
+      "name": "Fernway Bakery",
+      "needs_approval": true,
+      "website": null,
+      "has_style": false
+    }
+  ]
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The brand's id. Use it as `brand_id` on [`GET /channels`](/api-reference/channels/) and [`GET /posts`](/api-reference/list-posts/). |
+| `name` | string | The brand's name, as set in **Settings**, **Brands** |
+| `needs_approval` | boolean | `true` when an editor's posts to this brand wait in review until an owner, admin or client approves them |
+| `website` | string or null | The brand's website, saved when CapyInfographic read its look |
+| `has_style` | boolean | `true` when CapyInfographic and CapyMotion know the brand's colors, fonts and logo. When `false`, send `website` the first time you [make an infographic](/api-reference/generations/). |
+
+## Notes
+
+- Every workspace has at least one brand. A Free or Creator plan has one. Pro allows 5, and Agency has no limit.
+- Brands that need approval only hold back posts from **editors**. An owner's or admin's post is scheduled as usual. See [Approvals](/workspace/approvals/).
+- A brand key made for a partner sees its one brand only.
+
+## Errors
+
+| Status | When |
+| - | - |
+| 401 | The key is missing or deleted |
+| 429 | Over 120 requests a minute |
+
+## MCP
+
+The same list comes from the [`list_brands`](/api-reference/mcp-tools/#list_brands) tool.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="GET /channels" href="/api-reference/channels/" />
+  <LinkCard title="Brands" href="/workspace/brands/" />
+</CardGrid>

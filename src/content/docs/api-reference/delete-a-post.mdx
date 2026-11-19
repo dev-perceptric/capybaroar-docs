@@ -1,0 +1,139 @@
+---
+title: "DELETE /posts/{id}"
+description: "Delete a Capybaroar post from the calendar only, or delete it on the networks it went out on, with each channel's result."
+sidebar:
+  label: "DELETE /posts/{id}"
+  order: 12
+---
+
+import { Aside, Tabs, TabItem, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Deletes a post in one of two ways. A plain delete removes it from Capybaroar, and anything that already went out stays on the networks. With `everywhere=true`, Capybaroar deletes it on each network instead, and keeps the record marked as deleted.
+
+```http
+DELETE https://app.capybaroar.com/api/v1/posts/{id}
+DELETE https://app.capybaroar.com/api/v1/posts/{id}?everywhere=true&channels={ids}
+```
+
+## Parameters
+
+| Name | In | Type | Required | Description |
+| - | - | - | - | - |
+| `id` | path | string | Yes | The post's id |
+| `everywhere` | query | boolean | No | `true` deletes it on the networks. Default `false`. |
+| `channels` | query | string | No | With `everywhere=true`: only these channel ids, comma-separated. Default: every channel it went out on. |
+
+## Delete from Capybaroar only
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl -X DELETE https://app.capybaroar.com/api/v1/posts/9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+await fetch(`https://app.capybaroar.com/api/v1/posts/${postId}`, {
+  method: "DELETE",
+  headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` },
+});
+```
+
+  </TabItem>
+</Tabs>
+
+`200 OK`
+
+```json
+{ "deleted": true }
+```
+
+A draft or scheduled post is gone, and nothing goes out. A post that went out stays on the networks, and its results leave Analytics.
+
+## Delete on the networks
+
+<Tabs syncKey="lang">
+  <TabItem label="curl">
+
+```bash
+curl -X DELETE "https://app.capybaroar.com/api/v1/posts/9d8c7b6a-5e4f-4a3b-8c2d-1e0f9a8b7c6d?everywhere=true" \
+  -H "Authorization: Bearer cbr_your_key"
+```
+
+  </TabItem>
+  <TabItem label="JavaScript">
+
+```js
+const url = new URL(`https://app.capybaroar.com/api/v1/posts/${postId}`);
+url.searchParams.set("everywhere", "true");
+url.searchParams.set("channels", [xId, blueskyId].join(","));
+const res = await fetch(url, { method: "DELETE", headers: { Authorization: `Bearer ${process.env.CAPYBAROAR_KEY}` } });
+const { deleted, channels } = await res.json();
+```
+
+  </TabItem>
+</Tabs>
+
+`200 OK`
+
+```json
+{
+  "deleted": false,
+  "channels": [
+    { "channel_id": "8e9f0a1b-2c3d-4e4f-9a5b-6c7d8e9f0a1b", "name": "ocelotstudio", "network": "x", "result": "deleted", "error": null, "note": null, "url": "https://x.com/ocelotstudio/status/1858211234567890123" },
+    { "channel_id": "2f4e6a8c-1b3d-4e5f-9a7b-8c6d4e2f0a1b", "name": "ocelotstudio", "network": "instagram", "result": "manual", "error": "Delete it in the Instagram app", "note": null, "url": "https://www.instagram.com/p/C0cElOtSt/" },
+    { "channel_id": "0b1c2d3e-4f5a-4b6c-8d7e-9f0a1b2c3d4e", "name": "Ocelot Studio", "network": "facebook", "result": "skipped", "error": "Nothing went out on this channel", "note": null, "url": null }
+  ]
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `deleted` | boolean | `true` once the post is deleted on every channel it went out on. The post then has `status: "deleted"`. |
+| `channels` | list | One entry for each channel, with the fields below |
+| `channels[].result` | string | `deleted`, `failed`, `manual` or `skipped` |
+| `channels[].error` | string or null | Why it failed, or where to delete it yourself |
+| `channels[].note` | string or null | Something left behind, like a Telegram caption sent as its own message |
+| `channels[].url` | string or null | The post's link on the network |
+
+| Result | What it means | What to do |
+| - | - | - |
+| `deleted` | It's gone from the network, or was already gone | Nothing |
+| `failed` | The network didn't delete it | Read `error`, then send the request again |
+| `manual` | The network doesn't let apps delete posts, or this channel can't from here | Open `url` and delete it there. Instagram and TikTok always answer this. |
+| `skipped` | Nothing went out on that channel | Nothing |
+
+<Aside type="note">
+After a delete everywhere, the record stays so Analytics keeps its results. Send a plain `DELETE` afterwards if you want the record gone too.
+</Aside>
+
+## Who can delete
+
+Owners, admins and editors (for their brands). Clients can't delete posts.
+
+## Errors
+
+| Status | Message | When |
+| - | - | - |
+| 400 | `everywhere must be true or false` | Any other value |
+| 400 | `channel_ids only goes with everywhere: true` | `channels` without `everywhere=true` |
+| 400 | `Channel <id> isn't in this post` | A channel the post doesn't have |
+| 404 | `Post not found` | No such post, or a brand the key can't use |
+| 409 | `This post is going out right now. Try again in a minute.` | It's being posted |
+| 409 | `This post hasn't gone out yet` | `everywhere=true` on a post that didn't go out. Use a plain delete. |
+| 409 | `This post is being deleted. Try again in a moment.` | Another delete is running |
+
+## MCP
+
+[`delete_post`](/api-reference/mcp-tools/#delete_post) takes `id`, `everywhere` and `channel_ids` (a list).
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Edit and delete posts that went out" href="/publishing/edit-and-delete/" />
+  <LinkCard title="GET /posts/{id}" href="/api-reference/get-a-post/" />
+</CardGrid>

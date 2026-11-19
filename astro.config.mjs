@@ -28,6 +28,7 @@ export default defineConfig({
         group('Inbox and results', 'results', ['inbox', 'analytics-and-reports', 'link-in-bio']),
         group('Workspace', 'workspace', ['plans-and-billing', 'team-and-roles', 'approvals']),
         group('Developers', 'developers', ['rest-api', 'webhooks']),
+        { label: 'API reference', collapsed: true, items: [{ autogenerate: { directory: 'api-reference' } }] },
         group('Reference', 'reference', ['glossary', 'faq'], { collapsed: true }),
       ],
     }),
