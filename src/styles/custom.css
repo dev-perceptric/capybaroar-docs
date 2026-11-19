@@ -281,3 +281,15 @@ site-search button[data-open-modal] { border-radius: 999px; box-shadow: var(--cb
 /* Previous and next links: white cards on the ring shadow. */
 .pagination-links a { border: 0 !important; border-radius: var(--cb-r-lg) !important; box-shadow: var(--cb-sh-rest) !important; background: var(--cb-panel); }
 .pagination-links a:hover { box-shadow: var(--cb-sh-hover) !important; }
+
+/* Walkthrough clips: short muted loops of a flow in the app. */
+.walkthrough {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--cb-r-lg);
+  box-shadow: var(--cb-sh-rest);
+  background: var(--cb-paper);
+  margin-block: 1rem;
+}
