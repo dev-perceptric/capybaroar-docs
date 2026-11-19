@@ -1,103 +1,112 @@
 ---
-title: "Calendar, queue and campaigns"
-description: "Plan every post in one calendar, set queue times once, group channels and campaigns, keep files in Media and take a post down everywhere."
+title: "The calendar"
+description: "Plan every post in Capybaroar's calendar: the Day, Week, Month and List views, channel and campaign filters, post statuses, dragging posts to move them, and the buttons on the calendar's header."
 sidebar:
-  label: "Calendar and queue"
+  label: "The calendar"
 ---
 
 import { Aside, CardGrid, LinkCard, LinkButton, Steps } from '@astrojs/starlight/components';
 
-The calendar holds every post for every channel. Set your queue times once, and new posts slot into the next free one.
+The calendar holds every post for every channel. It's the first screen you see, and the only screen clients see. Write posts from here, move them by dragging, and open any post to change it or read its results.
 
 <LinkButton href="https://app.capybaroar.com/calendar" variant="secondary" icon="external">Open in Capybaroar</LinkButton>
 
 ![The week view of the Capybaroar calendar](../../../assets/shots/calendar-week.webp)
 
-## Views and filters
+## The header
 
-Pick **Day**, **Week**, **Month** or **List** at the top right. **Today** jumps back to now, and the arrows move one page at a time.
+| Button | What it does |
+| - | - |
+| **Campaigns** | Opens the campaigns panel. See [Channel groups and campaigns](/publishing/groups-and-campaigns/). |
+| **Bulk** | Makes many posts at once from a CSV file or a stack of files. See [Bulk upload](/publishing/bulk-upload/). |
+| **New post** | Opens the [post editor](/publishing/post-editor/) at the next whole hour |
+
+These three show for owners, admins and editors.
+
+## Move around
+
+- **Today** jumps back to now.
+- The **Previous** and **Next** arrows move one day, week, month or 4 weeks, by view.
+- **View** picks **Day**, **Week**, **Month** or **List**.
+
+| View | What it shows |
+| - | - |
+| **Day** | One day, hour by hour |
+| **Week** | Seven days, hour by hour |
+| **Month** | The month in a grid. Each day shows up to 3 posts, then **`<n>` more**. Click a day's number to open that day. |
+| **List** | 4 weeks of posts, day by day, with each post's time, channels and status. With nothing in them, it says **No posts in these 4 weeks**. |
 
 ![The month view of the calendar, with each day's posts and their channels](../../../assets/shots/publishing/calendar-month.webp)
 
-The row of channels above the calendar filters it. Click a channel to see only its posts, or **All channels** to see everything. When you use campaigns, the **Campaign** menu filters by campaign too.
+The calendar draws times in your browser's time zone.
+
+## Filter
+
+- **Channel** shows **All channels** or one channel. Each one shows how many posts it has in view, or **Reconnect** if it's signed out. With no channels yet, **Connect a channel** takes you to Channels.
+- **Campaign** shows when you have campaigns: **All**, one campaign, or **No campaign**.
+- The brand menu at the top of the sidebar limits everything to one brand, or **All brands**.
 
 ![The list view of the calendar, with each post's time, channels and status](../../../assets/shots/publishing/calendar-list.webp)
 
-Each post shows its status:
+## Post statuses
 
-| Status | What it means |
-| - | - |
-| **Draft** | Saved, with no time to go out |
-| **In review** | Waiting for approval |
-| **Scheduled** | Set to go out at its time |
-| **Posting** | Going out right now |
-| **Published** | Out on every channel |
-| **Partly published** | Out on some channels, and turned down on others |
-| **Failed** | Didn't go out on any channel. Open it to see why. |
+| Status | Color | What it means |
+| - | - | - |
+| **Draft** | Gray | Saved, with no plan to go out |
+| **In review** | Violet | Waiting for an owner, admin or client to approve it |
+| **Scheduled** | Yellow | Set to go out at its time |
+| **Posting** | Yellow | Going out right now |
+| **Published** | Green | Out on every channel |
+| **Partly published** | Amber | Out on some channels, and failed on others |
+| **Failed** | Red | Didn't go out on any channel. Open it to see why. |
+
+Post cards show their time, the logos of their channels and the start of their text. A check mark means published, and a warning sign means failed.
+
+## Make a post
+
+- Press **New post**.
+- Click an empty hour in **Day** or **Week**, or an empty day in **Month**. The editor opens at that time.
+- Past times can't be picked.
 
 ## Move a post
 
-Drag a post to another day or time to move it. Drafts and posts in review keep waiting, and the rest are scheduled at the new time.
+Drag a post card to another time. In **Month**, a post keeps its time of day and moves to the new day. Drafts, posts in review, scheduled and failed posts move. Posts that went out, or are going out, don't.
 
-## The posting queue
+- A draft stays a draft, and a post in review stays in review.
+- A scheduled post is scheduled at the new time.
+- A failed post you drop on a new time tries again then.
 
-**Add to queue** in the post editor puts a post in your next free queue time. Set those times once:
+If the move doesn't work, you see **Couldn't move the post** with the reason, like `Pick a time in the future`.
 
-<Steps>
+## Open a post
 
-1. **Open Queue.** Click **Settings**, then **Queue**. Times are in your workspace's time zone.
+Click a post card to open it:
 
-1. **Start from a preset, or add your own.** Pick **Weekdays at 9**, **Morning and lunch** or **Every day, twice**. **Your best times** uses the hours your posts do best, once 10 posts have results. Add or remove single times under each day.
+- A post that hasn't gone out opens in the post editor.
+- A post that went out opens as a results view, with **Edit**, **Evergreen**, **Post again** and **Delete**. See [Edit and delete posts that went out](/publishing/edit-and-delete/).
+- A post in review shows **Approve** and **Reject** to owners, admins and clients. See [Approvals](/workspace/approvals/).
 
-   ![Queue settings: presets at the top and the times for each day of the week](../../../assets/shots/publishing/queue-settings.webp)
+## What clients see
 
-1. **Press Save.**
+Clients see only the calendar, for their brands. They can open any post, and approve or reject posts in review. They can't write, move or delete posts, and the header buttons are hidden.
 
-</Steps>
+## Your queue and best times
 
-## Best times in the editor
-
-Next to the publish time, the editor shows chips with good times to post. Once your posts have results, they are your own best times. Until then, they are popular hours on that network. Click one to use it.
-
-## Channel groups
-
-Post to the same set of channels in one click. In the editor, pick two or more channels and press **Save as group**, then name it. Next time, choose it from the **Group** menu. **Manage groups** lets you delete one. The channels stay connected.
-
-## Campaigns
-
-A campaign ties posts together, like a launch or a sale. Pick one in the **Campaign** menu at the bottom of the editor, or choose **New campaign**. Press **Campaigns** on the calendar to see each campaign's posts, rename it or delete it. Deleting a campaign keeps its posts on the calendar.
-
-![The Campaigns panel, with each campaign's scheduled, published, failed and draft posts and its engagements](../../../assets/shots/publishing/campaigns.webp)
-
-## Your media
-
-**Media** in the sidebar holds every picture, video and PDF you upload, ready for any post. Files can be up to 250 MB, and PDFs up to 100 MB. Filter by **Pictures**, **Videos** or **PDFs**, or search by name.
-
-![The Media library with pictures and videos](../../../assets/shots/publishing/media.webp)
-
-- **Crop** a picture or **Trim** a video to fit each network.
-- Add **Alt text** to describe a picture for people who can't see it. Networks that take alt text get it with the post.
-- On plans with AI, press **Generate** to make a picture, video or audio file. See [AI credits](/ai/ai-credits/).
+**Add to queue** in the editor uses the times you set in **Settings**, **Queue**. See [The posting queue](/publishing/posting-queue/). Best time chips beside the publish time pick a good hour for one post.
 
 ## Short links
 
-Press **Shorten links** in the text toolbar to turn the links in a post into short links. Each one counts its clicks.
-
-## Post again, duplicate and delete
-
-Open a post from the calendar to act on it:
-
-- **Post again** makes a new copy of a post that went out. **Duplicate** does the same for one that hasn't.
-- **Delete** on a post that went out opens **Delete post**. Pick the channels and press **Delete everywhere** to take it down on each network. Some networks don't let apps delete posts, and Capybaroar says where to delete those yourself. **Remove from Capybaroar only** keeps the posts on the networks.
+Press **Shorten links** in the editor's text toolbar to turn the links in a post into short links, like `https://app.capybaroar.com/l/Ab3dEf9`. Each one counts its clicks, and clicks show in a post's results.
 
 <Aside type="note">
-Some networks let you change a post after it goes out. Open the post, press **Edit**, make your change and press **Save changes**. Each network's page says what it allows under **Change after it goes out**.
+Some networks let you change a post after it goes out. Open the post, press **Edit**, make your change and press **Save changes**. Each network's page says what it allows under **After it goes out**.
 </Aside>
 
 ## Related
 
 <CardGrid>
-  <LinkCard title="Bulk upload and automation" href="/publishing/bulk-and-automation/" />
-  <LinkCard title="Schedule your first post" href="/get-started/schedule-your-first-post/" />
-  <LinkCard title="Approvals" href="/workspace/approvals/" />
+  <LinkCard title="The post editor" href="/publishing/post-editor/" />
+  <LinkCard title="The posting queue" href="/publishing/posting-queue/" />
+  <LinkCard title="Channel groups and campaigns" href="/publishing/groups-and-campaigns/" />
+  <LinkCard title="The media library" href="/publishing/media-library/" />
 </CardGrid>

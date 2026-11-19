@@ -1,87 +1,29 @@
 ---
 title: "Analytics and reports"
-description: "See how your posts do and your best times to post in Analytics, then share a brand's results in a report."
+description: "Where Capybaroar's results live: Analytics for your own team, a published post's own numbers, and reports to share with clients by link, PDF and email."
 sidebar:
   label: "Analytics and reports"
 ---
 
-import { Aside, Badge, CardGrid, LinkCard, LinkButton, Steps } from '@astrojs/starlight/components';
+import { CardGrid, LinkCard, LinkButton } from '@astrojs/starlight/components';
 
-**Analytics** shows how your posts do and when your audience is most active. **Reports** turns a brand's results into a link to share, which can also go out by email on its own.
+Capybaroar collects each post's numbers from its networks and shows them in three places.
 
 <LinkButton href="https://app.capybaroar.com/analytics" variant="secondary" icon="external">Open in Capybaroar</LinkButton>
 
-![Capybaroar analytics](../../../assets/shots/analytics.webp)
+![Analytics with the period's numbers, engagements by day, best times and top posts](../../../assets/shots/analytics.webp)
 
-## Read your analytics
+| Where | For | What it shows |
+| - | - | - |
+| **Analytics** | Your team | Posts, reach, engagements and rate for 7, 30 or 90 days, against the period before; engagements by day; best times; formats; top posts; channels and followers |
+| **A post that went out** | Checking one post | Each channel's numbers, with links to the post |
+| **Reports** (Pro and Agency) | Clients and bosses | A brand's results as a live link, a PDF and weekly or monthly emails, with your logo on Agency |
 
-Click **Analytics** in the sidebar. Pick **7 days**, **30 days** or **90 days** at the top right. With more than one channel, the **Channel** menu narrows it to one.
-
-![Analytics for 30 days: posts out, reach, engagements, engagement rate, engagements by day, best time to post, what works and top posts](../../../assets/shots/results/analytics-full.webp)
-
-| Part | What it shows |
-| - | - |
-| **Posts out**, **Reach**, **Engagements**, **Engagement rate** | Totals for the period, with the change from the period before |
-| **Engagements by day** | A bar for each day. Hover a bar to see how many posts went out that day. |
-| **Best time to post** | The days and hours your posts do best, in your workspace's time zone |
-| **What works** | How each kind of post does, like Reels, videos and pictures |
-| **Top posts** | Your posts with the most engagement, with a link to each one |
-| **Channels** | Followers, reach and engagements for each channel |
-
-## When numbers show up
-
-Results arrive 1 hour after a post goes out. Capybaroar reads each post's numbers again after 1 day, 7 days and 30 days, so they keep growing for a month.
-
-TikTok, Discord, Telegram and WordPress posts aren't in Analytics yet. Every other network sends reach and engagement for each post.
-
-<Aside type="tip">
-Once 10 posts have results, **Your best times** in **Settings**, **Queue** sets your queue to the hours your posts do best. See [Calendar, queue and campaigns](/publishing/calendar-and-queue/#the-posting-queue).
-</Aside>
-
-## One post's numbers
-
-Open a post that went out from the calendar. Each channel shows the numbers its network gives, such as reach, impressions, likes, comments, shares, saves, views and clicks.
-
-![A post that went out, with each channel's views, likes, comments, shares and clicks](../../../assets/shots/results/post-results.webp)
-
-## Reports <Badge text="Pro and Agency" />
-
-A report is a brand's results for a period, as a link to share or a PDF, emailed every week or month if you like.
-
-<Steps>
-
-1. **Open Reports.** Click **Reports** in the sidebar, then **New report**.
-
-   ![Reports, with each report's brand, range, email schedule and when it was last sent](../../../assets/shots/results/reports.webp)
-
-1. **Name it and pick a brand.** Choose one brand, or **All brands**.
-
-1. **Pick the range.** **7 days**, **30 days**, **90 days** or **Last month**.
-
-1. **Pick the sections.** Tick the ones to show: **Summary**, **Followers**, **Top posts**, **Best time to post**, **By format**, **By channel** and **Notes**. Write your notes in the **Notes** box.
-
-   ![The New report dialog: name, brand, range, sections, email, logo and color](../../../assets/shots/results/new-report.webp)
-
-1. **Choose the email.** Under **Email**, pick **Off**, **Weekly** or **Monthly**, and add addresses in **Send to**. Weekly reports go out on Mondays at 9 AM and monthly ones on the 1st of the month at 9 AM.
-
-1. **Press Save.**
-
-</Steps>
-
-From the list of reports:
-
-- **Copy link** gives you the report's address to share. Anyone with the link can open it.
-- On the report's page, **Download PDF** saves it as a PDF.
-- **Send now** in the report's menu emails it right away.
-- **Delete** removes the report, and its link stops working.
-
-## Your agency's brand on reports <Badge text="Agency" />
-
-On Agency, each report can carry your **Logo** and your **Color**, and report emails go out under your agency's name. Upload the logo in **Media** first.
-
-## Related
+Numbers are read 1 hour, 1 day, 7 days and 30 days after a post goes out, and follower counts once a day. TikTok, Discord, Telegram and WordPress don't send post numbers back yet.
 
 <CardGrid>
-  <LinkCard title="Answer comments in the Inbox" href="/results/inbox/" />
-  <LinkCard title="Plans and billing" href="/workspace/plans-and-billing/" />
+  <LinkCard title="Analytics" href="/results/analytics/" description="Every card, chart and table on the Analytics screen" />
+  <LinkCard title="Reports" href="/results/reports/" description="Sections, share links, PDFs, emails and white-label" />
+  <LinkCard title="Edit and delete posts that went out" href="/publishing/edit-and-delete/" description="One post's numbers on each channel" />
+  <LinkCard title="GET /analytics" href="/api-reference/analytics/" description="The same numbers from the API" />
 </CardGrid>

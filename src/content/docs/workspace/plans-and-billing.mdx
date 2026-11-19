@@ -61,12 +61,45 @@ On Free you can schedule 30 posts a month. Drafts don't count, so save as many i
 
 Once you pay, **Manage billing** opens your Stripe billing page for your card, your invoices and your subscription. If a payment fails, Billing shows **Payment due**. Update your card in **Manage billing** to keep your plan.
 
-## What Billing shows
+## The Billing tab, part by part
 
-- **Brands**, **Channels**, **Posts this month** and **Members** next to your plan's limit for each.
-- **Credits**: plan credits and bought credits left, and when plan credits refill.
-- **Buy credits** and **Automatic top-up** on paid plans. See [AI credits](/ai/ai-credits/#buying-more).
-- **Credit history**, with **Download CSV**.
+**Settings**, **Billing** says **Your plan, credits and what this workspace uses**. Owners and admins see it. Others get `Only owners and admins can manage billing` if they try.
+
+### Your plan
+
+The top shows your plan's name and, when they apply:
+
+- **Monthly** or **Yearly**, for a paid plan.
+- **Pro trial, `<n>` days left** during the trial.
+- **Payment due** in red when a payment failed.
+- **Renews** and the date of the next payment.
+- **Manage billing**, once you've paid, to open Stripe for your card, invoices and subscription.
+
+### Usage
+
+Four bars compare what you use with your plan's limits: **Brands**, **Channels**, **Posts this month** and **Members**. **Unlimited** shows where the plan has no limit.
+
+### Plans
+
+**Billing period** switches the cards between **Monthly** and **Yearly**. Each plan card lists its members, brands, channels, posts, credits a month (or **No AI**), approvals, credit limits for each brand, reports (**Reports**, **Reports with your logo** or **No reports**) and link in bio. Your plan shows **Current**. Others show **Upgrade**.
+
+### Credits
+
+| Card | What it shows |
+| - | - |
+| **Credits left** | Everything you can spend now, in red at 0 |
+| **Plan credits** | What's left of this month's, like "of 2,500, refills Dec 4" |
+| **Bought credits** | Credits from packs, good for 12 months |
+
+**Buy credits** has one button for each pack: **1,000 for $12**, **5,000 for $50** and **20,000 for $160**. They open Stripe to pay.
+
+**Automatic top-up** buys a pack by itself when your credits fall under 200. Pick the **Pack**, and **Most a month**, from 1 to 10 packs.
+
+### Credit history
+
+Every AI action, with **Date**, **What**, **Model**, **Person** and **Credits**. Press **Show more** for older ones, or **Download CSV** for all of them.
+
+On Agency, the credit limit for each brand is set in [Brands](/workspace/brands/#credit-limits).
 
 <Aside type="note">
 When you reach a limit, Capybaroar says so in a short message, like "Your plan allows 8 channels. Upgrade to add more." Nothing you already have is removed.

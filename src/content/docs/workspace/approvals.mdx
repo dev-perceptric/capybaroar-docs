@@ -68,6 +68,36 @@ Anyone with the review link can approve or reject that brand's posts. Share it o
 
 For clients who want to see the calendar, invite them with the **Client** role in **Settings**, **Members**, and pick their brands. They see the calendar for those brands and approve or reject posts there. They also get the approval emails. Clients never take a paid seat. See [Team, roles and brands](/workspace/team-and-roles/).
 
+## Step by step
+
+| Step | Who | What happens |
+| - | - | - |
+| An editor schedules, queues or posts | Editor | The post goes to **In review** at its time. Owners, admins and the brand's clients get an email. Webhooks get `post.in_review`. |
+| Someone opens it | Owner, admin or client | The calendar shows it in violet with **In review**. The editor shows **Approve** and **Reject**. |
+| **Approve** | Owner, admin, client or review link | It's scheduled for its time, or goes out at once if the time has passed. The author gets an email. Webhooks get `post.approved`. |
+| **Reject** | Owner, admin, client or review link | **Reject this post** asks **What should change?**. The post goes back to **Draft** with the comment. The author gets an email. Webhooks get `post.rejected`. |
+| The editor fixes it | Editor | They change the draft and schedule it again. It goes back to review. |
+
+While a post is in review, it can still be changed. Moving it on the calendar keeps it in review.
+
+## The review page
+
+The review link opens a page with the brand's name and every post waiting for approval. Each post shows **In review**, its time, and a **Preview** menu to see it as it will look on each of its channels. **Approve** and **Reject** sit under each one. When nothing is waiting, the page says **Nothing to review**.
+
+If the link was turned off, the page says **This review link was turned off**.
+
+## Who can approve
+
+| Role | Approve and reject | Skip review |
+| - | - | - |
+| Owner | Yes | Yes |
+| Admin | Yes | Yes |
+| Editor | No | No |
+| Client | Yes, for their brands | They can't write posts |
+| Anyone with the review link | Yes, for that brand | |
+
+Approvals need Pro or Agency. On Free and Creator, the **Posts need approval** switch answers `Approvals come with Pro and Agency. Upgrade to use them.`
+
 ## Webhooks for approvals
 
 The `post.in_review`, `post.approved` and `post.rejected` events tell your own tools when a post moves through review. See [Webhooks](/developers/webhooks/).
@@ -76,5 +106,6 @@ The `post.in_review`, `post.approved` and `post.rejected` events tell your own t
 
 <CardGrid>
   <LinkCard title="Team, roles and brands" href="/workspace/team-and-roles/" />
-  <LinkCard title="Calendar, queue and campaigns" href="/publishing/calendar-and-queue/" />
+  <LinkCard title="The calendar" href="/publishing/calendar-and-queue/" />
+  <LinkCard title="Brands" href="/workspace/brands/" />
 </CardGrid>
