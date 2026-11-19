@@ -1,0 +1,157 @@
+---
+title: "Errors with your account, team and billing"
+description: "Every message Capybaroar shows for signing up and in, sign-in links, two-factor, devices, invites, members, brands, workspace settings, plans, payments and data exports."
+sidebar:
+  label: "Account, team and billing"
+  order: 9
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+These messages come from signing up and in, **Settings** and invites.
+
+## Signing up
+
+| Message | How to fix it |
+| - | - |
+| `Enter your email` | Type your email address |
+| `Did you mean <address>?` | Capybaroar spotted a likely typo, like `gmial.com`. Press it to fix it, or keep yours. |
+| `Use your work or personal email. Throwaway inboxes can't sign up` | Use an address you'll keep |
+| `Use at least 8 characters.` | Pick a longer password |
+| `That password is too easy to guess. Try a longer one.` | Use a longer password with a few words |
+| `That password showed up in <n> data leaks. Pick a different one.` | That password is known to attackers. Pick one you haven't used before. |
+| `Accept the Terms, Privacy Policy and Data Processing Agreement to continue` | Tick the box under the form |
+| `Confirm your email first. The link is in your inbox` | Open the email from Capybaroar and press its link |
+| `Your email is confirmed. Sign in to continue.` | This one is good news. Sign in. |
+
+## Signing in
+
+| Message | How to fix it |
+| - | - |
+| `Wrong email or password` | Check both. Use **Forgot password?** to set a new one. |
+| `Too many tries. Try again in <n> minutes.` | Wait. Sign-in allows 10 tries for one email in 15 minutes. |
+| `Your password showed up in a data leak. Choose a new one to keep your account safe.` | Set a new password when asked |
+| `Sign-in didn't finish. Try again.` | Sign in again |
+| `Sign in again` | Your session ended. Sign in. |
+
+### Sign-in links and codes
+
+| Message | How to fix it |
+| - | - |
+| `Wait a minute, then send again` | Links are sent at most once a minute. The button shows `Send again in <n>s`. |
+| `Enter the code from the email` | Type the code from the sign-in email |
+| `That code didn't work. Check it or send a new one` | Check the code, or press send again |
+| `The link expired. Ask for a new one.` | Send a new link |
+| `That link has expired or was already used. Sign in, or send a new one.` | Each link works once. Send a new one. |
+| `That link opened in a different browser. Sign in here, or open it where you asked for it.` | Open the link in the browser where you asked for it, or type the code from the email |
+| `Too many tries. Wait a few minutes` | Wait, then send again |
+
+## Two-factor sign-in
+
+| Message | How to fix it |
+| - | - |
+| `Enter the code from your app.` | Type the 6-digit code from your authenticator app |
+| `Enter a backup code.` | Type one of your backup codes |
+| `That code didn't work` | Check your phone's clock is right, then try the newest code |
+| `Not a backup code` | Backup codes are 10 characters. Check for typos. |
+| `Too many wrong codes. Try again in 15 minutes.` | Wait 15 minutes |
+| `Couldn't check the code. Try again` | A hiccup. Try again. |
+| `Couldn't start. Try again.` | Setting up 2FA didn't start. Press it again. |
+| `Start again` | The set-up timed out. Start it again. |
+| `Couldn't turn off 2FA. Try again.` | Try again with a fresh code |
+| `Couldn't make new codes. Try again.` | Try again with a fresh code |
+| `Turn on 2FA for your account first` | To require 2FA for everyone, the owner must turn it on for themselves first |
+| `Only owners can change this` | Only the owner can require 2FA |
+
+## Devices
+
+| Message | How to fix it |
+| - | - |
+| `Couldn't sign out other devices. Try again.` | Try again in a moment |
+| `Device not found` | It was already signed out. Refresh the page. |
+| `This link expired. Sign in and use Settings to sign out other devices, or reset your password.` | The **Sign out everywhere** link from an email has expired. Sign in and use **Signed-in devices**. |
+| `Couldn't sign out every device. Try again in a minute.` | Try the link again |
+
+## Invites and members
+
+| Message | How to fix it |
+| - | - |
+| `Enter an email address` | Type the person's email |
+| `Pick a role` | Pick **Admin**, **Editor** or **Client** |
+| `Pick at least one brand` | Pick a brand, or **All brands** |
+| `<email> is already a member` | They're already in the workspace |
+| `Your plan allows <n> members. Upgrade to add more.` | Free and Creator have 1 seat. Remove someone, withdraw an open invite, or upgrade. Clients don't take seats. |
+| `Approvals come with Pro and Agency. Upgrade to use them.` | Clients need Pro or Agency |
+| `Daily limit of 20 invites reached. Try again in <n> hours.` | Wait until tomorrow |
+| `<email> was invited too many times today. Try again in <n> hours.` | An address can get 4 invites a day |
+| `You can't change your own role` | Ask another owner or admin |
+| `The owner's role can't change` | The owner stays the owner |
+| `The owner sees every brand` | The owner's brands can't be limited |
+| `You can't remove yourself` | Ask another owner or admin |
+| `The owner can't be removed` | The owner stays in the workspace |
+| `Member not found` | They already left. Refresh the page. |
+
+### Opening an invite
+
+| Message | How to fix it |
+| - | - |
+| `This invite is for <email>. Sign in with that address.` | Sign out, then sign in or sign up with the invited address |
+| `This invite has expired. Ask for a new one.` | Ask the person who invited you to send it again |
+| `This invite was already used` | Sign in. You're already in. |
+| `This invite was withdrawn` | Ask for a new invite |
+
+## Brands and workspace
+
+| Message | How to fix it |
+| - | - |
+| `Enter a name` | Type a name |
+| `Names are up to 60 characters` | Shorten the name |
+| `Your plan allows <n> brands. Upgrade to add more.` | Free and Creator have 1 brand, Pro 5 |
+| `A workspace keeps at least one brand` | Add another brand before you delete this one |
+| `Move or remove this brand's channels first` | Move its channels to another brand in **Channels**, or remove them |
+| `Each word or hashtag is up to 40 characters` | Shorten it in the brand kit |
+| `The voice is up to 1,500 characters` | Shorten the brand voice |
+| `Unknown time zone` | Pick a time zone from the list |
+| `Only owners and admins can change this` | Ask an owner or admin |
+| `The name doesn't match` | To delete the workspace, type its name exactly |
+| `Only owners can delete the workspace` | Ask the owner |
+| `The email doesn't match` | To delete your account, type your email exactly |
+| `Make someone else an owner of <workspace> or delete it first` | You're the only owner of a workspace others use. Delete that workspace first. |
+| **Couldn't switch** | Switching brand or workspace failed. Try again. |
+| `These terms changed again. Reload the page.` | Reload, read the new terms and accept again |
+
+## Plans and payments
+
+| Message | How to fix it |
+| - | - |
+| `Only owners and admins can change the plan` | Ask an owner or admin |
+| `Only owners and admins can manage billing` | The same, for invoices and cards |
+| `Unknown plan` | Pick Creator, Pro or Agency |
+| `No billing account yet` | Pick a plan first. Invoices show after your first payment. |
+| `Billing isn't set up` | Payments aren't ready on this server. Try again later. |
+| `Couldn't start checkout` or `Couldn't open billing` | A hiccup with the payment page. Try again. |
+| `Your plan doesn't include reports. Upgrade to use them.` | Reports come with Pro and Agency |
+
+## Data exports and the audit log
+
+| Message | How to fix it |
+| - | - |
+| `Only owners can export the workspace` | Ask the owner. Anyone can use **Download my data** for their own data. |
+| `Couldn't reach the export. Try again.` | Try again |
+| **Didn't finish** | The export failed. Start it again. It doesn't count against the one a day. |
+| `Not enough disk space to build the export` | Try again later |
+| `The export is <n> GB, over the 20 GB limit` | The workspace has too many files to export at once. Delete files you don't need, or contact support. |
+| `Only owners and admins can see the audit log` | Ask an owner or admin |
+| `Couldn't load the audit log. Try again.` | Try again |
+
+<Aside type="note">
+Capybaroar never says whether an email has an account. A wrong email and a wrong password get the same message, so nobody can test addresses.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Your account and security" href="/workspace/your-account/" />
+  <LinkCard title="Team and roles" href="/workspace/team-and-roles/" />
+  <LinkCard title="Plans and billing" href="/workspace/plans-and-billing/" />
+</CardGrid>

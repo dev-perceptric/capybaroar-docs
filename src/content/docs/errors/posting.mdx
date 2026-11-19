@@ -1,0 +1,128 @@
+---
+title: "Errors when writing and scheduling posts"
+description: "Every message the Capybaroar post editor, calendar and queue can show, what it means and how to fix it: times, channels, brands, files, plan limits, approvals, campaigns and groups."
+sidebar:
+  label: "Writing and scheduling"
+  order: 2
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+These messages come from the post editor, the calendar and the queue. Each network's own rules, like Instagram needing a picture, are on [Each network's rules](/errors/networks/).
+
+## Before you schedule
+
+The editor checks the post as you write. The first problem shows in amber at the bottom, and **Schedule**, **Add to queue** and **Post now** stay off until it's fixed. **Save draft** still works.
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `<channel>: over <n> characters` | The text for that channel is longer than its network allows | Shorten it, or pick the channel in **Text for** and give it its own shorter text |
+| `<channel>: <setting> is required` | The network needs a setting, like a YouTube **Title** or a Pinterest **Board** | Open the channel's tab and fill it in |
+| `<channel>: post <n> is over <n> characters` | A part of the thread is too long for that network | Shorten that part |
+| `Words to avoid: <words>` | The post uses words the brand kit says to avoid | Change the words, or schedule it anyway. This one doesn't block the post. |
+
+## When you press a button
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Pick at least one channel` | No channel is picked | Pick one in **Channels** |
+| `Pick a time in the future` | The time is in the past | Pick a later time, or press **Post now** |
+| `Pick a time` | The post has no time | Set the time beside the buttons |
+| `Pick channels from one brand` | The channels belong to different brands | Make one post for each brand. The **Channels** menu marks other brands' channels as **Another brand's channel**. |
+| `You can't post to this brand` | The brand isn't one of yours | Ask an owner or admin to give you the brand |
+| `Reconnect <channel> first` | That channel is signed out | Reconnect it in **Channels** |
+| `<channel>: write something or add media` | That channel would get an empty post | Add text or a file |
+| `<channel>: PDFs can only go to LinkedIn` | A PDF is on a post with other networks | Post the PDF to LinkedIn on its own |
+| `Audio can't go on a post on its own. Use a picture or a video.` | An audio file from the library is attached | Remove it. Use it in a video instead. |
+| `A file in this post was deleted` | A file was removed from Media after it was added | Add the file again, or remove it from the post |
+| `A file in this thread was deleted` | The same, in a part of the thread | Fix that part |
+| `A channel in this post was removed` | A channel was disconnected | Pick the channels again |
+| `A thread has up to 25 posts` | The thread is too long | Remove parts, or split it in two |
+| `This post already went out` | It went out while you had it open | Close it. Use **Post again** to make a copy. |
+| `Post not found` | It was deleted, or it's in a brand you can't see | Refresh the calendar |
+
+## Plan limits
+
+| Message | How to fix it |
+| - | - |
+| `Your plan allows 30 scheduled posts a month. Upgrade to schedule more.` | Free counts posts scheduled or sent this calendar month. Save it as a draft for next month, or upgrade in **Settings**, **Billing**. |
+| `Your plan doesn't include AI. Upgrade to use it.` | AI writing and AI files need Creator, Pro or Agency |
+
+## The queue
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Add time slots to your queue in Settings first` | **Add to queue** has no times to use | Add times in **Settings**, **Queue** |
+| `No free slot in the next 8 weeks` | Every queue time for 8 weeks has a post | Add more times, or pick a time yourself |
+| `Not enough results yet` | **Your best times** needs results | Wait until 10 posts have results, or pick another preset |
+| `Each slot needs a day and a time` | A queue time is missing a part | Remove it and add it again |
+
+## Moving posts on the calendar
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| **Couldn't move the post** with `This post can't move` | It went out, or it's going out now | Only drafts, posts in review, scheduled and failed posts move |
+| **Couldn't move the post** with `Pick a time in the future` | It was dropped on a time that has passed | Drop it on a later time. Drafts can go anywhere. |
+
+## Approvals
+
+| Message | What it means |
+| - | - |
+| `Only owners, admins and clients can approve` | Editors can't approve, even their own posts |
+| `Only owners, admins and clients can reject` | The same for rejecting |
+| `This post isn't waiting for approval` | Someone else approved or rejected it first |
+| `Write what should change` | Rejecting needs a comment |
+| `Clients can only approve or reject posts` | A client tried to change or delete a post |
+| `This review link was turned off` | An owner or admin made a new link, or turned it off. Ask them for the new one. |
+
+## Campaigns, groups and snippets
+
+| Message | How to fix it |
+| - | - |
+| `Name the campaign` | Type a name |
+| `Campaign names are up to 60 characters` | Use a shorter name |
+| `There is already a campaign called <name>` | Pick another name |
+| `That campaign belongs to another brand` | Pick a campaign of this post's brand, or **None** |
+| `That campaign was deleted` | Pick another campaign |
+| `Name the group` | Type a name |
+| `Keep the name under 60 characters` | Use a shorter name |
+| `A group's channels must be from one brand` | Save one group for each brand |
+| `A channel in this group was removed` | Save the group again |
+| `You can't use this brand's channels` | The group's brand isn't one of yours |
+| `Select the text to save` | Select text before **Save as snippet** |
+| `A snippet needs text` | Select some text first |
+| `Snippets are up to 3,000 characters` | Save a shorter piece |
+| `Give it a name` | Name the snippet |
+
+## Text tools
+
+| Message | How to fix it |
+| - | - |
+| `No links to shorten` | **Shorten links** found no links in the text |
+| `Select a link, or leave nothing selected to shorten every link` | The selected text isn't a link |
+| `That isn't a link` | Use a whole `https://` link |
+| `Use an http or https link` | Links must start with `http://` or `https://` |
+| `Couldn't make a short link, try again` | A short hiccup. Press it again. |
+
+## Edit and delete posts that went out
+
+| Message | What it means |
+| - | - |
+| `Only posts that went out can be edited here` | Use the editor for posts that haven't gone out |
+| `This post didn't go to that channel` | Pick a channel the post went out on |
+| `This post is being changed. Try again in a moment.` | Another change is saving |
+| `This post is going out right now. Try again in a minute.` | Wait until it's out |
+| `This post hasn't gone out yet` | Use **Delete** for a post that's still scheduled |
+| `This post is being deleted. Try again in a moment.` | Another delete is running |
+| `Nothing went out on this channel` | There's nothing to delete there |
+| `Delete it in the <network> app` | The network doesn't let apps delete. Use the link to delete it there. |
+| `Reconnect <channel> first` | Reconnect, then delete again |
+| **Couldn't load this post** | Close the dialog and open the post again |
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Each network's rules" href="/errors/networks/" />
+  <LinkCard title="The post editor" href="/publishing/post-editor/" />
+  <LinkCard title="Error guide" href="/errors/" />
+</CardGrid>

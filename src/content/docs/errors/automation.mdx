@@ -1,0 +1,116 @@
+---
+title: "Errors with bulk upload, feeds and evergreen posts"
+description: "Every message Capybaroar shows when you import posts from a CSV file, turn a stack of files into posts, add an RSS feed or repeat a post with Evergreen."
+sidebar:
+  label: "Bulk upload, feeds and evergreen"
+  order: 7
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+These messages come from **Bulk upload** on the calendar, **Feeds** in Channels and **Evergreen** on a post that went out.
+
+## Importing a CSV file
+
+Capybaroar reads the whole file and checks every row before it saves anything. Rows with problems show their message beside them, and the rest can still be saved.
+
+### The file
+
+| Message | How to fix it |
+| - | - |
+| `This file is empty` | Pick the right file. Save it from your spreadsheet as CSV. |
+| `This file has a header and no rows` | Add a row for each post under the header |
+| `The first row needs the columns date, time, channels and text` | Put those four column names in the first row. `media URL`, `first comment` and `campaign` are optional. |
+| `Up to 500 rows at a time` | Split the file into files of 500 rows or fewer |
+| `CSV files are up to 900 KB` | Split the file |
+| **Choose another file?** | You picked a new file while one was loaded. Press the button to swap it. |
+
+### A row
+
+| Message | How to fix it |
+| - | - |
+| `Use a date like 2026-11-05 and a time like 09:30` | Write the date as year-month-day. The time can be `14:30` or `2:30 pm`. |
+| `Pick a time like 09:30` | The time column is empty or unclear |
+| `Pick a time in the future` | The row's time has passed |
+| `No channel called <name>` | Use the channel's name, its @handle, or a network's name to post to every channel on it. Separate several with `\|`, `;` or `,`, like `LinkedIn \| X`. |
+| `Pick at least one channel` | The channels column is empty |
+| `Pick channels from one brand` | A row can only post to one brand's channels |
+| `Write something or add a media URL` | The row has no text and no file |
+| `The media URL must start with http:// or https://` | Use a full public link |
+| `The media URL isn't a JPG, PNG, GIF, WebP, MP4, MOV or PDF` | Link to a file of one of those types |
+| `These channels don't take a first comment` | Remove the first comment, or post to LinkedIn, Facebook or Instagram |
+| `Campaign names are up to 60 characters` | Shorten the campaign name |
+| `Reconnect <channel> first` | Reconnect the channel, then import again |
+| `<channel>: <network> posts are up to <n> characters` | Shorten the text |
+| `<channel>: post <n> of the thread is over <n> characters` | Shorten that part of the thread |
+| `<channel>: <network> needs a picture or video` | Add a media URL |
+| `<channel>: <setting> is required` | That network needs a setting that a CSV can't set, like a YouTube title. Import it as a draft and add it in the editor. |
+
+### Saving
+
+| Message | How to fix it |
+| - | - |
+| **Can't schedule these posts** with `Your plan allows 30 scheduled posts a month and <n> are left. Upgrade to schedule more, or save these as drafts.` | Save them as drafts, or upgrade |
+| **Couldn't save the posts** | Some rows didn't save. The rows that did are marked. Press save again for the rest. |
+| `Up to 25 rows per request` | Shown if a save is sent in too big a piece. Try again. |
+
+## Turning files into posts
+
+| Message | How to fix it |
+| - | - |
+| `Use JPG, PNG, GIF, WebP, MP4 or MOV` | Bulk upload of files takes pictures and videos only |
+| `Up to 100 files at a time` | Drop up to 100 files |
+| `Wait for the uploads to finish` | Wait until every tile is done |
+| `Pick at least one channel` | Pick channels in **Pick channels** |
+| `Couldn't write captions` | Claude's captions failed. Write them yourself, or try again. |
+| **Couldn't place every file** with `The queue has no free slot for every file in the next 8 weeks` | Add queue times, or pick **One a day** |
+| `Add time slots to your queue in Settings first` | Add queue times, or pick **One a day** |
+
+## RSS feeds
+
+| Message | How to fix it |
+| - | - |
+| `That address isn't an RSS or Atom feed` | Use the feed's own address, often ending in `/feed` or `/rss.xml`. A web page's address doesn't work. |
+| `That address isn't reachable from here` | The address is on a private network. Use a public one. |
+| `Use an http or https link` | Start it with `https://` |
+| `Links with a password aren't supported` | Use a feed that doesn't need a sign-in |
+| `Use a link on port 443 or 80` | Remove the port number from the address |
+| `Too many redirects` | Use the address the feed ends up at |
+| `This feed has no items yet` | Add it once the feed has at least one article |
+| `Write a template` | Fill in the post template |
+| `Templates are up to 1,000 characters` | Shorten the template |
+| `Use {title}, {link} or {summary} in the template` | Put at least one of these in the template |
+| `Pick at least one channel` | Pick where the posts go |
+| `Pick channels from this brand` | A feed posts to one brand's channels |
+| `<network> needs a picture or video, so it can't post feed items` | Feeds post text and links, so Instagram, TikTok, YouTube and Pinterest can't take them |
+| `You can't post to this brand` | Pick a brand you have |
+| `Feed not found` | It was removed. Refresh the page. |
+| **Couldn't change the feed** or **Couldn't remove the feed** | Try again |
+
+A feed that stops working shows its last error on its card. These are the ones that stop it:
+
+| Message | How to fix it |
+| - | - |
+| `This feed's channels were removed` | Edit the feed and pick channels again |
+| `The person who added this feed left the workspace. Add it again.` | Remove it and add it again yourself |
+
+## Evergreen posts
+
+| Message | How to fix it |
+| - | - |
+| `Only published posts can be evergreen` | Turn on Evergreen after the post has gone out |
+| `Pick how often` | Pick every week, or every 2, 4, 8, 12 or 26 weeks |
+| `The post was deleted, so it no longer repeats` | Turn on Evergreen on another post |
+| `The person who turned this on left the workspace` | Turn it off and on again yourself |
+
+<Aside type="note">
+Each repeat is a new copy in your queue, checked like any new post. If a copy can't be scheduled, Evergreen shows the reason on the post, like `Add time slots to your queue in Settings first`.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Bulk upload" href="/publishing/bulk-upload/" />
+  <LinkCard title="RSS feeds" href="/publishing/rss-feeds/" />
+  <LinkCard title="Evergreen posts" href="/publishing/evergreen/" />
+</CardGrid>

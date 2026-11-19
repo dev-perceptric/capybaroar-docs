@@ -1,0 +1,78 @@
+---
+title: "Error guide"
+description: "Where Capybaroar shows errors, how it retries a post that didn't go out, and a guide to every message the app can show, grouped by area."
+sidebar:
+  label: "Overview"
+  order: 1
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Capybaroar says what went wrong in plain words, and most messages say what to do next. This guide lists every message the app can show, what it means and how to fix it. Find yours by area, or search the docs for a few words of it.
+
+## Find your message
+
+<CardGrid>
+  <LinkCard title="Writing and scheduling posts" href="/errors/posting/" description="The post editor, the calendar, the queue and plan limits" />
+  <LinkCard title="Each network's rules" href="/errors/networks/" description="Every network's checks and the messages networks send back" />
+  <LinkCard title="Connecting channels" href="/errors/channels/" description="Sign-in, connect forms, reconnecting and removing" />
+  <LinkCard title="Media and AI files" href="/errors/media/" description="Uploads, crop and trim, alt text, pictures, videos and audio" />
+  <LinkCard title="AI and credits" href="/errors/ai-and-credits/" description="The agent, rewriting, suggested replies and credits" />
+  <LinkCard title="Bulk upload, feeds and evergreen" href="/errors/automation/" description="CSV files, a stack of files, RSS feeds and repeats" />
+  <LinkCard title="Inbox, reports and link in bio" href="/errors/results/" description="Answering, sending reports, building bio pages" />
+  <LinkCard title="Account, team and billing" href="/errors/account-and-team/" description="Sign-in, two-factor, invites, brands, plans and exports" />
+</CardGrid>
+
+For the REST API and MCP server, see [Errors and limits](/api-reference/errors-and-limits/).
+
+## Where errors show
+
+| Where | What you see |
+| - | - |
+| **Post editor** | A line at the bottom, beside the buttons. Problems to fix before scheduling are in amber, like `LinkedIn Studio: over 3,000 characters`. Errors after you press a button are in red. |
+| **Calendar** | A post that didn't go out is marked **Failed** or **Partly published**. Open it to see each channel's reason. |
+| **Dialogs** | Titles that start with **Couldn't**, like **Couldn't remove the channel**, with the reason under them |
+| **Channels** | A red line at the top when a sign-in fails, and **Reconnect** on a channel that's signed out |
+| **Email** | Owners and admins get an email when a post doesn't go out, and when a channel needs reconnecting (at most once a day for each channel) |
+| **Webhooks** | `post.failed` and `channel.reconnect` events, for your own tools |
+
+Messages that start with a channel's name, like `Fernway Bakery: Pinterest needs a board`, tell you which channel to fix.
+
+## How a post is retried
+
+When a post's time comes, Capybaroar sends it to each channel on its own. If a network has a hiccup, like a timeout or being busy, Capybaroar tries again by itself:
+
+| Try | Waits before it |
+| - | - |
+| 1 | None |
+| 2 | 1 minute |
+| 3 | 5 minutes |
+| 4 | 15 minutes |
+| 5 | 60 minutes |
+| 6 | 4 hours |
+
+While it retries, the channel shows the last error with `(retrying)` at the end. After the sixth try, it fails and you get the email.
+
+Two kinds of errors don't retry, because trying again won't help:
+
+- **A sign-in problem.** The channel is marked **Reconnect**. Reconnect it, then schedule the post again.
+- **A post the network turned down**, like a file it can't read. Fix the post, then schedule it again.
+
+Capybaroar never posts twice. If a network took the post and something failed after, like a first comment, the post counts as published and the problem shows as a note.
+
+## Fix a failed post
+
+1. Open the post from the calendar. Each channel shows its status and reason.
+1. Fix what the reason says: shorten the text, swap a file, reconnect the channel.
+1. Press **Schedule** with a time in the future, or **Post now**. Channels that already went out aren't sent again.
+
+<Aside type="tip">
+A message that ends in **Try again** or **Try again in a moment** is a short hiccup on our side or the network's. Wait a little and press the button again.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Errors and limits (API)" href="/api-reference/errors-and-limits/" />
+  <LinkCard title="FAQ" href="/reference/faq/" />
+</CardGrid>

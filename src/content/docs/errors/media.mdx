@@ -1,0 +1,84 @@
+---
+title: "Errors with media and AI files"
+description: "Every message Capybaroar shows for uploads, the media library, crop and trim, alt text, and AI pictures, videos, infographics and audio, with what to do."
+sidebar:
+  label: "Media and AI files"
+  order: 5
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+These messages come from **Media**, the post editor's **Media** area and **Generate**. A file that fails to upload shows its reason on its tile in red, with a button to clear it.
+
+## Uploading
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Use JPG, PNG, GIF, WebP, MP4, MOV or PDF` | The file's type isn't taken | Save it in one of those types. HEIC, HEIF and AVIF photos are turned into JPG for you as they upload. |
+| `Couldn't read <file>. Save it as JPG and try again.` | A HEIC or AVIF photo couldn't be turned into JPG in your browser | Save it as JPG on your device and upload that |
+| `Files are up to 250 MB` | The file is too big | Use a shorter or smaller video |
+| `PDFs are up to 100 MB` | The PDF is too big | Make the PDF smaller, or split it |
+| `The file is empty` | The file has no content | Check the file opens on your device |
+| `The file isn't the kind its name says.` | A file named `.jpg` that is really something else, for example | Open and save it again as the right type |
+| `Couldn't start the upload` | A hiccup before the upload began | Drop the file again |
+| `Upload didn't finish` | The connection dropped during the upload | Check your connection and drop it again |
+| `Couldn't read the upload` | The file arrived but couldn't be read | Upload it again |
+| `Wait for the uploads to finish` | Bulk upload is still sending files | Wait for every tile to finish |
+| `Up to 100 files at a time` | Too many files in one bulk upload | Upload them in batches of 100 or fewer |
+
+## The media library
+
+| Message | What it means |
+| - | - |
+| `File not found` | It was deleted, or it's in a brand you can't see |
+| `A file in this post was deleted` | A post uses a file that was deleted from Media. Add it again. |
+| `Pick pictures from Media` | A link in bio picture must come from your library |
+
+Deleting a file asks **Delete `<name>`?** first. If posts still to go out use it, the box says `It's in <n> posts still to go out. They'll go out without it.`
+
+## Crop and trim
+
+| Message | How to fix it |
+| - | - |
+| `Couldn't make the picture` or `Couldn't crop` | The cropped copy couldn't be saved. Try again. |
+| `Couldn't trim` | The trimmed copy couldn't be saved. Try again. |
+| `Only MP4 and MOV videos can be trimmed` | Trim works on MP4 and MOV files |
+| `Pick at least half a second` | Keep 0.5 seconds or more |
+| `Couldn't read the video` | The video file is damaged or uses an unusual codec. Export it again as MP4. |
+| `Video not found` | The video was deleted |
+| `Video trimming isn't set up on this server` | Trimming isn't ready right now. Trim it on your device for now. |
+
+## Alt text
+
+Alt text saves at once. If it doesn't, the editor shows the reason in red at the bottom. Alt text is sent to the networks that take it: see each [network's page](/channels/).
+
+## AI pictures, videos, infographics and audio
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Describe what to make` | The prompt is empty | Describe the picture or video |
+| `Write the words or describe the sound` | An audio prompt is empty | Write the voiceover's words, or describe the sound |
+| `Keep it under 2,000 characters` | A picture or video prompt is too long | Shorten it. Audio, infographics and animations take 5,000. |
+| `For a song, describe the style, then write the words after "Lyrics:" (10 characters or more each)` | A song needs both parts | Write the style, then `Lyrics:` and the words |
+| `<model> edits a picture: send source_media_id` | You picked an edit model without a picture | Pick a picture to edit, or another model |
+| `<model> doesn't take a picture` | That model only works from words | Remove the picture, or pick another model |
+| `That picture isn't in this workspace's media library` | The start picture was deleted | Pick another picture |
+| `Use a JPG, PNG or WebP picture` | The start picture is a GIF or a video | Pick a JPG, PNG or WebP picture |
+| `website must be a site address, like example.com` | CapyInfographic needs a real site address | Type the brand's site, like `fernway.example` |
+| `This would cost <n> credits. One file can cost up to 1,000.` | The request is too big for one file | Pick a shorter length or another model |
+| `AI media isn't set up on this server` | AI files aren't ready right now | Try again later |
+| `Couldn't save the request. Try again in a moment.` | A hiccup when it started | Press **Generate** again. No credits were used. |
+| `fal lost this request. Try again.` | The model's service lost the job | Generate it again. Its credits come back. |
+
+When an AI file fails, its credits come back to you in full. Credit messages, like `You're out of credits. Buy more in Settings, Billing.`, are on [AI and credits](/errors/ai-and-credits/).
+
+<Aside type="note">
+Audio files can't go on a post on their own. Use them in a video you edit elsewhere.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Media library" href="/publishing/media-library/" />
+  <LinkCard title="Make pictures, videos and audio" href="/ai/ai-media/" />
+</CardGrid>

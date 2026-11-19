@@ -1,0 +1,100 @@
+---
+title: "Errors with AI and credits"
+description: "Every message from Capybaroar's AI: the agent, Rewrite with AI, threads, polls, carousels, slideshows, suggested replies and captions, plus every credit, top-up and brand limit message."
+sidebar:
+  label: "AI and credits"
+  order: 6
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+These messages come from Capybaroar's AI: the agent in **Agents**, **Rewrite with AI** in the post editor, AI threads and formats, suggested replies in the Inbox, and credits. Messages for AI pictures and videos are on [Media and AI files](/errors/media/).
+
+## When credits run short
+
+When an AI action stops for credits, Capybaroar opens one box:
+
+| Box | When | What it offers |
+| - | - | - |
+| **AI comes with paid plans** | The workspace is on Free | **See plans** opens **Settings**, **Billing** |
+| **Out of credits** | Not enough credits left | **Buy credits** opens **Settings**, **Billing** |
+
+Editors see the same title with `Ask an owner or admin to upgrade.` or `Ask an owner or admin to buy credits.`, since only owners and admins can pay.
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Your plan doesn't include AI. Upgrade to use it.` | Free has no AI | Upgrade to Creator, Pro or Agency |
+| `You're out of credits. Buy more in Settings, Billing.` | No credits are left this month | Buy a pack, or wait for the monthly refill |
+| `This costs <n> credits and <m> are left` | This action needs more than you have | Buy a pack, or pick something smaller, like a shorter video |
+| `This brand has used its credits for this month` | The brand's own monthly limit is used up (Agency) | Raise the brand's limit in **Settings**, **Billing**, or wait for next month |
+| `This costs <n> credits and this brand has <m> left this month` | The brand's limit is nearly used | Raise the limit, or pick something smaller |
+
+Credits for a failed action come back in full.
+
+## The agent
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Write a message` | The message box is empty | Type what you want |
+| `Clients can only approve or reject posts` | Clients can't use the agent | Ask an editor, admin or owner |
+| `The agent isn't set up yet` | The agent isn't ready on this server | Try again later |
+| `Only drafts and posts in review take files later. Save it as a draft first.` | The agent tried to add a file to a scheduled post | Ask it to save the post as a draft first, then add the file |
+| `Chat not found` | The chat was deleted, or it's older than 365 days | Start a new chat |
+| **Couldn't delete the chat** | A hiccup while deleting | Try again |
+
+## Rewrite with AI and text formats
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Write something first` | There's no text to rewrite | Write a draft, then pick a rewrite |
+| `Say what to change` | **Ask for a change** is empty | Tell Claude what to change, like "end with a question" |
+| `Write what the thread is about first` | **Write a thread** needs a topic in the text box | Write a line or two about it |
+| `Write what the poll is about first` | **Write an X poll** needs a topic | Write a line about the question |
+| `Write what the slides are about first` | **Make a LinkedIn carousel** or **Make a TikTok slideshow** needs a topic | Write what the slides should cover |
+| `Write what it's about first` | The same, from the editor's AI menu | Add some text |
+| `Claude can't rewrite this post` | Claude won't work with this text | Change the text and try again |
+| `Claude can't write this` | Claude won't write this format for the text | Change the topic |
+| `Claude didn't answer, try again` | No answer came back | Try again |
+| `No text came back, try again` | The answer was empty | Try again |
+| `Claude didn't send a usable answer. Try again.` | The answer couldn't be read | Try again |
+| `Claude didn't write a usable poll. Try again.` | The poll had too few or too long options | Try again, or write the options yourself |
+| `Claude wrote fewer than 2 posts. Add more to the text and try again.` | Not enough for a thread | Give it more to say |
+| `Claude wrote fewer than <n> slides. Add more to the text and try again.` | Not enough for a carousel or slideshow | Add more points |
+| `Replace the thread?` | You asked for a thread on a post that already has one | Press **Replace** to swap it |
+| `Replace the files on this post?` | A carousel or slideshow replaces the post's files | Press **Replace** to go ahead |
+
+## Captions and replies
+
+| Message | How to fix it |
+| - | - |
+| `Claude can't write a caption for this file` | Write the caption yourself, or try another file |
+| `Couldn't write captions` | Bulk upload's captions failed. Try again, or write them in the sheet. |
+| `Suggestions aren't set up yet` | Suggested replies aren't ready on this server. Write the reply yourself. |
+| `Claude can't suggest a reply to this` | Write the reply yourself |
+| `No reply came back, try again` | Press **Suggest reply** again |
+
+## Buying credits and top-ups
+
+| Message | What it means |
+| - | - |
+| `Credit packs come with paid plans` | Free can't buy packs. Upgrade first. |
+| `Pick a pack` | Pick 1,000, 5,000 or 20,000 credits |
+| `Only owners and admins can buy credits` | Ask an owner or admin |
+| `Automatic top-ups come with paid plans` | Upgrade to turn on automatic top-up |
+| `Pick 1 to 10 a month` | Automatic top-up can buy from 1 to 10 packs a month |
+| `Brand limits come with Agency` | A credit limit for each brand needs Agency |
+| `Enter a whole number of credits` | Type a brand limit with no decimals |
+| `Billing isn't set up` | Payments aren't ready on this server. Try again later. |
+| `Couldn't start checkout` | A hiccup with the payment page. Try again. |
+
+<Aside type="note">
+The brand kit's **Words to avoid** shows as a warning in the editor, `Words to avoid: ...`. It never stops a post.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="AI credits" href="/ai/ai-credits/" />
+  <LinkCard title="The AI agent" href="/ai/agent/" />
+  <LinkCard title="Rewrite with AI" href="/ai/rewrite-with-ai/" />
+</CardGrid>

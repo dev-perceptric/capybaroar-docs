@@ -1,0 +1,239 @@
+---
+title: "Each network's rules and messages"
+description: "Every network-specific message Capybaroar can show, from Instagram to WordPress: the checks before a post is scheduled and the answers networks send back when it goes out."
+sidebar:
+  label: "Each network's rules"
+  order: 3
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Each network has its own rules for text, files and settings. Capybaroar checks a post against them before it's scheduled, and shows the first problem as `<channel>: <reason>`. A few messages only come back from the network when the post goes out. This page collects them all, network by network. Each network's own page has the same table and more about what it can post.
+
+## Messages from any network
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Reconnect <channel>` | The channel was signed out when the post's time came | Reconnect it in **Channels**, then schedule the post again |
+| `<what>: <the network's own message>` | The network turned the post down and said why. The first part names the step, like `Facebook post` or `Instagram media`. | Read the network's words after the colon. Most mean a permission was removed or a file can't be read. Reconnect, or change the file. |
+| `... (retrying)` | A hiccup on the network's side. Capybaroar tries again by itself. | Nothing. It tries up to 6 times over about 5 hours. |
+| `Media is still processing; will retry` | The network is still reading a video | Nothing. Capybaroar checks again. |
+| `Capybaroar didn't keep this post's id` | An older post can't be changed or deleted from here | Change or delete it on the network |
+| `the X app isn't attached to a Project in the X developer portal` | X refused Capybaroar's app (check) | Contact Capybaroar support |
+
+
+## Instagram
+
+More on the [Instagram page](/channels/instagram/).
+
+| Message | What to do |
+| - | - |
+| `Instagram needs a picture or video` | Add a picture or video. Instagram doesn't take text-only posts. |
+| `An Instagram Reel is one video` | Remove extra files, or set the format back to Post. |
+| `An Instagram Story is one picture or video` | Keep one file for a Story. |
+| `Instagram takes up to 10 files` | Remove files until there are 10 or fewer. |
+| `No Instagram professional account is linked to your Facebook Pages` | Switch the account to business or creator in the Instagram app, link it to a Facebook Page, then connect again. |
+| `Media processing failed: …` | Instagram couldn't read the file. Try another picture or video, or a smaller one. |
+
+## Facebook
+
+More on the [Facebook page](/channels/facebook/).
+
+| Message | What to do |
+| - | - |
+| `Facebook takes one video, or pictures only` | Use one video on its own, or only pictures. |
+| `A Facebook Reel is one video` | Keep one video for a Reel. |
+| `A Facebook Story is one picture or video` | Keep one file for a Story. |
+| `No Facebook Pages were shared with Capybaroar` | Connect again and tick the Pages you want during the Meta sign-in. |
+| `Facebook didn't publish the Story` | Try again with one picture or one short video. |
+| `A Facebook Reel is one video` | Use one video for a Reel. |
+| `A Facebook Story is one picture or video` | Keep one file for a Story. |
+| `Facebook takes one video, or pictures only` | Use one video on its own, or only pictures. |
+
+## Threads
+
+More on the [Threads page](/channels/threads/).
+
+| Message | What to do |
+| - | - |
+| `Threads posts are up to 500 characters` | Shorten the text in the Threads tab. |
+| `Threads takes up to 20 files` | Remove files until there are 20 or fewer. |
+| `Threads takes up to 20 files` | Remove files until there are 20 or fewer. |
+
+## TikTok
+
+More on the [TikTok page](/channels/tiktok/).
+
+| Message | What to do |
+| - | - |
+| `TikTok takes one video, or pictures only` | Use one video on its own, or only pictures. |
+| `TikTok photo posts take JPG or WebP pictures` | Save the picture as JPG or WebP and add it again. |
+| `TikTok photo posts take up to 35 pictures` | Remove some pictures, or make two posts. |
+| `Choose who can watch this TikTok` | Pick an option in Who can watch. |
+| `Branded content can't be set to Only me on TikTok` | Pick a wider audience, or set Promotional content to Your brand or No. |
+| `This TikTok account can't post with that Who can watch choice. Pick another` | Pick one of the options the TikTok tab shows. |
+| `TikTok has blocked this account from posting for now` | Check the account in the TikTok app. |
+| `TikTok needs one video, or 1 to 35 pictures` | Add a video or pictures. |
+| `TikTok pictures must be under 20 MB` | Use smaller pictures. |
+| `TikTok photo titles are up to 90 characters` | Shorten the Photo title. |
+| `TikTok captions are up to 2,200 characters` | Shorten the text. |
+
+TikTok also sends these when a post goes out:
+
+| Message | How to fix it |
+| - | - |
+| `Until TikTok approves Capybaroar, set the TikTok account to private and post as Only me` | Make the account private in TikTok and pick **Only me** (check) |
+| `TikTok's daily post limit for this account is reached. Try again tomorrow` | Move the post to tomorrow |
+| `TikTok's daily limit for apps like Capybaroar is reached. Try again later` | Schedule it again later |
+| `TikTok needs the media website verified first` | Contact Capybaroar support (check) |
+| `A picture is too big for TikTok. Use pictures up to 1080 pixels on the long side.` | Resize the pictures, or crop them in Media |
+
+## LinkedIn
+
+More on the [LinkedIn page](/channels/linkedin/).
+
+| Message | What to do |
+| - | - |
+| `LinkedIn takes one video, or pictures only` | Use one video on its own, or only pictures. |
+| `LinkedIn takes one PDF on its own` | Remove the other files, or post the PDF on its own. |
+| `PDFs can only go to LinkedIn` | Pick only LinkedIn channels for a PDF, or use pictures for the other networks. |
+| `LinkedIn couldn't read this PDF` | Check that the file opens, is under 100 MB and has 300 pages or fewer. |
+| `This LinkedIn account isn't an admin of any Page` | Ask a Page admin to add you, or connect your profile instead. |
+| `LinkedIn couldn't read this PDF. Check that it opens and is under 300 pages.` | Open the PDF to check it, and split long ones. |
+| `LinkedIn takes one PDF on its own` | Post the PDF with no other files. |
+| `LinkedIn takes one video, or pictures only` | Use one video on its own, or only pictures. |
+| `LinkedIn takes up to 20 pictures` | Remove pictures until there are 20 or fewer. |
+
+## YouTube
+
+More on the [YouTube page](/channels/youtube/).
+
+| Message | What to do |
+| - | - |
+| `YouTube needs exactly one video` | Use one video and no pictures. |
+| `YouTube needs a title` | Add a title in the YouTube tab. |
+| `This Google account has no YouTube channel` | Sign in with the Google account that owns the channel, or create a channel first. |
+| `YouTube needs exactly one video` | Keep one video and remove other files. |
+| `YouTube titles and descriptions can't contain < or >` | Take out the angle brackets. |
+| `This Google account has no YouTube channel` | Make a channel on YouTube, or sign in with the account that has one. |
+| `Reconnect YouTube to delete from here` | Reconnect the channel so Capybaroar gets the newer access it needs. |
+
+## X (Twitter)
+
+More on the [X (Twitter) page](/channels/x/).
+
+| Message | What to do |
+| - | - |
+| `An X poll has 2 to 4 options` | Write 2, 3 or 4 options in Poll, one per line. |
+| `An X poll can't have pictures or video` | Remove the files, or clear the poll. |
+| `X posts are up to 280 characters` | Shorten the text in the X tab. |
+| `X takes up to 4 pictures, or one video or GIF` | Remove files until you have up to 4 pictures, or one video or GIF. |
+| `X posts need text or media` | Add text or a file. |
+| `Poll options are up to 25 characters: …` | Shorten the option the message names. |
+| `X pictures must be under 5 MB` | Use smaller pictures. |
+| `X GIFs must be under 15 MB` | Use a smaller GIF. |
+| `X videos must be under 512 MB` | Use a shorter or smaller video. |
+| `X video processing failed: …` | X couldn't read the video. Try another file. |
+
+## Pinterest
+
+More on the [Pinterest page](/channels/pinterest/).
+
+| Message | What to do |
+| - | - |
+| `Pinterest needs a board` | Pick a board in the Pinterest tab. |
+| `Pinterest needs one picture or one video` | Keep one file. |
+| `Pinterest board "…" wasn't found` | Type the board's name exactly as it shows on Pinterest. |
+| `Pinterest board section "…" wasn't found` | Check the section's name, or leave Board section empty. |
+| `Pinterest couldn't process this video` | Try another video file. |
+| `Pinterest titles are up to 100 characters` | Shorten the title. |
+| `Pinterest links are up to 2,048 characters` | Use a shorter link. |
+
+## Bluesky
+
+More on the [Bluesky page](/channels/bluesky/).
+
+| Message | What to do |
+| - | - |
+| `Wrong handle or app password` | Check the handle (like name.bsky.social) and make a new app password if needed. |
+| `Bluesky posts are up to 300 characters` | Shorten the text in the Bluesky tab. |
+| `Bluesky pictures must be under 1 MB` | Use smaller pictures. |
+| `Wrong handle or app password` | Check the handle (like `you.bsky.social`) and make a new app password. |
+| `Bluesky videos aren't supported yet` | Use pictures. |
+| `Bluesky takes up to 4 pictures` | Remove pictures until there are 4 or fewer. |
+| `Bluesky pictures must be under 1 MB` | Use smaller pictures. |
+
+## Mastodon
+
+More on the [Mastodon page](/channels/mastodon/).
+
+| Message | What to do |
+| - | - |
+| `Enter a Mastodon server, like mastodon.social` | Type the server your account is on. |
+| `Mastodon posts are up to 500 characters` | Shorten the text in the Mastodon tab. |
+| `Enter a Mastodon server, like mastodon.social` | Type only the server's name, without your handle. |
+| `Mastodon takes up to 4 files` | Remove files until there are 4 or fewer. |
+| `Mastodon sign-in expired; try again` | Connect again from Channels. |
+
+## Discord
+
+More on the [Discord page](/channels/discord/).
+
+| Message | What to do |
+| - | - |
+| `This Discord webhook doesn't exist or was deleted` | Make a new webhook in Discord and connect it again. |
+| `Discord takes up to 10 files` | Remove files until there are 10 or fewer. |
+| `Discord files must be under 10 MB` | Use smaller files. |
+| `Enter a Discord webhook URL, like https://discord.com/api/webhooks/...` | Paste the whole URL you copied from Discord. |
+| `This Discord webhook doesn't exist or was deleted` | Make a new webhook and connect again. |
+| `Discord files must be under 10 MB (…)` | Use a smaller file. |
+
+## Telegram
+
+More on the [Telegram page](/channels/telegram/).
+
+| Message | What to do |
+| - | - |
+| `Enter a channel like @yourchannel` | Type the channel's @name, its t.me link or its chat id. |
+| `Add @… as an admin of the channel first` | Add the bot the message names as an admin of the channel or group, then connect again. |
+| `Let @… post messages in the channel's admin rights` | In the channel's admin settings, turn on Post messages for the bot. |
+| `Telegram posts are up to 4096 characters` | Shorten the text in the Telegram tab. |
+| `Telegram takes up to 10 files` | Remove files until there are 10 or fewer. |
+| `Telegram albums can't hold GIFs` | Post the GIF on its own. |
+| `Telegram pictures must be under 5 MB` | Use smaller pictures. |
+| `Telegram videos must be under 20 MB` | Use a shorter or smaller video. |
+| `Telegram posts need text or media` | Add text or a file. |
+| `Telegram captions are up to 1024 characters` | Shorten the text under the files, or remove the files. |
+| `Telegram won't let the bot delete this message. Delete it in Telegram.` | Delete it in Telegram. |
+
+## WordPress
+
+More on the [WordPress page](/channels/wordpress/).
+
+| Message | What to do |
+| - | - |
+| `Enter your site's address, like example.com` | Type the address of your WordPress site. |
+| `Use your site's https:// address` | Application passwords need https. Use the https:// address. |
+| `WordPress didn't accept that username and application password` | Check the username and make a new application password. |
+| `This site's REST API isn't reachable. Check the address, and that the REST API is on.` | Check the address. Some security plugins turn the REST API off. |
+| `This WordPress user can't publish posts. Use an author, editor or administrator.` | Connect with an account that has one of those roles. |
+| `WordPress posts need a title` | Add a title in the WordPress tab. |
+| `WordPress takes pictures as the featured image only` | Remove videos and other files. |
+| `WordPress takes one picture, as the featured image` | Keep one picture. |
+| `Use your site's https:// address` | Use the `https://` address of your site. |
+| `WordPress didn't accept that username and application password` | Check the username and make a new application password. |
+| `This site's REST API isn't reachable. Check the address, and that the REST API is on.` | Check the address, and that no plugin turns off the REST API. |
+| `This WordPress user can't publish posts. Use an author, editor or administrator.` | Connect with a user who can publish. |
+| `WordPress takes pictures as the featured image only` | Remove videos and PDFs. |
+| `WordPress takes one picture, as the featured image` | Keep one picture. |
+
+<Aside type="note">
+Character counts follow what people see, so an emoji counts as one. X counts some links and scripts differently, so a post right at 280 can still be turned down by X.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Compare every network" href="/channels/" />
+  <LinkCard title="Errors when writing and scheduling" href="/errors/posting/" />
+</CardGrid>

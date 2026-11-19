@@ -1,0 +1,116 @@
+---
+title: "Errors in the Inbox, reports and link in bio"
+description: "Every message Capybaroar shows when you answer comments in the Inbox, make and send reports, or build a link in bio page, with what each one means."
+sidebar:
+  label: "Inbox, reports and link in bio"
+  order: 8
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+These messages come from the **Inbox**, **Reports** and **Link in bio**.
+
+## Inbox
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Write a reply` | The reply box is empty | Type your answer |
+| `Reconnect <channel> first` | The channel is signed out | Reconnect it in **Channels**, then send again |
+| `This channel was removed` | The conversation's channel was disconnected | Nothing to do. Its items are gone. |
+| `This message is gone` | It was deleted on the network | Pick another conversation |
+| `This conversation is gone` | The same, for a whole thread | Pick another conversation |
+| `Not found` | The item isn't in a brand you can see | Refresh the Inbox |
+| `This Bluesky post can't be answered from here` | Capybaroar is missing a detail Bluesky needs to reply | Answer it in the Bluesky app |
+| `This Bluesky post can't be liked from here` | The same, for a like | Like it in the Bluesky app |
+| `<step>: no one to answer` | The person who wrote it can't be found on the network | Answer it on the network |
+| `<step> isn't possible on a message` | Likes and hides only work on comments | Answer the message instead |
+| `YouTube can't show a removed comment again` | Hiding on YouTube removes the comment for good | Nothing. YouTube asks first: **Remove this comment from YouTube?** |
+| `Suggestions aren't set up yet` | **Suggest reply** isn't ready | Write the reply yourself |
+| `Claude can't suggest a reply to this` | Claude won't answer this one | Write the reply yourself |
+| `No reply came back, try again` | A hiccup | Press **Suggest reply** again |
+
+A channel whose Inbox can't be read shows **Error** next to it in the **Channel** menu, and **Reconnect** if it's signed out. Reading stops on a permission problem until it's fixed. For a hiccup, Capybaroar tries again at the next check, 10 or 30 minutes later.
+
+## Reports
+
+| Message | How to fix it |
+| - | - |
+| `Your plan doesn't include reports. Upgrade to use them.` | Reports come with Pro and Agency |
+| `Enter a name` | Name the report |
+| `Names are up to 80 characters` | Shorten the name |
+| `Pick a brand` | Editors with some brands must pick one of theirs |
+| `Brand not found` | The brand was deleted, or isn't yours |
+| `Pick a range` | Pick the period the report covers |
+| `Pick a schedule` | Pick how often it's emailed, or none |
+| `Pick at least one section` | Tick one or more sections to show |
+| `Notes are up to 5,000 characters` | Shorten the notes |
+| `<text> isn't an email address` | Fix the address the message names |
+| `Send to up to 20 addresses` | Remove some addresses |
+| `Add an email to send to` | A scheduled report needs at least one address |
+| `Colors look like #1F6FEB` | Type a color as `#` and six letters or digits (Agency) |
+| `Pick an image for the logo` | The logo must be a picture from Media (Agency) |
+| `Report not found` | It was deleted. Refresh the page. |
+| `This report was sent 5 times this hour. Try again in <n> minutes.` | Wait, then send again |
+| `Daily limit of 50 report emails reached. Try again in <n> hours.` | The workspace sent 50 report emails today. Wait until tomorrow. |
+| `Email isn't set up on this server` | Report emails aren't ready. Share the link or PDF for now. |
+| `Couldn't send the email` or **Couldn't send the report** | A hiccup with email. Try again. |
+| **Couldn't delete the report** | Try again |
+| `This report link was turned off` | Someone opened an old link after the report was deleted. Ask for a new link. |
+
+## Link in bio
+
+### Building the page
+
+| Message | How to fix it |
+| - | - |
+| `Say what the page is for` | Write a line about the page before **Build with AI** |
+| `Keep it to one or two sentences` | Shorten what you wrote |
+| `Use a website address like example.com` | Type the site address only |
+| `Couldn't open <site>. Check the address or leave it empty.` | Check the address, or leave it out |
+| `Claude can't build this page` | Change what you wrote and try again |
+| `Claude didn't build a page, try again` | Try again |
+| `Claude's answer couldn't be read, try again` | Try again |
+| `The page came back cut short, try again` | Try again |
+| **Couldn't build the page** | Try again. If it says you're out of credits, see [AI and credits](/errors/ai-and-credits/). |
+| **Use this template?** | A template replaces the page's blocks and look. Press **Use template** to go ahead. |
+
+### The address
+
+| Message | How to fix it |
+| - | - |
+| `Addresses are 3 to 40 characters` | Use a longer or shorter address |
+| `Use lowercase letters, numbers and dashes, starting and ending with a letter or number` | Take out capitals, spaces and other marks |
+| `Use one dash at a time` | Replace `--` with `-` |
+| `That address is reserved` | Pick another. Some words are kept for Capybaroar. |
+| `That address is taken` | Pick another |
+| `Couldn't find a free address, try again` | Type an address yourself |
+
+### Saving
+
+| Message | How to fix it |
+| - | - |
+| `Titles are up to 80 characters` | Shorten the title |
+| `Bios are up to 300 characters` | Shorten the bio |
+| `Search titles are up to 70 characters` | Shorten the search title |
+| `Descriptions are up to 200 characters` | Shorten the search description |
+| `Up to 50 blocks` | Remove blocks |
+| `Block <n> is empty` | Fill in the block, or delete it |
+| `Block <n> has an unknown type` | Delete the block and add it again |
+| `Pick a picture from Media` | Pictures on the page must come from your library |
+| `Pick a valid date and time` | Fix the block's **Show only between** dates |
+| `Couldn't make short links, try again` | Save again |
+| `This page was deleted` | Someone deleted it. Make a new page. |
+| `Couldn't reach Capybaroar. Check your connection and try again.` | Check your connection, then save again |
+| **Couldn't save** or **Couldn't make the page** | Try again |
+
+<Aside type="note">
+Deleting a page asks **Delete this page?** first, because its address stops working at once.
+</Aside>
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Inbox" href="/results/inbox/" />
+  <LinkCard title="Reports" href="/results/reports/" />
+  <LinkCard title="Link in bio" href="/results/link-in-bio/" />
+</CardGrid>

@@ -29,6 +29,7 @@ export default defineConfig({
         group('Workspace', 'workspace', ['plans-and-billing', 'team-and-roles', 'approvals']),
         group('Developers', 'developers', ['rest-api', 'webhooks']),
         { label: 'API reference', collapsed: true, items: [{ autogenerate: { directory: 'api-reference' } }] },
+        { label: 'Error guide', collapsed: true, items: [{ autogenerate: { directory: 'errors' } }] },
         group('Reference', 'reference', ['roles-and-permissions', 'plan-limits', 'glossary', 'faq'], { collapsed: true }),
       ],
     }),

@@ -1,0 +1,129 @@
+---
+title: "Errors when connecting channels"
+description: "Every message Capybaroar can show while you connect, reconnect, move or remove a channel, network by network, and how to fix each one."
+sidebar:
+  label: "Connecting channels"
+  order: 4
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+These messages show when you connect a channel in **Channels**. A sign-in that fails sends you back to **Channels** with the reason in red at the top. A connect form shows the reason inside the form.
+
+## Any network
+
+| Message | What it means | How to fix it |
+| - | - | - |
+| `Your plan allows <n> channels. Upgrade to add more.` | Connecting would pass your plan's channel count | Remove a channel you don't use, or upgrade in **Settings**, **Billing** |
+| `This network isn't set up` | The network's sign-in isn't ready on Capybaroar's side. It shows **Soon** in **Add channel**. | Try again later |
+| `Clients can't connect channels` | Clients only approve posts | Ask an editor, admin or owner to connect it |
+| `Enter <field>` | A connect form field is empty | Fill in every field |
+| `<field> is required` | Mastodon's **Server** is empty | Type your server, like `mastodon.social` |
+| `<network> sign-in: <reason>` | The network refused the sign-in | Try again, and press allow on every screen the network shows |
+| **Couldn't remove the channel** | The channel couldn't be removed just now | Try again. `Channel not found` means it was already removed. |
+| **Couldn't move the channel** | Moving it to another brand failed | Try again. Only owners and admins can move channels. |
+| `Only owners and admins can change this` | An editor tried to move a channel | Ask an owner or admin |
+
+<Aside type="tip">
+Signing in with the wrong account? Sign out of the network in your browser first, then press **Connect** again. TikTok always shows **Switch account** on its approval page.
+</Aside>
+
+## Instagram and Facebook
+
+| Message | How to fix it |
+| - | - |
+| `No Facebook Pages were shared with Capybaroar` | Connect again. On Meta's screen, press **Edit access** (or similar) and tick the Pages you want (check). |
+| `No Instagram professional account is linked to your Facebook Pages` | Switch the Instagram account to business or creator, link it to a Facebook Page in Meta's settings, then connect again |
+
+Every Page you share becomes its own channel, and each one counts toward your plan.
+
+## LinkedIn
+
+| Message | How to fix it |
+| - | - |
+| `This LinkedIn account isn't an admin of any Page` | You picked **LinkedIn Page**. Ask a Page admin to add you, or connect your profile with **LinkedIn**. |
+| `LinkedIn sign-in expired` | Press **Reconnect** and sign in again |
+
+## YouTube
+
+| Message | How to fix it |
+| - | - |
+| `This Google account has no YouTube channel` | Make a channel on YouTube, or sign in with the Google account that owns it |
+| `Reconnect YouTube to delete from here` | The channel was connected before Capybaroar asked for comment and delete access. Reconnect it. |
+| `Reconnect YouTube to edit from here` | The same, for editing a live video |
+
+## TikTok
+
+| Message | How to fix it |
+| - | - |
+| `TikTok sign-in: <reason>` | Try again and approve every permission |
+| `TikTok sign-in expired` | Press **Reconnect** |
+| `Couldn't reach TikTok` | The TikTok tab couldn't load your account's choices. Close the post and open it again. |
+
+## X (Twitter)
+
+| Message | How to fix it |
+| - | - |
+| `X sign-in expired` | Press **Reconnect** |
+
+## Pinterest
+
+| Message | How to fix it |
+| - | - |
+| `Pinterest sign-in expired` | Press **Reconnect** |
+
+## Mastodon
+
+| Message | How to fix it |
+| - | - |
+| `Enter a Mastodon server, like mastodon.social` | Type only the server's name. Leave out `@you` and `https://`. |
+| `Mastodon server is missing; reconnect the channel` | Remove the channel and connect it again with your server |
+| `Mastodon server isn't valid; reconnect the channel` | The same |
+| `Mastodon sign-in expired; try again` | Connect again |
+
+## Bluesky
+
+| Message | How to fix it |
+| - | - |
+| `Wrong handle or app password` | Check your handle, like `you.bsky.social`. Make a new app password in Bluesky under **Settings**, **Privacy and security**, **App passwords**, and use that. Your normal password doesn't work here. |
+
+## Discord
+
+| Message | How to fix it |
+| - | - |
+| `Enter a Discord webhook URL, like https://discord.com/api/webhooks/...` | Paste the whole URL you copied from the channel's **Integrations**, **Webhooks** |
+| `This Discord webhook doesn't exist or was deleted` | Make a new webhook in Discord and connect again |
+
+## Telegram
+
+| Message | How to fix it |
+| - | - |
+| `Enter a channel like @yourchannel` | Type the channel's @name, its `t.me` link or its chat id |
+| `Add @<bot> as an admin of the channel first` | Add the bot the message names as an admin of the channel or group, then connect again |
+| `Let @<bot> post messages in the channel's admin rights` | In the channel's admin settings, turn on **Post messages** for the bot |
+
+## WordPress
+
+| Message | How to fix it |
+| - | - |
+| `Enter your site's address, like example.com` | Fill in **Site address** |
+| `Use your site's https:// address` | Your site must use `https://` |
+| `Enter your username and an application password` | Fill in both |
+| `WordPress didn't accept that username and application password` | Check the username, and make a new application password in WordPress under **Users**, **Profile** |
+| `This site's REST API isn't reachable. Check the address, and that the REST API is on.` | Check the address. A security plugin may turn off the REST API. |
+| `This WordPress user can't publish posts. Use an author, editor or administrator.` | Connect as a user who can publish |
+| `<step>: the site didn't answer like WordPress. Check the address.` | The address isn't a WordPress site, or it points at the wrong folder |
+
+## When a channel needs reconnecting
+
+A channel shows **Reconnect** when its network signs Capybaroar out. Common reasons: you changed your password, removed Capybaroar in the network's settings, or the sign-in expired. Posts due while it's signed out fail with `Reconnect <channel name>`, and new posts to it are refused with `Reconnect <channel name> first`.
+
+Press **Reconnect** on the channel in **Channels** and sign in with the same account. The channel keeps its brand and its history. Then open the failed posts and schedule them again.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="The Channels screen" href="/channels/channels-screen/" />
+  <LinkCard title="Compare every network" href="/channels/" />
+  <LinkCard title="Error guide" href="/errors/" />
+</CardGrid>
