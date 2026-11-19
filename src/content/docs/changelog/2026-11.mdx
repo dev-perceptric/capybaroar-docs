@@ -1,0 +1,119 @@
+---
+title: "November 2026"
+description: "What changed in Capybaroar in November 2026: the Inbox, approvals, the API and MCP server, AI pictures and videos, link in bio, threads and polls, live edits, two-factor sign-in, the audit log and more."
+sidebar:
+  label: "November 2026"
+  order: 2
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+November was Capybaroar's first full month. Here's what changed, week by week, newest first. Fixes are listed when you would notice them.
+
+## November 15 to 18
+
+### New
+
+- **Sign in with an email link and code.** On the sign-in page, press **Email me a sign-in link**. The email has a link and a code, so you can sign in on another device too. If a link can't sign you in where you opened it, the sign-in page now says why.
+- **Getting-started emails.** New workspaces get a few short tips by email in their first days. Turn them off in **Settings**, **Your account**, under **Emails**.
+- **CapyInfographic.** Ask for a graphic, chart or banner and Claude designs it in your brand's colors, fonts and logo. Capybaroar draws it exactly, so every word is spelled right. See [Make pictures, videos and audio](/ai/ai-media/).
+- **CapyMotion.** Short animated videos, 6 to 30 seconds, from your own words and numbers: stats that count up, bars, lists, quotes and a call to action.
+
+### Better
+
+- **Faster pages.** Screens read less and load faster, the Inbox marks items done and sends replies without a reload, and **Settings** loads only the tab you open.
+- **Media thumbnails.** The library shows small tiles and no longer downloads whole videos to draw them.
+- **Passwords.** Strength is judged by length only. Long and easy to remember is fine.
+- **Sign-in emails** all look like Capybaroar, from Capybaroar.
+
+### Fixed
+
+- After signing in with Google, you land on the app every time.
+- Deleting your account now removes your name from the workspace's audit log events.
+
+## November 8 to 14
+
+### New
+
+- **Two-factor sign-in.** Turn it on in **Settings**, **Your account** with any authenticator app, and keep 10 backup codes. Owners can require it for everyone in **Settings**, **General**. See [Your account and security](/workspace/your-account/).
+- **Audit log.** A new **Audit log** tab in Settings shows who did what: members, brands, channels, posts, media, API keys, apps, webhooks, billing and the workspace. Filter it and download it as CSV. See [Audit log](/workspace/audit-log/).
+- **Download my data and Export workspace.** Get a ZIP of your own data, or the owner can export the whole workspace. The link comes by email and lasts 24 hours.
+- **Signed-in devices.** See every device signed in to your account and sign the others out. New devices send you an email with a **This wasn't me** link.
+- **Leaked password check.** Capybaroar warns you when a password has shown up in a data leak, and signs out your other sessions when you reset it.
+- **Edit posts after they go out.** Change the text of a live post on Facebook, LinkedIn, Mastodon, Telegram, Discord and WordPress, and more on YouTube and Pinterest. See [Edit and delete posts that went out](/publishing/edit-and-delete/).
+- **Published posts open as a results view** with their numbers, links and an **Edit** button.
+- **Threads.** Write a thread on X, Bluesky, Threads and Mastodon with **Add to thread**. Each part goes out as a reply to the one before, up to 25 posts.
+- **X polls**, **Who can reply**, and **Made with AI** and **Paid partnership** labels.
+- **TikTok photo posts** of 1 to 35 pictures.
+- **LinkedIn PDF carousels.** Post a PDF as a document people swipe through. Pick who can see a profile post, and turn resharing off.
+- **Instagram Trial Reels**, **YouTube category** and **Notify subscribers**, and **Pinterest board sections**.
+- **Brand kit.** Each brand gets a voice, words to avoid and hashtags. AI writing follows it, and the editor warns about words to avoid.
+- **AI threads, polls, carousels and slideshows** from one line of text, and **Ask for a change** to tell Claude what to rewrite.
+- **Campaigns** to group posts, with their own color and results, and a **Day** view on the calendar.
+- **Queue presets**: **Weekdays at 9**, **Morning and lunch**, **Every day, twice** and **Your best times**. New accounts see popular hours on each network until their own results come in.
+- **HEIC photos** from iPhones turn into JPG as they upload, and the media library has search.
+- **WordPress** is a new network, and **Telegram** is back.
+- **Claude can sign in.** Add Capybaroar to Claude as a connector with your Capybaroar sign-in, with no key to copy. ChatGPT and other apps that sign in get AI pictures and videos too.
+- **Developer tools.** A JavaScript SDK (`@capybaroar/sdk`), a command line tool (`capybaroar`) and an MCP package for apps that start a command (`@capybaroar/mcp`) (check whether they're published).
+- **AI model picker.** In the agent's chat box, pick the model for CapyImage, CapyVideo and CapyAudio, or let Capy pick.
+
+### Better
+
+- **Settings as tables**: brands with their approval switch and credit limit, members, webhooks and credit history. The queue shows one row for each weekday.
+- **Dropdowns** replace rows of chips for channels, groups, models and kinds.
+- **Channels and campaigns as tables**, and an **Add channel** button.
+- **The post editor** shows one character counter for each network, and the preview has a **Preview** menu.
+- **Reports** list as a table, link in bio blocks show as rows, and the sidebar shows your 6 newest agent chats. Brands can be searched in the brand menu.
+- **AI prices** went down: every AI action now costs 2 times what it costs us, down from 2.5. AI formats cost 10 credits and a link in bio page 40.
+- **Disconnecting a channel** ends Capybaroar's access on the network, where the network allows it.
+- **Readable X errors.** X's error codes now come back as plain words.
+
+### Security
+
+- Channel sign-ins are tied to the browser and person that started them.
+- Uploads are checked by what the file really is, the media library is limited to each person's brands, and uploads belong to the brand they were made for.
+- Shared limits on sign-in tries, emails, password resets and API requests.
+
+## November 1 to 7
+
+### New
+
+- **Agencies and teams.** Brands for each client, email invites with roles, and post approvals. See [Team and roles](/workspace/team-and-roles/) and [Approvals](/workspace/approvals/).
+- **Inbox.** Comments, replies, mentions and messages from every channel in one place, with suggested replies. YouTube and X are read every 30 minutes, the rest every 10. See [Inbox](/results/inbox/).
+- **Analytics** with reach, engagement and best times to post.
+- **Reports** for agencies with share links, a PDF and scheduled emails. See [Reports](/results/reports/).
+- **The REST API and MCP server**, with keys in **Settings**, **API and MCP**. Then **webhooks** and **upload by link**. See the [API reference](/api-reference/).
+- **Delete everywhere** takes a post down on every network it went out on.
+- **More ways to fill the calendar**: bulk upload from a CSV file or a stack of pictures, RSS feeds, evergreen reposts and link in bio.
+- **Link in bio** got its own section with blocks, themes, analytics and settings, then templates and **Build with AI**, and 11 new themes, fonts, Pop and Glass buttons and 25 templates. Pages live at `capybaroar.com/<name>`.
+- **AI pictures, videos and audio.** CapyImage, CapyVideo and CapyAudio, where Capy picks the best model for what you ask. One credit balance covers everything AI.
+- **Four plans**: Free, Creator, Pro and Agency, with AI credits on paid plans. See [Plans and billing](/workspace/plans-and-billing/).
+- **The agent** can now do everything the API can, makes pictures and videos for the posts it writes, and has a chat page with your chats in the sidebar.
+- **Select all and saved channel groups** in the post editor.
+- **Facebook Stories**: schedule a picture or video as a Page Story.
+- **Eight new networks**, and per-channel text and settings on every post.
+- **The post editor** went full screen with phone and desktop previews, drag and drop, a text toolbar (undo, bold, italic, hashtags, mentions, short links, snippets and rewrites), crop and trim, and autosave on your device.
+- **Previews play videos**, and TikTok posts get a live link once they're out.
+
+### Better
+
+- **A calmer look**, the same across the app, with a sidebar that folds to icons and Settings with one tab at a time.
+- **Faster pages**: smaller downloads and fewer trips to the server.
+- **TikTok** always shows its approval page with **Switch account**, explains its error codes in plain words, and shows your account's live choices in the TikTok tab.
+- The calendar draws times in your own time zone.
+
+### Paused
+
+- **Reddit and Google Business** are paused. They're hidden from Channels and can't be connected for now. Telegram was paused too, and came back on November 11.
+
+## On capybaroar.com
+
+- A [pricing page](https://capybaroar.com/pricing), landing pages for each network and feature, 29 free social media tools, a social media glossary of 200 terms, and a blog.
+- Help docs, built from the app's own facts, so limits and settings match the app.
+
+## Related
+
+<CardGrid>
+  <LinkCard title="October 2026" href="/changelog/2026-10/" />
+  <LinkCard title="All release notes" href="/changelog/" />
+</CardGrid>
